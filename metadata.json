@@ -1,0 +1,6 @@
+{
+  "name": "E-Dijital Davetiye",
+  "description": "Premium Dijital Davetiye Platformu - Çevre dostu ve tamamen kişiselleştirilebilir lüks davetiyeler.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
