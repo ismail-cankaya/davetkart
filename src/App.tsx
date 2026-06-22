@@ -151,49 +151,36 @@ export default function App() {
       return isoString;
     }
   };
-  // === Scroll-linked Device Grow Animation (Google Antigravity style) ===
-  const deviceSectionRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
+
+  // Scroll-jack effect: from Hero to Categories directly
+  useEffect(() => {
+    let isScrolling = false;
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const isScrollingDown = currentScrollY > lastScrollY;
+      lastScrollY = currentScrollY;
+
+      if (isScrolling) return;
+
+      // If near the top and scrolling down, snap to Categories
+      if (isScrollingDown && currentScrollY > 10 && currentScrollY < window.innerHeight * 0.3) {
+        isScrolling = true;
+        const target = document.getElementById('animasyon-ve-onizleme');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+        setTimeout(() => { isScrolling = false; }, 800); // Cooldown
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Standard section refs
   const featuresRef = useRef<HTMLDivElement>(null);
-  const featuresInView = useInView(featuresRef, { once: true, margin: "-100px" });
-
-  // Track scroll progress through the hero → device section
-  const { scrollYProgress: heroScrollProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  });
-
-  // Track scroll progress for the device section itself
-  const { scrollYProgress: deviceScrollProgress } = useScroll({
-    target: deviceSectionRef,
-    offset: ["start end", "center center"]
-  });
-
-  // Smooth spring physics for buttery animations
-  const smoothDeviceProgress = useSpring(deviceScrollProgress, {
-    stiffness: 80,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  // Device scaling: starts at 0.6 → grows to 1.0 (desktop only, mobile uses simpler animation)
-  const deviceScale = useTransform(smoothDeviceProgress, [0, 0.8], isMobile ? [1, 1] : [0.55, 1]);
-  // 3D perspective rotation: starts tilted → flattens (desktop only)
-  const deviceRotateX = useTransform(smoothDeviceProgress, [0, 0.8], isMobile ? [0, 0] : [18, 0]);
-  // Vertical translation: starts lower → moves to position (desktop only)
-  const deviceTranslateY = useTransform(smoothDeviceProgress, [0, 0.8], isMobile ? [0, 0] : [80, 0]);
-  // Opacity for the device
-  const deviceOpacity = useTransform(smoothDeviceProgress, [0, 0.3], isMobile ? [1, 1] : [0.3, 1]);
-  // Border radius morph effect
-  const deviceBorderRadius = useTransform(smoothDeviceProgress, [0, 0.8], [60, 42]);
-
-  // Hero content parallax - moves up as user scrolls
-  const heroContentY = useTransform(heroScrollProgress, [0, 1], [0, -100]);
-  const heroContentOpacity = useTransform(heroScrollProgress, [0, 0.6], [1, 0]);
-
-  // Smooth spring for hero parallax
-  const smoothHeroY = useSpring(heroContentY, { stiffness: 100, damping: 30 });
-  const smoothHeroOpacity = useSpring(heroContentOpacity, { stiffness: 100, damping: 30 });
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans selection:bg-[#064e3b] selection:text-white">
@@ -312,9 +299,8 @@ export default function App() {
       <main className="flex-grow">
 
         {/* Hero Section */}
-        <section ref={heroRef} className="relative min-h-[100dvh] pt-20 pb-20 overflow-hidden bg-gradient-to-b from-[#f8f9ff] via-white to-[#f8f9ff] flex flex-col justify-center bg-grain">
-          <motion.div
-            style={{ y: smoothHeroY, opacity: smoothHeroOpacity }}
+        <section className="relative min-h-[100dvh] pt-20 pb-20 overflow-hidden bg-gradient-to-b from-[#f8f9ff] via-white to-[#f8f9ff] flex flex-col justify-center bg-grain">
+          <div
             className="max-w-7xl mx-auto px-4 md:px-12 relative z-10 flex flex-col items-center text-center w-full"
           >
 
@@ -393,7 +379,7 @@ export default function App() {
                 </motion.div>
               ))}
             </motion.div>
-          </motion.div>
+          </div>
 
           {/* Decorative floating blobs with animation */}
           <motion.div
@@ -418,28 +404,28 @@ export default function App() {
           />
 
           {/* Scroll indicator */}
-          <motion.div
+          <motion.a
+            href="#animasyon-ve-onizleme"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 1 }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 cursor-pointer group"
           >
-            <span className="text-[10px] text-[#515f74] uppercase tracking-[0.2em] font-semibold">Keşfet</span>
+            <span className="text-[10px] text-[#515f74] uppercase tracking-[0.2em] font-semibold group-hover:text-[#003527] transition-colors">Keşfet</span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="w-5 h-8 rounded-full border-2 border-[#003527]/20 flex items-start justify-center pt-1.5"
+              className="w-5 h-8 rounded-full border-2 border-[#003527]/20 flex items-start justify-center pt-1.5 group-hover:border-[#003527]/40 transition-colors"
             >
-              <div className="w-1 h-2 bg-[#003527]/40 rounded-full" />
+              <div className="w-1 h-2 bg-[#003527]/40 rounded-full group-hover:bg-[#003527]/60 transition-colors" />
             </motion.div>
-          </motion.div>
+          </motion.a>
         </section>
 
-        {/* Scroll Interaction & Device Preview Section - Google Antigravity Style */}
+        {/* Device Preview Section */}
         <section
-          ref={deviceSectionRef}
           id="animasyon-ve-onizleme"
-          className="py-12 md:py-32 bg-[#f8f9ff] relative overflow-hidden"
+          className="py-12 md:py-20 bg-[#f8f9ff] relative overflow-hidden"
         >
           <div className="max-w-7xl mx-auto px-4 md:px-12">
 
@@ -462,9 +448,9 @@ export default function App() {
               </p>
             </motion.div>
 
-            <div className="flex flex-col-reverse lg:flex-row gap-8 lg:gap-16 items-center lg:items-start justify-center">
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center lg:items-start justify-center">
 
-              {/* Left Column (on desktop) / Bottom Column (on mobile): Koleksiyonlar */}
+              {/* Left Column (on desktop) / Top Column (mobile): Koleksiyonlar */}
               <motion.div
                 className="w-full lg:w-1/2 flex flex-col justify-center space-y-4 lg:space-y-6 pt-4"
                 initial={{ opacity: 0, x: -60 }}
@@ -568,25 +554,18 @@ export default function App() {
                 </motion.div>
               </motion.div>
 
-              {/* Right Column (desktop) / Top Column (mobile): Phone Device Preview */}
-              {/* 3D Perspective container for Google Antigravity-style scroll grow */}
+              {/* Right Column (desktop) / Bottom Column (mobile): Phone Device Preview */}
               <div
                 ref={phoneRef}
-                className="w-full lg:w-1/2 flex flex-col items-center justify-center min-h-[500px] lg:min-h-[700px] perspective-container"
+                className="w-full lg:w-1/2 flex flex-col items-center justify-center min-h-[400px] lg:min-h-[550px] perspective-container"
               >
 
-                {/* Scroll-linked Device Frame with 3D transforms */}
+                {/* Device Frame Animation */}
                 <motion.div
-                  style={!isMobile ? {
-                    scale: deviceScale,
-                    rotateX: deviceRotateX,
-                    translateY: deviceTranslateY,
-                    opacity: deviceOpacity,
-                  } : {}}
-                  initial={isMobile ? { opacity: 0, y: 30, scale: 0.95 } : false}
-                  whileInView={isMobile ? { opacity: 1, y: 0, scale: 1 } : undefined}
-                  viewport={isMobile ? { once: true, margin: "0px" } : undefined}
-                  transition={isMobile ? { duration: 0.8, ease: [0.16, 1, 0.3, 1] } : undefined}
+                  initial={isMobile ? { opacity: 0, y: 30, scale: 0.95 } : { opacity: 0, y: 60, scale: 0.7, rotateX: 15 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+                  viewport={{ once: true, margin: "0px" }}
+                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                   className="relative will-change-transform"
                 >
                   {/* Ambient glow behind device - lighter on mobile */}
