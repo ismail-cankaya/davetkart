@@ -14,5 +14,8 @@ export interface RSVPResponse {
   guestCount: number;
   menuPreference: string;
   status: 'Katılıyor' | 'Bekleniyor' | 'Katılamıyor';
+  message?: string;
+  photoUrl?: string;
+  videoUrl?: string;
   createdAt: string;
 }

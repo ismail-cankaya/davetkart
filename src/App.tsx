@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from 'motion/react';
 import {
   Heart,
@@ -23,7 +23,12 @@ import {
   UserCheck,
   Send,
   Trash2,
-  RefreshCw
+  RefreshCw,
+  Image as ImageIcon,
+  Music,
+  Play,
+  Pause,
+  Upload
 } from 'lucide-react';
 import { Invitation, RSVPResponse } from './types';
 import { TEMPLATE_PRESETS, INITIAL_INVITATION, INITIAL_RSVP_LIST } from './data';
@@ -49,8 +54,25 @@ export default function App() {
     guestName: '',
     guestCount: 2,
     menuPreference: 'Et Menü',
-    status: 'Katılıyor' as 'Katılıyor' | 'Bekleniyor' | 'Katılamıyor'
+    status: 'Katılıyor' as 'Katılıyor' | 'Bekleniyor' | 'Katılamıyor',
+    message: '',
+    photoUrl: '',
+    videoUrl: ''
   });
+
+  const handleRsvpPhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const url = URL.createObjectURL(e.target.files[0]);
+      setNewRsvp(prev => ({ ...prev, photoUrl: url }));
+    }
+  };
+
+  const handleRsvpVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const url = URL.createObjectURL(e.target.files[0]);
+      setNewRsvp(prev => ({ ...prev, videoUrl: url }));
+    }
+  };
 
   // Save state on change
   useEffect(() => {
@@ -99,6 +121,9 @@ export default function App() {
       guestCount: Number(newRsvp.guestCount),
       menuPreference: newRsvp.menuPreference,
       status: newRsvp.status,
+      message: newRsvp.message,
+      photoUrl: newRsvp.photoUrl,
+      videoUrl: newRsvp.videoUrl,
       createdAt: new Date().toISOString()
     };
 
@@ -802,6 +827,44 @@ export default function App() {
                                 </div>
                               </div>
 
+                              <div>
+                                <label className="block text-[11px] font-semibold text-stone-300 uppercase tracking-wider mb-1.5">
+                                  Çiftimize Mesajınız (İsteğe Bağlı)
+                                </label>
+                                <textarea
+                                  rows={2}
+                                  value={newRsvp.message}
+                                  onChange={e => setNewRsvp(p => ({ ...p, message: e.target.value }))}
+                                  placeholder="Örn. Mutluluklar dileriz..."
+                                  className="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 transition-colors placeholder:text-stone-500 resize-none"
+                                />
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                  <label className="block text-[11px] font-semibold text-stone-300 uppercase tracking-wider mb-1.5">
+                                    Fotoğraf Ekle
+                                  </label>
+                                  <label className="flex items-center justify-center w-full bg-white/5 border border-white/15 border-dashed hover:border-amber-400 hover:bg-white/10 rounded-xl px-3 py-2 text-xs text-white transition-colors cursor-pointer group">
+                                    <input type="file" accept="image/*" onChange={handleRsvpPhotoUpload} className="hidden" />
+                                    <span className="flex items-center gap-1.5 group-hover:text-amber-400 text-stone-300">
+                                      <ImageIcon size={14} /> {newRsvp.photoUrl ? 'Değiştir' : 'Seç'}
+                                    </span>
+                                  </label>
+                                </div>
+                                <div>
+                                  <label className="block text-[11px] font-semibold text-stone-300 uppercase tracking-wider mb-1.5">
+                                    Kısa Video Ekle
+                                  </label>
+                                  <label className="flex items-center justify-center w-full bg-white/5 border border-white/15 border-dashed hover:border-amber-400 hover:bg-white/10 rounded-xl px-3 py-2 text-xs text-white transition-colors cursor-pointer group">
+                                    <input type="file" accept="video/*" onChange={handleRsvpVideoUpload} className="hidden" />
+                                    <span className="flex items-center gap-1.5 group-hover:text-amber-400 text-stone-300">
+                                      <Play size={14} /> {newRsvp.videoUrl ? 'Değiştir' : 'Seç'}
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+
                               <motion.button
                                 type="submit"
                                 whileHover={{ scale: 1.02 }}
@@ -1289,36 +1352,61 @@ export default function App() {
                           initial={{ opacity: 0, x: 20 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: -20 }}
-                          className="flex items-center justify-between bg-slate-50/80 hover:bg-white rounded-xl p-3 md:p-4 border border-slate-100 transition-colors duration-300"
+                          className="flex flex-col gap-2 bg-slate-50/80 hover:bg-white rounded-xl p-3 md:p-4 border border-slate-100 transition-colors duration-300"
                         >
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-[#003527]/5 text-[#003527] border border-[#003527]/10 flex items-center justify-center font-bold text-xs uppercase shadow-sm">
-                              {rsvp.guestName ? rsvp.guestName.substring(0, 2) : 'M'}
-                            </div>
-                            <div>
-                              <p className="font-bold text-xs text-[#0b1c30]">{rsvp.guestName}</p>
-                              <div className="flex items-center gap-1.5 text-[10px] text-[#515f74] mt-0.5">
-                                <Users size={11} className="text-stone-400" />
-                                <span>{rsvp.guestCount} Kişi</span>
-                                <span className="text-stone-300">•</span>
-                                <Utensils size={11} className="text-stone-400" />
-                                <span>{rsvp.menuPreference || 'Belirtilmedi'}</span>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-full bg-[#003527]/5 text-[#003527] border border-[#003527]/10 flex items-center justify-center font-bold text-xs uppercase shadow-sm shrink-0">
+                                {rsvp.guestName ? rsvp.guestName.substring(0, 2) : 'M'}
                               </div>
+                              <div>
+                                <p className="font-bold text-xs text-[#0b1c30]">{rsvp.guestName}</p>
+                                <div className="flex items-center gap-1.5 text-[10px] text-[#515f74] mt-0.5">
+                                  <Users size={11} className="text-stone-400" />
+                                  <span>{rsvp.guestCount} Kişi</span>
+                                  <span className="text-stone-300">•</span>
+                                  <Utensils size={11} className="text-stone-400" />
+                                  <span>{rsvp.menuPreference || 'Belirtilmedi'}</span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-2 shrink-0">
+                              <span className={`${badgeBg} px-3 py-1 rounded-full text-[10px] font-bold shadow-sm`}>
+                                {rsvp.status}
+                              </span>
+                              <button
+                                onClick={() => handleDeleteRsvp(rsvp.id)}
+                                className="p-1 h-7 w-7 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-700 flex items-center justify-center border border-red-200 transition-all"
+                                title="Kaydı Sil"
+                              >
+                                <Trash2 size={12} />
+                              </button>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-2">
-                            <span className={`${badgeBg} px-3 py-1 rounded-full text-[10px] font-bold shadow-sm`}>
-                              {rsvp.status}
-                            </span>
-                            <button
-                              onClick={() => handleDeleteRsvp(rsvp.id)}
-                              className="p-1 h-7 w-7 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-700 flex items-center justify-center border border-red-200 transition-all"
-                              title="Kaydı Sil"
-                            >
-                              <Trash2 size={12} />
-                            </button>
-                          </div>
+                          {/* Extra Content (Message, Photo, Video) */}
+                          {(rsvp.message || rsvp.photoUrl || rsvp.videoUrl) && (
+                            <div className="mt-2 pl-13 flex flex-col gap-2">
+                              {rsvp.message && (
+                                <p className="text-xs text-stone-600 bg-white p-2.5 rounded-lg border border-stone-100 shadow-sm italic relative w-fit max-w-full">
+                                  "{rsvp.message}"
+                                </p>
+                              )}
+                              <div className="flex gap-2">
+                                {rsvp.photoUrl && (
+                                  <a href={rsvp.photoUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 bg-sky-50 text-sky-700 text-[10px] px-2.5 py-1.5 rounded-lg border border-sky-200 hover:bg-sky-100 transition-colors font-medium">
+                                    <ImageIcon size={12} /> Fotoğrafı Gör
+                                  </a>
+                                )}
+                                {rsvp.videoUrl && (
+                                  <a href={rsvp.videoUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 bg-purple-50 text-purple-700 text-[10px] px-2.5 py-1.5 rounded-lg border border-purple-200 hover:bg-purple-100 transition-colors font-medium">
+                                    <Play size={12} /> Videoyu İzle
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          )}
                         </motion.div>
                       );
                     })}

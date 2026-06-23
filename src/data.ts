@@ -56,6 +56,7 @@ export const INITIAL_RSVP_LIST: RSVPResponse[] = [
     guestCount: 2,
     menuPreference: 'Et Menü',
     status: 'Katılıyor',
+    message: 'Canım arkadaşlarım, bu mutlu gününüzde yanınızda olmayı çok isterdim. Mutluluklar!',
     createdAt: '2026-06-21T10:15:00Z'
   },
   {
