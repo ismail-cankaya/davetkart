@@ -165,7 +165,8 @@ export default function App() {
       if (isScrolling) return;
 
       // If near the top and scrolling down, snap to Categories
-      if (isScrollingDown && currentScrollY > 10 && currentScrollY < window.innerHeight * 0.3) {
+      // Disabled on mobile (innerWidth < 768) so users can scroll down naturally to see the usage statistics
+      if (window.innerWidth >= 768 && isScrollingDown && currentScrollY > 10 && currentScrollY < window.innerHeight * 0.3) {
         isScrolling = true;
         const target = document.getElementById('animasyon-ve-onizleme');
         if (target) {
