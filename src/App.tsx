@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from 'motion/react';
 import {
   Heart,
@@ -107,17 +107,17 @@ export default function App() {
     setIsRsvpModalOpen(false);
 
     // Visual notification/alert
-    alert(`Teşekkürler, ${entry.guestName}! LCV yanıtınız başarıyla kaydedildi ve LCV paneline eklendi.`);
+    alert(`Teşekkürler, ${entry.guestName}! Katılım bildiriminiz başarıyla kaydedildi ve katılım paneline eklendi.`);
   };
 
   const handleDeleteRsvp = (id: string) => {
-    if (window.confirm('Bu LCV kaydını silmek istediğinize emin misiniz?')) {
+    if (window.confirm('Bu katılım kaydını silmek istediğinize emin misiniz?')) {
       setRsvpList(prev => prev.filter(r => r.id !== id));
     }
   };
 
   const handleResetRsvps = () => {
-    if (window.confirm('LCV listesini orijinal durumuna sıfırlamak istiyor musunuz?')) {
+    if (window.confirm('Katılım listesini orijinal durumuna sıfırlamak istiyor musunuz?')) {
       setRsvpList(INITIAL_RSVP_LIST);
     }
   };
@@ -201,7 +201,7 @@ export default function App() {
             <a className="text-[#515f74] hover:text-[#003527] transition-colors font-medium text-sm" href="#koleksiyonlar">Kategoriler</a>
             <a className="text-[#515f74] hover:text-[#003527] transition-colors font-medium text-sm" href="#tasarimci">Davetiye Tasarla</a>
             <a className="text-[#515f74] hover:text-[#003527] transition-colors font-medium text-sm" href="#neden-dijital">Özellikler</a>
-            <a className="text-[#515f74] hover:text-[#003527] transition-colors font-medium text-sm" href="#lcv-paneli">Canlı LCV Paneli</a>
+            <a className="text-[#515f74] hover:text-[#003527] transition-colors font-medium text-sm" href="#lcv-paneli">Canlı Katılım Paneli</a>
           </nav>
 
           {/* Actions */}
@@ -272,7 +272,7 @@ export default function App() {
                   className="text-[#515f74] hover:text-[#003527] font-medium text-base py-1"
                   href="#lcv-paneli"
                 >
-                  Canlı LCV Paneli
+                  Canlı Katılım Paneli
                 </a>
 
                 <div className="flex gap-4 mt-2">
@@ -449,9 +449,9 @@ export default function App() {
               </p>
             </motion.div>
 
-            <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center lg:items-start justify-center">
+            <div className="flex flex-col-reverse lg:flex-row gap-8 lg:gap-16 items-center lg:items-start justify-center">
 
-              {/* Left Column (on desktop) / Top Column (mobile): Koleksiyonlar */}
+              {/* Left Column (on desktop) / Bottom Column (mobile): Koleksiyonlar */}
               <motion.div
                 className="w-full lg:w-1/2 flex flex-col justify-center space-y-4 lg:space-y-6 pt-4"
                 initial={{ opacity: 0, x: -60 }}
@@ -696,7 +696,7 @@ export default function App() {
                             onClick={() => setIsRsvpModalOpen(true)}
                             className={`w-full max-w-[210px] ${activePreset.btnColor} font-semibold py-3 px-6 rounded-full text-xs tracking-wider shadow-xl transition-all duration-300 border border-white/15 cursor-pointer`}
                           >
-                            LCV GÖNDER (RSVP)
+                            KATILIM BİLDİR
                           </motion.button>
                           <p className="text-[9px] text-stone-300/80 tracking-wide">
                             *Lütfen yanıtınızı en geç etkinlik haftasına kadar iletiniz.
@@ -718,7 +718,7 @@ export default function App() {
                             <div className="flex justify-between items-center mb-5">
                               <h3 className="text-sm font-serif font-bold text-amber-200 flex items-center gap-1.5 uppercase tracking-wider">
                                 <Heart size={14} className="text-amber-300 fill-amber-300/20" />
-                                LCV Katılım Formu
+                                Davet Katılım Formu
                               </h3>
                               <motion.button
                                 whileHover={{ scale: 1.1, rotate: 90 }}
@@ -820,6 +820,27 @@ export default function App() {
                   </motion.div>
                 </motion.div>
 
+                {/* Tam Ekranda Görüntüle Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="w-full mt-6"
+                >
+                  <button
+                    onClick={() => {
+                      if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                      }
+                    }}
+                    className="w-full max-w-[280px] lg:max-w-[335px] mx-auto bg-white/80 hover:bg-white text-[#003527] border border-[#003527]/10 py-3 rounded-xl font-bold text-xs shadow-sm hover:shadow-md cursor-pointer transition-all flex items-center justify-center gap-2"
+                  >
+                    <Maximize2 size={16} />
+                    Tam Ekranda Görüntüle
+                  </button>
+                </motion.div>
+
                 {/* Animated scroll label - desktop only */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -834,7 +855,7 @@ export default function App() {
                   >
                     <Smartphone size={14} />
                   </motion.div>
-                  <span>Önizleme üzerinde deneyin! LCV Gönder butonuna basıp form doldurabilirsiniz.</span>
+                  <span>Önizleme üzerinde deneyin! Katılım Bildir butonuna basıp form doldurabilirsiniz.</span>
                 </motion.div>
               </div>
 
@@ -868,38 +889,11 @@ export default function App() {
                     Kendi E-Davetiyeni Tasarla
                   </h2>
                   <p className="text-stone-300 text-sm mt-2 max-w-xl">
-                    Aşağıdaki bilgileri düzenleyerek davetiyenizi anında kişiselleştirebilirsiniz. Yukarıdaki telefon simülatöründe ve canlı LCV panelinde sonuçları gerçek zamanlı gözlemleyin.
+                    Aşağıdaki bilgileri düzenleyerek davetiyenizi anında kişiselleştirebilirsiniz. Yukarıdaki telefon simülatöründe ve canlı katılım panelinde sonuçları gerçek zamanlı gözlemleyin.
                   </p>
                 </div>
 
                 <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/15 space-y-6">
-
-                  {/* Design Template Quick Selection */}
-                  <div>
-                    <label className="block text-xs font-bold tracking-wider uppercase text-amber-200 mb-3">
-                      Tasarım Şablon Teması
-                    </label>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {TEMPLATE_PRESETS.map((pst) => (
-                        <button
-                          key={pst.id}
-                          type="button"
-                          onClick={() => handleTemplateChange(pst.id)}
-                          className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all cursor-pointer ${activePresetId === pst.id
-                            ? 'bg-[#003527] border-amber-300 shadow-lg scale-[1.03]'
-                            : 'bg-white/5 border-white/10 hover:bg-white/10'
-                            }`}
-                        >
-                          <div className={`w-5 h-5 rounded-full ${pst.backgroundStyle} border border-white/20 mb-1`} />
-                          <span className="text-[10px] font-semibold tracking-wide truncate max-w-[100px]">
-                            {pst.name.split(' (')[0]}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="h-[1px] bg-white/10" />
 
                   {/* Form entries */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -993,13 +987,17 @@ export default function App() {
                       Bütün Formu Sıfırla
                     </button>
 
-                    <a
-                      href="#davetiye-simulasyonu"
-                      className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-md"
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('animasyon-ve-onizleme')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-md cursor-pointer transition-colors"
                     >
                       <Smartphone size={14} />
-                      Simülatöre Git
-                    </a>
+                      Önizleme
+                    </button>
                   </div>
 
                 </div>
@@ -1045,15 +1043,15 @@ export default function App() {
                     <div className="flex items-center gap-2 mb-2 bg-white/20 w-fit px-2.5 py-0.5 rounded-full text-[10px] font-bold">
                       <Flame size={12} /> Sınırlı Süre Promosyonu
                     </div>
-                    <h4 className="font-serif text-xl font-bold">İlk Davetiyeniz %100 Ücretsiz!</h4>
+                    <h4 className="font-serif text-xl font-bold">İlk Davetiyeniz %60 İndirimli!</h4>
                     <p className="text-xs font-medium mt-1 text-slate-900 leading-relaxed">
-                      Sitemize şimdi üye olarak ilk dijital davetiyenizi hiçbir ücret ödemeden oluşturabilir ve ilk 102 misafirinize tamamen ücretsiz LCV takibi uygulayabilirsiniz.
+                      Sitemize şimdi üye olarak ilk dijital davetiyenizi büyük bir indirimle oluşturabilir ve ilk 102 misafirinize tamamen ücretsiz katılım takibi yapabilirsiniz.
                     </p>
                     <a
                       href="#tasarimci"
                       className="mt-4 inline-flex items-center gap-1 bg-slate-950 text-white font-bold text-xs px-4 py-2 rounded-lg hover:bg-slate-900 transition-colors"
                     >
-                      <span>Hemen Ücretsiz Başla</span>
+                      <span>Hemen Başla</span>
                       <ArrowRight size={12} />
                     </a>
                   </div>
@@ -1068,190 +1066,382 @@ export default function App() {
           </div>
         </motion.section>
 
-        {/* Feature list: Why E-Dijital Davetiye */}
-        <section
-          ref={featuresRef}
-          id="neden-dijital"
-          className="py-12 md:py-24 bg-[#eff4ff] relative overflow-hidden"
-        >
-          <div className="max-w-7xl mx-auto px-4 md:px-12">
+        {/* ═══════════════════════════════════════════════════════════════ */}
+        {/* How It Works — 3 Step Process */}
+        {/* ═══════════════════════════════════════════════════════════════ */}
+        <section ref={featuresRef} id="neden-dijital" className="py-20 md:py-32 bg-[#f8f9ff] relative overflow-hidden">
+          {/* Subtle background decoration */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+            <div className="absolute top-20 right-10 w-72 h-72 bg-emerald-100/30 rounded-full blur-3xl" />
+            <div className="absolute bottom-20 left-10 w-96 h-96 bg-amber-50/40 rounded-full blur-3xl" />
+          </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="max-w-7xl mx-auto px-4 md:px-12 relative z-10">
+            {/* Section Header */}
+            <motion.div
+              className="text-center mb-16 md:mb-20"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <span className="text-[#003527] font-semibold text-xs tracking-wider uppercase bg-[#003527]/5 px-3 py-1 rounded-full inline-block mb-4">
+                Basit 3 Adım
+              </span>
+              <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#0b1c30] mb-4">
+                Nasıl <span className="italic text-[#003527] font-medium">Çalışır?</span>
+              </h2>
+              <p className="text-[#515f74] text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+                Dijital davetiyenizi dakikalar içinde oluşturun ve sevdiklerinizle anında paylaşın.
+              </p>
+            </motion.div>
 
-              {/* Left Column content */}
-              <motion.div
-                className="space-y-6"
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "0px" }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            {/* Steps Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-10">
+              {[
+                {
+                  step: '01',
+                  title: 'Şablon Seçin',
+                  desc: 'Düğün, nişan, baby shower, doğum günü veya kurumsal etkinlik — hayalinizdeki konsepte uygun premium şablonu seçin.',
+                  icon: <Sparkles size={24} />,
+                  gradient: 'from-emerald-500 to-teal-600',
+                  bgLight: 'bg-emerald-50',
+                  borderColor: 'border-emerald-200',
+                  iconBg: 'bg-emerald-100 text-emerald-700'
+                },
+                {
+                  step: '02',
+                  title: 'Kişiselleştirin',
+                  desc: 'İsimleri, tarihi, mekanı ve özel mesajınızı girin. Canlı önizlemede her değişikliği anında görün.',
+                  icon: <Laptop size={24} />,
+                  gradient: 'from-amber-500 to-orange-600',
+                  bgLight: 'bg-amber-50',
+                  borderColor: 'border-amber-200',
+                  iconBg: 'bg-amber-100 text-amber-700'
+                },
+                {
+                  step: '03',
+                  title: 'Paylaşın & Takip Edin',
+                  desc: 'WhatsApp, SMS veya e-posta ile gönderin. Canlı katılım panelinden katılım durumlarını anlık takip edin.',
+                  icon: <Send size={24} />,
+                  gradient: 'from-violet-500 to-purple-600',
+                  bgLight: 'bg-violet-50',
+                  borderColor: 'border-violet-200',
+                  iconBg: 'bg-violet-100 text-violet-700'
+                }
+              ].map((item, idx) => (
+                <motion.div
+                  key={item.step}
+                  className={`relative group rounded-3xl ${item.bgLight} border ${item.borderColor} p-8 md:p-10 hover:shadow-2xl transition-all duration-700 hover:-translate-y-2`}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.15 }}
+                >
+                  {/* Step Number */}
+                  <div className="absolute -top-4 -right-2 md:-right-4">
+                    <span className={`bg-gradient-to-br ${item.gradient} text-white text-2xl md:text-3xl font-serif font-bold w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center shadow-lg`}>
+                      {item.step}
+                    </span>
+                  </div>
+
+                  {/* Icon */}
+                  <div className={`w-14 h-14 rounded-2xl ${item.iconBg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500`}>
+                    {item.icon}
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="font-serif text-xl md:text-2xl font-bold text-[#0b1c30] mb-3">
+                    {item.title}
+                  </h3>
+                  <p className="text-[#515f74] text-sm leading-relaxed">
+                    {item.desc}
+                  </p>
+
+                  {/* Connector line (between cards on desktop) */}
+                  {idx < 2 && (
+                    <div className="hidden md:block absolute top-1/2 -right-3 lg:-right-5 w-6 lg:w-10 h-[2px] bg-gradient-to-r from-[#003527]/20 to-transparent z-20" />
+                  )}
+                </motion.div>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <motion.div
+              className="text-center mt-14 md:mt-20"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+            >
+              <a
+                href="#tasarimci"
+                className="group inline-flex items-center gap-3 bg-[#003527] text-white px-10 py-5 rounded-full font-semibold text-sm hover:bg-[#064e3b] transition-all duration-500 shadow-lg hover:shadow-2xl hover:-translate-y-1"
               >
-                <span className="text-[#003527] font-semibold text-xs tracking-wider uppercase bg-[#003527]/5 px-3 py-1 rounded-full">
-                  Neden E-Dijital Davetiye?
-                </span>
-                <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#0b1c30]">
-                  Geleneksel Matbaa Süreçlerini Geride Bırakın
-                </h2>
-                <p className="text-[#515f74] text-sm md:text-base leading-relaxed">
-                  Zarflama, kargo kayıpları ve eksik LCV dönüşleriyle vakit kaybetmeyin. Modern teknolojinin getirdiği kolaylık ve estetiği bir arada yaşayın.
-                </p>
+                Hemen Başlayın
+                <ArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform duration-300" />
+              </a>
+              <p className="text-[#515f74] text-xs mt-4">Kredi kartı gerektirmez · İlk davetiye %60 indirimli</p>
+            </motion.div>
+          </div>
+        </section>
 
-                <div className="space-y-6 pt-4">
-                  {[
-                    { num: 1, title: 'Dakikalar İçinde Hazır', desc: 'Seçtiğiniz lüks şablonu anında kişiselleştirebilir ve akıllı telefonunuzdan WhatsApp, SMS veya diğer kanallar üzerinden sevdiklerinizle anında paylaşabilirsiniz.' },
-                    { num: 2, title: 'Çevre Dostu Yaklaşım', desc: 'Tonlarca kağıt israfını ve orman tahribatını önleyin. Sürdürülebilir, sıfır karbon, doğaya ve ekosisteme saygılı bir kutlama organize etmenin gururunu yaşayın.' },
-                    { num: 3, title: 'Gelişmiş Anlık LCV Takibi', desc: 'Katılımcı sayılarını, çocuk menüsü veya glütensiz yiyecek tercihlerini anlık gözlemleyin. Oturma düzenini hatasız ve zahmetsizce planlayın.' }
-                  ].map((feature, idx) => (
-                    <motion.div
-                      key={feature.num}
-                      className="flex gap-4 group"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "0px" }}
-                      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.15 }}
-                    >
-                      <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        className="w-12 h-12 rounded-full bg-[#b0f0d6] flex items-center justify-center text-[#002117] shrink-0 shadow-sm font-bold group-hover:shadow-md transition-shadow duration-300"
-                      >
-                        {feature.num}
-                      </motion.div>
-                      <div>
-                        <h4 className="font-semibold text-sm text-[#0b1c30]">{feature.title}</h4>
-                        <p className="text-xs text-[#515f74] mt-1 text-justify">
-                          {feature.desc}
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
+        {/* ═══════════════════════════════════════════════════════════════ */}
+        {/* Live LCV Dashboard Panel — Independent Full-Width Section */}
+        {/* ═══════════════════════════════════════════════════════════════ */}
+        <section id="lcv-paneli" className="py-20 md:py-28 bg-gradient-to-b from-slate-50 to-stone-100 relative overflow-hidden">
+          {/* Decorative background */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-100/20 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-100/20 rounded-full blur-3xl" />
+          </div>
 
-              {/* LCV List live Panel - Right Column */}
-              <motion.div
-                id="lcv-paneli"
-                className="relative"
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "0px" }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-              >
+          <div className="max-w-5xl mx-auto px-4 md:px-12 relative z-10">
+            {/* Section Header */}
+            <motion.div
+              className="text-center mb-12"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <span className="text-[#003527] font-semibold text-xs tracking-wider uppercase bg-[#003527]/5 px-3 py-1 rounded-full inline-block mb-4">
+                Gerçek Zamanlı Takip
+              </span>
+              <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#0b1c30] mb-4">
+                Canlı <span className="italic text-[#003527] font-medium">Katılım Paneli</span>
+              </h2>
+              <p className="text-[#515f74] text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+                Misafirlerinizin katılım durumlarını anlık olarak izleyin. Menü tercihlerini, kişi sayılarını ve yanıt durumlarını tek panelden yönetin.
+              </p>
+            </motion.div>
 
-                <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 relative z-10 space-y-6">
+            {/* LCV Dashboard Card */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            >
+              <div className="bg-white rounded-3xl p-6 md:p-10 shadow-2xl border border-slate-100/80 relative z-10 space-y-8">
 
-                  <div className="flex justify-between items-center border-b border-stone-100 pb-4">
-                    <div>
-                      <h3 className="font-serif text-lg font-bold text-[#0b1c30] flex items-center gap-2">
-                        <Users className="text-[#003527]" size={20} />
-                        Canlı LCV Paneli
-                      </h3>
-                      <p className="text-[10px] text-[#515f74] mt-0.5">
-                        Misafirlerinizin LCV yanıtları bu panele eşzamanlı yansır (*Simülasyondur)
-                      </p>
-                    </div>
-
-                    <button
-                      onClick={handleResetRsvps}
-                      title="Listeyi Orijinal Haline Sıfırla"
-                      className="p-2 rounded-lg bg-gray-50 border border-gray-200 text-gray-500 hover:text-red-600 transition-colors cursor-pointer flex items-center gap-1 text-[11px] font-semibold"
-                    >
-                      <RefreshCw size={13} /> SIFIRLA
-                    </button>
-                  </div>
-
-                  {/* LCV Counters Status Grid */}
-                  <div className="grid grid-cols-3 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
-                    <div>
-                      <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wide">KATILIYOR</p>
-                      <p className="font-serif text-xl font-bold text-emerald-800 mt-1">{countAttending} Kişi</p>
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-yellow-700 uppercase tracking-wide">BELİRSİZ</p>
-                      <p className="font-serif text-xl font-bold text-yellow-800 mt-1">{countPending} Kişi</p>
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-red-700 uppercase tracking-wide">KATILAMAYACAK</p>
-                      <p className="font-serif text-xl font-bold text-red-800 mt-1">{countDeclines} Kişi</p>
-                    </div>
-                  </div>
-
-                  {/* Guest responses listing */}
-                  <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
-                    <AnimatePresence initial={false}>
-                      {rsvpList.map((rsvp) => {
-                        let badgeBg = 'bg-stone-100 text-[#404944]';
-                        if (rsvp.status === 'Katılıyor') badgeBg = 'bg-[#efe2c1] text-[#211b07]';
-                        if (rsvp.status === 'Katılamıyor') badgeBg = 'bg-[#ffdad6] text-[#93000a]';
-
-                        return (
-                          <motion.div
-                            key={rsvp.id}
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            className="flex items-center justify-between border-b border-stone-100 pb-3"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-full bg-[#003527]/5 text-[#003527] border border-[#003527]/10 flex items-center justify-center font-bold text-xs uppercase shadow-sm">
-                                {rsvp.guestName ? rsvp.guestName.substring(0, 2) : 'M'}
-                              </div>
-                              <div>
-                                <p className="font-bold text-xs text-[#0b1c30]">{rsvp.guestName}</p>
-                                <div className="flex items-center gap-1.5 text-[10px] text-[#515f74] mt-0.5">
-                                  <Users size={11} className="text-stone-400" />
-                                  <span>{rsvp.guestCount} Kişi</span>
-                                  <span className="text-stone-300">•</span>
-                                  <Utensils size={11} className="text-stone-400" />
-                                  <span>{rsvp.menuPreference || 'Belirtilmedi'}</span>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                              <span className={`${badgeBg} px-3 py-1 rounded-full text-[10px] font-bold shadow-sm`}>
-                                {rsvp.status}
-                              </span>
-
-                              {/* Option to delete row */}
-                              <button
-                                onClick={() => handleDeleteRsvp(rsvp.id)}
-                                className="p-1 h-7 w-7 rounded bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center border border-red-200 transition-colors"
-                                title="Kaydı Sil"
-                              >
-                                <Trash2 size={12} />
-                              </button>
-                            </div>
-                          </motion.div>
-                        );
-                      })}
-                    </AnimatePresence>
-
-                    {rsvpList.length === 0 && (
-                      <p className="text-center text-xs text-gray-400 py-8">Henüz kaydedilmiş LCV yanıtı bulunmuyor.</p>
-                    )}
-                  </div>
-
-                  <div className="bg-[#b0f0d6]/20 p-4 rounded-xl border border-[#b0f0d6]/70 text-center">
-                    <p className="text-xs font-semibold text-[#003527] flex items-center justify-center gap-1.5">
-                      <UserCheck size={14} />
-                      Misafirlerinizin yaptığı her RSVP anında burada görünür!
+                {/* Header Row */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-stone-100 pb-6">
+                  <div>
+                    <h3 className="font-serif text-xl font-bold text-[#0b1c30] flex items-center gap-2">
+                      <Users className="text-[#003527]" size={22} />
+                      Misafir Takip Panosu
+                    </h3>
+                    <p className="text-xs text-[#515f74] mt-1">
+                      Misafirlerinizin katılım yanıtları bu panele eşzamanlı yansır <span className="text-[#003527] font-medium">(*Simülasyondur)</span>
                     </p>
                   </div>
 
+                  <button
+                    onClick={handleResetRsvps}
+                    title="Listeyi Orijinal Haline Sıfırla"
+                    className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-500 hover:text-red-600 hover:border-red-200 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-semibold"
+                  >
+                    <RefreshCw size={13} /> Sıfırla
+                  </button>
                 </div>
 
-                {/* Decorative blob styling */}
-                <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-amber-100 rounded-full blur-3xl opacity-50 z-0" />
-                <div className="absolute -top-10 -left-10 w-64 h-64 bg-emerald-100 rounded-full blur-3xl opacity-50 z-0" />
-              </motion.div>
+                {/* Stats Counters */}
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="bg-emerald-50 p-5 rounded-2xl border border-emerald-100 text-center">
+                    <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-2">
+                      <UserCheck size={18} />
+                    </div>
+                    <p className="text-[10px] md:text-xs font-bold text-emerald-700 uppercase tracking-wider">Katılıyor</p>
+                    <p className="font-serif text-2xl md:text-3xl font-bold text-emerald-800 mt-1">{countAttending}</p>
+                    <p className="text-[10px] text-emerald-600 font-medium">kişi</p>
+                  </div>
+                  <div className="bg-amber-50 p-5 rounded-2xl border border-amber-100 text-center">
+                    <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-2">
+                      <Clock size={18} />
+                    </div>
+                    <p className="text-[10px] md:text-xs font-bold text-amber-700 uppercase tracking-wider">Belirsiz</p>
+                    <p className="font-serif text-2xl md:text-3xl font-bold text-amber-800 mt-1">{countPending}</p>
+                    <p className="text-[10px] text-amber-600 font-medium">kişi</p>
+                  </div>
+                  <div className="bg-red-50 p-5 rounded-2xl border border-red-100 text-center">
+                    <div className="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-2">
+                      <X size={18} />
+                    </div>
+                    <p className="text-[10px] md:text-xs font-bold text-red-700 uppercase tracking-wider">Katılamayacak</p>
+                    <p className="font-serif text-2xl md:text-3xl font-bold text-red-800 mt-1">{countDeclines}</p>
+                    <p className="text-[10px] text-red-600 font-medium">kişi</p>
+                  </div>
+                </div>
 
+                {/* Guest List */}
+                <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+                  <AnimatePresence initial={false}>
+                    {rsvpList.map((rsvp) => {
+                      let badgeBg = 'bg-stone-100 text-[#404944]';
+                      if (rsvp.status === 'Katılıyor') badgeBg = 'bg-emerald-100 text-emerald-800';
+                      if (rsvp.status === 'Katılamıyor') badgeBg = 'bg-red-100 text-red-800';
+
+                      return (
+                        <motion.div
+                          key={rsvp.id}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          className="flex items-center justify-between bg-slate-50/80 hover:bg-white rounded-xl p-3 md:p-4 border border-slate-100 transition-colors duration-300"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-[#003527]/5 text-[#003527] border border-[#003527]/10 flex items-center justify-center font-bold text-xs uppercase shadow-sm">
+                              {rsvp.guestName ? rsvp.guestName.substring(0, 2) : 'M'}
+                            </div>
+                            <div>
+                              <p className="font-bold text-xs text-[#0b1c30]">{rsvp.guestName}</p>
+                              <div className="flex items-center gap-1.5 text-[10px] text-[#515f74] mt-0.5">
+                                <Users size={11} className="text-stone-400" />
+                                <span>{rsvp.guestCount} Kişi</span>
+                                <span className="text-stone-300">•</span>
+                                <Utensils size={11} className="text-stone-400" />
+                                <span>{rsvp.menuPreference || 'Belirtilmedi'}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <span className={`${badgeBg} px-3 py-1 rounded-full text-[10px] font-bold shadow-sm`}>
+                              {rsvp.status}
+                            </span>
+                            <button
+                              onClick={() => handleDeleteRsvp(rsvp.id)}
+                              className="p-1 h-7 w-7 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-700 flex items-center justify-center border border-red-200 transition-all"
+                              title="Kaydı Sil"
+                            >
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </AnimatePresence>
+
+                  {rsvpList.length === 0 && (
+                    <p className="text-center text-xs text-gray-400 py-8">Henüz kaydedilmiş katılım yanıtı bulunmuyor.</p>
+                  )}
+                </div>
+
+                {/* Footer Info */}
+                <div className="bg-gradient-to-r from-[#003527]/5 to-emerald-50 p-4 rounded-xl border border-emerald-100 text-center">
+                  <p className="text-xs font-semibold text-[#003527] flex items-center justify-center gap-1.5">
+                    <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }}>
+                      <UserCheck size={14} />
+                    </motion.div>
+                    Yukarıdaki telefon önizlemesinden Katılım bildirerek bu paneli canlı test edebilirsiniz!
+                  </p>
+                </div>
+
+              </div>
+
+              {/* Decorative blur blobs */}
+              <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-amber-200/40 rounded-full blur-3xl z-0" />
+              <div className="absolute -top-6 -left-6 w-48 h-48 bg-emerald-200/40 rounded-full blur-3xl z-0" />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════════════ */}
+        {/* Social Proof — Customer Testimonials */}
+        {/* ═══════════════════════════════════════════════════════════════ */}
+        <section className="py-20 md:py-28 bg-gradient-to-b from-emerald-950 to-[#001a10] text-white relative overflow-hidden">
+          {/* Decorative elements */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-10 right-10 w-80 h-80 bg-emerald-800/20 rounded-full blur-3xl" />
+            <div className="absolute bottom-10 left-10 w-96 h-96 bg-amber-900/10 rounded-full blur-3xl" />
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 md:px-12 relative z-10">
+            {/* Section Header */}
+            <motion.div
+              className="text-center mb-14 md:mb-20"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <span className="text-amber-300 font-semibold text-xs tracking-wider uppercase bg-amber-300/10 px-3 py-1 rounded-full inline-block mb-4 border border-amber-300/20">
+                Müşteri Deneyimleri
+              </span>
+              <h2 className="font-serif text-3xl md:text-5xl font-bold text-white mb-4">
+                Binlerce Çiftin <span className="italic text-amber-200 font-medium">Tercihi</span>
+              </h2>
+              <p className="text-stone-300 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+                Özel günlerini dijital zarafetle taçlandıran kullanıcılarımızın deneyimlerini keşfedin.
+              </p>
+            </motion.div>
+
+            {/* Testimonial Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+              {[
+                {
+                  name: 'Elif & Burak',
+                  event: 'Düğün Davetiyesi',
+                  quote: 'Davetiyemiz o kadar güzel oldu ki, birçok misafirimiz "bu gerçekten dijital mi?" diye sordu. Harika bir deneyimdi!',
+                  stars: 5,
+                  avatar: 'EB'
+                },
+                {
+                  name: 'Ayşe Kılıç',
+                  event: 'Baby Shower',
+                  quote: 'Katılım takip sistemi hayat kurtarıcı. Kim geliyor, ne yemek istiyor, hepsini tek panelden takip ettim. Çok pratik!',
+                  stars: 5,
+                  avatar: 'AK'
+                },
+                {
+                  name: 'Serkan & Merve',
+                  event: 'Nişan Töreni',
+                  quote: 'Sürdürülebilir, şık ve modern. Kağıt davetiye yerine dijital tercih ettiğimiz için çok mutluyuz. Şiddetle tavsiye ederiz.',
+                  stars: 5,
+                  avatar: 'SM'
+                }
+              ].map((review, idx) => (
+                <motion.div
+                  key={review.name}
+                  className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:bg-white/10 hover:border-white/20 transition-all duration-500 group"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.12 }}
+                >
+                  {/* Stars */}
+                  <div className="flex gap-1 mb-5">
+                    {Array.from({ length: review.stars }).map((_, i) => (
+                      <svg key={i} className="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+
+                  {/* Quote */}
+                  <p className="text-stone-200 text-sm leading-relaxed mb-6 italic">
+                    &ldquo;{review.quote}&rdquo;
+                  </p>
+
+                  {/* Author */}
+                  <div className="flex items-center gap-3 pt-4 border-t border-white/10">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-bold text-xs shadow-md">
+                      {review.avatar}
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold text-sm">{review.name}</p>
+                      <p className="text-stone-400 text-xs">{review.event}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
-
           </div>
         </section>
 
       </main>
-
       {/* Footer */}
       <footer className="bg-stone-900 border-t border-white/5 text-white/90">
         <div className="max-w-7xl mx-auto px-4 md:px-12 py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
