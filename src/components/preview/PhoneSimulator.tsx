@@ -107,32 +107,28 @@ export function PhoneSimulator({
                 <div className="w-8 h-[1px] bg-amber-200/50 mx-auto" />
 
                 {/* Invitation Short Title */}
-                <AnimatePresence mode="wait">
+                <div className="min-h-[16px]">
                   <motion.p
-                    key={invitation.title}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.5 }}
-                    className="text-[11px] font-sans font-semibold tracking-[0.15em] text-amber-200/95 uppercase drop-shadow-sm leading-tight"
+                    className="text-[9px] font-sans font-semibold tracking-[0.2em] text-amber-200/95 uppercase drop-shadow-sm leading-tight"
                   >
                     {invitation.title || 'HAYATIMIZIN EN ÖZEL GÜNÜ'}
                   </motion.p>
-                </AnimatePresence>
+                </div>
 
                 {/* Beautiful Script Couple Names */}
-                <AnimatePresence mode="wait">
+                <div className="min-h-[48px] flex items-center justify-center">
                   <motion.h2
-                    key={invitation.names}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.05 }}
                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                     className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-amber-100 italic tracking-wide leading-tight px-2 py-1 drop-shadow-md"
                   >
                     {invitation.names || 'Sophia & Elias'}
                   </motion.h2>
-                </AnimatePresence>
+                </div>
 
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-6 h-[0.5px] bg-amber-200/30" />
@@ -141,18 +137,16 @@ export function PhoneSimulator({
                 </div>
 
                 {/* Custom message */}
-                <AnimatePresence mode="wait">
+                <div className="min-h-[40px] flex items-center justify-center">
                   <motion.p
-                    key={invitation.subtitle}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="text-xs text-stone-200/90 font-sans tracking-wide leading-relaxed max-w-xs mx-auto px-4 italic"
+                    className="text-[10px] text-stone-200/90 font-sans tracking-wide leading-relaxed max-w-xs mx-auto px-4 italic"
                   >
                     "{invitation.subtitle}"
                   </motion.p>
-                </AnimatePresence>
+                </div>
 
                 <div className="w-12 h-[1px] bg-amber-200/40 mx-auto" />
 
