@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Heart, Menu, X } from 'lucide-react';
 
-export function Header() {
+export const Header = React.memo(function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -116,4 +116,4 @@ export function Header() {
       </AnimatePresence>
     </header>
   );
-}
+});

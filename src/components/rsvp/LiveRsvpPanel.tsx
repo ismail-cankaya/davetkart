@@ -9,7 +9,11 @@ interface LiveRsvpPanelProps {
   handleResetRsvps: () => void;
 }
 
-export function LiveRsvpPanel({ rsvpList, handleDeleteRsvp, handleResetRsvps }: LiveRsvpPanelProps) {
+export const LiveRsvpPanel = React.memo(function LiveRsvpPanel({ 
+  rsvpList, 
+  handleDeleteRsvp, 
+  handleResetRsvps 
+}: LiveRsvpPanelProps) {
   const countAttending = rsvpList.filter(r => r.status === 'Katılıyor').reduce((sum, r) => sum + r.guestCount, 0);
   const countPending = rsvpList.filter(r => r.status === 'Bekleniyor').reduce((sum, r) => sum + r.guestCount, 0);
   const countDeclines = rsvpList.filter(r => r.status === 'Katılamıyor').reduce((sum, r) => sum + r.guestCount, 0);
@@ -199,4 +203,4 @@ export function LiveRsvpPanel({ rsvpList, handleDeleteRsvp, handleResetRsvps }: 
       </div>
     </section>
   );
-}
+});

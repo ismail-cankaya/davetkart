@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Check, ArrowRight, Flame } from 'lucide-react';
 import { Invitation } from '../../types';
@@ -11,12 +11,29 @@ interface DesignerPanelProps {
   setActivePresetId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export function DesignerPanel({
+export const DesignerPanel = React.memo(function DesignerPanel({
   invitation,
   handleInputChange,
   setInvitation,
   setActivePresetId
 }: DesignerPanelProps) {
+  const [localInvitation, setLocalInvitation] = useState<Invitation>(invitation);
+  const debounceRef = useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    setLocalInvitation(invitation);
+  }, [invitation]);
+
+  const handleLocalChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setLocalInvitation(prev => ({ ...prev, [name]: value }));
+
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setInvitation(prev => ({ ...prev, [name]: value }));
+    }, 400);
+  };
+
   return (
     <motion.section
       id="tasarimci"
@@ -57,8 +74,8 @@ export function DesignerPanel({
                   <input
                     type="text"
                     name="names"
-                    value={invitation.names}
-                    onChange={handleInputChange}
+                    value={localInvitation.names}
+                    onChange={handleLocalChange}
                     placeholder="Örn. Sophia &amp; Elias"
                     className="w-full bg-white/5 border border-white/15 focus:border-amber-300 focus:outline-none rounded-xl px-4 py-3 text-sm text-white transition-colors"
                   />
@@ -72,8 +89,8 @@ export function DesignerPanel({
                   <input
                     type="text"
                     name="title"
-                    value={invitation.title}
-                    onChange={handleInputChange}
+                    value={localInvitation.title}
+                    onChange={handleLocalChange}
                     placeholder="Örn. HAYATIMIZIN EN ÖZEL GÜNÜ"
                     className="w-full bg-white/5 border border-white/15 focus:border-amber-300 focus:outline-none rounded-xl px-4 py-3 text-sm text-white transition-colors"
                   />
@@ -87,8 +104,8 @@ export function DesignerPanel({
                   <input
                     type="datetime-local"
                     name="date"
-                    value={invitation.date}
-                    onChange={handleInputChange}
+                    value={localInvitation.date}
+                    onChange={handleLocalChange}
                     className="w-full bg-white/5 border border-white/15 focus:border-amber-300 focus:outline-none rounded-xl px-4 py-3 text-sm text-white transition-colors [color-scheme:dark]"
                   />
                 </div>
@@ -101,8 +118,8 @@ export function DesignerPanel({
                   <input
                     type="text"
                     name="venue"
-                    value={invitation.venue}
-                    onChange={handleInputChange}
+                    value={localInvitation.venue}
+                    onChange={handleLocalChange}
                     placeholder="Örn. Çırağan Sarayı, Beşiktaş"
                     className="w-full bg-white/5 border border-white/15 focus:border-amber-300 focus:outline-none rounded-xl px-4 py-3 text-sm text-white transition-colors"
                   />
@@ -118,8 +135,8 @@ export function DesignerPanel({
                 <textarea
                   name="subtitle"
                   rows={3}
-                  value={invitation.subtitle}
-                  onChange={handleInputChange}
+                  value={localInvitation.subtitle}
+                  onChange={handleLocalChange}
                   placeholder="Örn. Sizleri de bu mutlu günümüzde aramızda görmekten onur duyarız..."
                   className="w-full bg-white/5 border border-white/15 focus:border-amber-300 focus:outline-none rounded-xl px-4 py-3 text-sm text-white transition-colors resize-none"
                 />
@@ -214,4 +231,4 @@ export function DesignerPanel({
       </div>
     </motion.section>
   );
-}
+});

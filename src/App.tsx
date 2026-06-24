@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { TEMPLATE_PRESETS } from './data';
 import { useScrollSnap } from './hooks/useScrollSnap';
 import { useAppState } from './hooks/useAppState';
@@ -6,11 +6,12 @@ import { useAppState } from './hooks/useAppState';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { Hero } from './components/home/Hero';
-import { Features } from './components/home/Features';
-import { Testimonials } from './components/home/Testimonials';
 import { PreviewSection } from './components/preview/PreviewSection';
 import { DesignerPanel } from './components/editor/DesignerPanel';
-import { LiveRsvpPanel } from './components/rsvp/LiveRsvpPanel';
+
+const Features = React.lazy(() => import('./components/home/Features').then(m => ({ default: m.Features })));
+const Testimonials = React.lazy(() => import('./components/home/Testimonials').then(m => ({ default: m.Testimonials })));
+const LiveRsvpPanel = React.lazy(() => import('./components/rsvp/LiveRsvpPanel').then(m => ({ default: m.LiveRsvpPanel })));
 
 function App() {
   // 1. Scroll-jack logic hook
@@ -69,15 +70,17 @@ function App() {
           setActivePresetId={setActivePresetId}
         />
 
-        <Features />
+        <React.Suspense fallback={<div className="py-20 flex justify-center items-center"><div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div></div>}>
+          <Features />
 
-        <LiveRsvpPanel
-          rsvpList={rsvpList}
-          handleDeleteRsvp={handleDeleteRsvp}
-          handleResetRsvps={handleResetRsvps}
-        />
+          <LiveRsvpPanel
+            rsvpList={rsvpList}
+            handleDeleteRsvp={handleDeleteRsvp}
+            handleResetRsvps={handleResetRsvps}
+          />
 
-        <Testimonials />
+          <Testimonials />
+        </React.Suspense>
       </main>
 
       <Footer />

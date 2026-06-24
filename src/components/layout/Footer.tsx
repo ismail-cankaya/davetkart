@@ -1,7 +1,7 @@
 import React from 'react';
 import { Heart } from 'lucide-react';
 
-export function Footer() {
+export const Footer = React.memo(function Footer() {
   return (
     <footer className="bg-stone-900 border-t border-white/5 text-white/90">
       <div className="max-w-7xl mx-auto px-4 md:px-12 py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
@@ -73,4 +73,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+});

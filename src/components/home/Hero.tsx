@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, ArrowRight } from 'lucide-react';
 
-export function Hero() {
+export const Hero = React.memo(function Hero() {
   return (
     <section className="relative min-h-[100dvh] pt-20 pb-20 overflow-hidden bg-gradient-to-b from-[#f8f9ff] via-white to-[#f8f9ff] flex flex-col justify-center bg-grain">
       <div className="max-w-7xl mx-auto px-4 md:px-12 relative z-10 flex flex-col items-center text-center w-full">
@@ -126,4 +126,4 @@ export function Hero() {
       </motion.a>
     </section>
   );
-}
+});

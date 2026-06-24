@@ -69,6 +69,7 @@ export function TemplateGrid({ activePresetId, handleTemplateChange, phoneRef }:
               className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 ease-out filter brightness-90 md:brightness-[0.8]"
               src={pst.imageUrl}
               alt={pst.name}
+              loading="lazy"
             />
 
             <AnimatePresence>

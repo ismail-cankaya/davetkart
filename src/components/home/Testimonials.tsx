@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 
-export function Testimonials() {
+export const Testimonials = React.memo(function Testimonials() {
   return (
     <section className="py-20 md:py-28 bg-gradient-to-b from-emerald-950 to-[#001a10] text-white relative overflow-hidden">
       {/* Decorative elements */}
@@ -93,4 +93,4 @@ export function Testimonials() {
       </div>
     </section>
   );
-}
+});

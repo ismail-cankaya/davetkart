@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Laptop, Send, ArrowRight } from 'lucide-react';
 
-export function Features() {
+export const Features = React.memo(function Features() {
   return (
     <section id="neden-dijital" className="py-20 md:py-32 bg-[#f8f9ff] relative overflow-hidden">
       {/* Subtle background decoration */}
@@ -121,4 +121,4 @@ export function Features() {
       </div>
     </section>
   );
-}
+});

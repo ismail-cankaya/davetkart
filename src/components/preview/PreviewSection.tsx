@@ -19,7 +19,7 @@ interface PreviewSectionProps {
   handleRsvpVideoUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function PreviewSection({
+export const PreviewSection = React.memo(function PreviewSection({
   isMobile,
   activePresetId,
   activePreset,
@@ -82,4 +82,4 @@ export function PreviewSection({
       </div>
     </section>
   );
-}
+});
