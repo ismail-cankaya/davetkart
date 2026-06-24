@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { TEMPLATE_PRESETS } from './data';
 import { useScrollSnap } from './hooks/useScrollSnap';
 import { useAppState } from './hooks/useAppState';

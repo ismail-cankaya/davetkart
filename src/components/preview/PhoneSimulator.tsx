@@ -69,6 +69,7 @@ export function PhoneSimulator({
               invitation={invitation} 
               bgImage={activePreset.imageUrl} 
               onRsvpClick={() => setIsRsvpModalOpen(true)} 
+              mode="preview"
             />
 
             {/* RSVP Modal */}

@@ -5,7 +5,7 @@ import { TemplateProps } from '../types';
 import { formatDateStr } from '../utils';
 import './emerald.css';
 
-export function EmeraldTemplate({ invitation, bgImage, onRsvpClick }: TemplateProps) {
+export function EmeraldHero({ invitation, bgImage, onRsvpClick }: TemplateProps) {
   return (
     <div className="template-emerald w-full h-full relative bg-emerald-950 flex flex-col">
       <AnimatePresence mode="popLayout">

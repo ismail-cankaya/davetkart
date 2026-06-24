@@ -5,7 +5,7 @@ import { TemplateProps } from '../types';
 import { formatDateStr } from '../utils';
 import './baby-shower.css';
 
-export function BabyShowerTemplate({ invitation, bgImage, onRsvpClick }: TemplateProps) {
+export function BabyShowerHero({ invitation, bgImage, onRsvpClick }: TemplateProps) {
   return (
     <div className="template-baby w-full h-full relative bg-sky-100 flex flex-col">
       <AnimatePresence mode="popLayout">

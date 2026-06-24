@@ -5,7 +5,7 @@ import { TemplateProps } from '../types';
 import { formatDateStr } from '../utils';
 import './sunset.css';
 
-export function SunsetTemplate({ invitation, bgImage, onRsvpClick }: TemplateProps) {
+export function SunsetHero({ invitation, bgImage, onRsvpClick }: TemplateProps) {
   return (
     <div className="template-sunset w-full h-full relative bg-orange-950 flex flex-col">
       <AnimatePresence mode="popLayout">

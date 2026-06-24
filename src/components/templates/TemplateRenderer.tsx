@@ -1,8 +1,8 @@
 import React from 'react';
-import { EmeraldTemplate } from './Emerald/EmeraldTemplate';
-import { SunsetTemplate } from './Sunset/SunsetTemplate';
-import { BabyShowerTemplate } from './BabyShower/BabyShowerTemplate';
-import { MidnightGoldTemplate } from './MidnightGold/MidnightGoldTemplate';
+import { EmeraldHero, EmeraldLive } from './Emerald';
+import { SunsetHero, SunsetLive } from './Sunset';
+import { BabyShowerHero, BabyShowerLive } from './BabyShower';
+import { MidnightGoldHero, MidnightGoldLive } from './MidnightGold';
 import { Invitation } from '../../types';
 
 interface TemplateRendererProps {
@@ -10,19 +10,32 @@ interface TemplateRendererProps {
   invitation: Invitation;
   bgImage: string;
   onRsvpClick: () => void;
+  mode?: 'preview' | 'live';
 }
 
-export function TemplateRenderer({ templateId, invitation, bgImage, onRsvpClick }: TemplateRendererProps) {
+export function TemplateRenderer({ templateId, invitation, bgImage, onRsvpClick, mode = 'preview' }: TemplateRendererProps) {
+  const isLive = mode === 'live';
+
   switch (templateId) {
     case 'emerald':
-      return <EmeraldTemplate invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />;
+      return isLive 
+        ? <EmeraldLive invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />
+        : <EmeraldHero invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />;
     case 'sunset':
-      return <SunsetTemplate invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />;
+      return isLive
+        ? <SunsetLive invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />
+        : <SunsetHero invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />;
     case 'baby':
-      return <BabyShowerTemplate invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />;
+      return isLive
+        ? <BabyShowerLive invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />
+        : <BabyShowerHero invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />;
     case 'corporate':
-      return <MidnightGoldTemplate invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />;
+      return isLive
+        ? <MidnightGoldLive invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />
+        : <MidnightGoldHero invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />;
     default:
-      return <EmeraldTemplate invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />;
+      return isLive
+        ? <EmeraldLive invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />
+        : <EmeraldHero invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} />;
   }
 }

@@ -5,7 +5,7 @@ import { TemplateProps } from '../types';
 import { formatDateStr } from '../utils';
 import './midnight-gold.css';
 
-export function MidnightGoldTemplate({ invitation, bgImage, onRsvpClick }: TemplateProps) {
+export function MidnightGoldHero({ invitation, bgImage, onRsvpClick }: TemplateProps) {
   return (
     <div className="template-midnight w-full h-full relative bg-slate-950 flex flex-col">
       <AnimatePresence mode="popLayout">
