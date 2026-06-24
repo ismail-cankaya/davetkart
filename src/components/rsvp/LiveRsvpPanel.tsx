@@ -1,0 +1,202 @@
+import React from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Users, RefreshCw, UserCheck, Clock, X, Utensils, Trash2, ImageIcon, Play } from 'lucide-react';
+import { RSVPResponse } from '../../types';
+
+interface LiveRsvpPanelProps {
+  rsvpList: RSVPResponse[];
+  handleDeleteRsvp: (id: string) => void;
+  handleResetRsvps: () => void;
+}
+
+export function LiveRsvpPanel({ rsvpList, handleDeleteRsvp, handleResetRsvps }: LiveRsvpPanelProps) {
+  const countAttending = rsvpList.filter(r => r.status === 'Katılıyor').reduce((sum, r) => sum + r.guestCount, 0);
+  const countPending = rsvpList.filter(r => r.status === 'Bekleniyor').reduce((sum, r) => sum + r.guestCount, 0);
+  const countDeclines = rsvpList.filter(r => r.status === 'Katılamıyor').reduce((sum, r) => sum + r.guestCount, 0);
+
+  return (
+    <section id="lcv-paneli" className="py-20 md:py-28 bg-gradient-to-b from-slate-50 to-stone-100 relative overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-100/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-100/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 md:px-12 relative z-10">
+        {/* Section Header */}
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className="text-[#003527] font-semibold text-xs tracking-wider uppercase bg-[#003527]/5 px-3 py-1 rounded-full inline-block mb-4">
+            Gerçek Zamanlı Takip
+          </span>
+          <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#0b1c30] mb-4">
+            Canlı <span className="italic text-[#003527] font-medium">Katılım Paneli</span>
+          </h2>
+          <p className="text-[#515f74] text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+            Misafirlerinizin katılım durumlarını anlık olarak izleyin. Menü tercihlerini, kişi sayılarını ve yanıt durumlarını tek panelden yönetin.
+          </p>
+        </motion.div>
+
+        {/* LCV Dashboard Card */}
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+        >
+          <div className="bg-white rounded-3xl p-6 md:p-10 shadow-2xl border border-slate-100/80 relative z-10 space-y-8">
+
+            {/* Header Row */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-stone-100 pb-6">
+              <div>
+                <h3 className="font-serif text-xl font-bold text-[#0b1c30] flex items-center gap-2">
+                  <Users className="text-[#003527]" size={22} />
+                  Misafir Takip Panosu
+                </h3>
+                <p className="text-xs text-[#515f74] mt-1">
+                  Misafirlerinizin katılım yanıtları bu panele eşzamanlı yansır <span className="text-[#003527] font-medium">(*Simülasyondur)</span>
+                </p>
+              </div>
+
+              <button
+                onClick={handleResetRsvps}
+                title="Listeyi Orijinal Haline Sıfırla"
+                className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-500 hover:text-red-600 hover:border-red-200 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-semibold"
+              >
+                <RefreshCw size={13} /> Sıfırla
+              </button>
+            </div>
+
+            {/* Stats Counters */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-emerald-50 p-5 rounded-2xl border border-emerald-100 text-center">
+                <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-2">
+                  <UserCheck size={18} />
+                </div>
+                <p className="text-[10px] md:text-xs font-bold text-emerald-700 uppercase tracking-wider">Katılıyor</p>
+                <p className="font-serif text-2xl md:text-3xl font-bold text-emerald-800 mt-1">{countAttending}</p>
+                <p className="text-[10px] text-emerald-600 font-medium">kişi</p>
+              </div>
+              <div className="bg-amber-50 p-5 rounded-2xl border border-amber-100 text-center">
+                <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-2">
+                  <Clock size={18} />
+                </div>
+                <p className="text-[10px] md:text-xs font-bold text-amber-700 uppercase tracking-wider">Belirsiz</p>
+                <p className="font-serif text-2xl md:text-3xl font-bold text-amber-800 mt-1">{countPending}</p>
+                <p className="text-[10px] text-amber-600 font-medium">kişi</p>
+              </div>
+              <div className="bg-red-50 p-5 rounded-2xl border border-red-100 text-center">
+                <div className="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-2">
+                  <X size={18} />
+                </div>
+                <p className="text-[10px] md:text-xs font-bold text-red-700 uppercase tracking-wider">Katılamayacak</p>
+                <p className="font-serif text-2xl md:text-3xl font-bold text-red-800 mt-1">{countDeclines}</p>
+                <p className="text-[10px] text-red-600 font-medium">kişi</p>
+              </div>
+            </div>
+
+            {/* Guest List */}
+            <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+              <AnimatePresence initial={false}>
+                {rsvpList.map((rsvp) => {
+                  let badgeBg = 'bg-stone-100 text-[#404944]';
+                  if (rsvp.status === 'Katılıyor') badgeBg = 'bg-emerald-100 text-emerald-800';
+                  if (rsvp.status === 'Katılamıyor') badgeBg = 'bg-red-100 text-red-800';
+
+                  return (
+                    <motion.div
+                      key={rsvp.id}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      className="flex flex-col gap-2 bg-slate-50/80 hover:bg-white rounded-xl p-3 md:p-4 border border-slate-100 transition-colors duration-300"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-[#003527]/5 text-[#003527] border border-[#003527]/10 flex items-center justify-center font-bold text-xs uppercase shadow-sm shrink-0">
+                            {rsvp.guestName ? rsvp.guestName.substring(0, 2) : 'M'}
+                          </div>
+                          <div>
+                            <p className="font-bold text-xs text-[#0b1c30]">{rsvp.guestName}</p>
+                            <div className="flex items-center gap-1.5 text-[10px] text-[#515f74] mt-0.5">
+                              <Users size={11} className="text-stone-400" />
+                              <span>{rsvp.guestCount} Kişi</span>
+                              <span className="text-stone-300">•</span>
+                              <Utensils size={11} className="text-stone-400" />
+                              <span>{rsvp.menuPreference || 'Belirtilmedi'}</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className={`${badgeBg} px-3 py-1 rounded-full text-[10px] font-bold shadow-sm`}>
+                            {rsvp.status}
+                          </span>
+                          <button
+                            onClick={() => handleDeleteRsvp(rsvp.id)}
+                            className="p-1 h-7 w-7 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-700 flex items-center justify-center border border-red-200 transition-all"
+                            title="Kaydı Sil"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Extra Content (Message, Photo, Video) */}
+                      {(rsvp.message || rsvp.photoUrl || rsvp.videoUrl) && (
+                        <div className="mt-2 pl-13 flex flex-col gap-2">
+                          {rsvp.message && (
+                            <p className="text-xs text-stone-600 bg-white p-2.5 rounded-lg border border-stone-100 shadow-sm italic relative w-fit max-w-full">
+                              "{rsvp.message}"
+                            </p>
+                          )}
+                          <div className="flex gap-2">
+                            {rsvp.photoUrl && (
+                              <a href={rsvp.photoUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 bg-sky-50 text-sky-700 text-[10px] px-2.5 py-1.5 rounded-lg border border-sky-200 hover:bg-sky-100 transition-colors font-medium">
+                                <ImageIcon size={12} /> Fotoğrafı Gör
+                              </a>
+                            )}
+                            {rsvp.videoUrl && (
+                              <a href={rsvp.videoUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 bg-purple-50 text-purple-700 text-[10px] px-2.5 py-1.5 rounded-lg border border-purple-200 hover:bg-purple-100 transition-colors font-medium">
+                                <Play size={12} /> Videoyu İzle
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+
+              {rsvpList.length === 0 && (
+                <p className="text-center text-xs text-gray-400 py-8">Henüz kaydedilmiş katılım yanıtı bulunmuyor.</p>
+              )}
+            </div>
+
+            {/* Footer Info */}
+            <div className="bg-gradient-to-r from-[#003527]/5 to-emerald-50 p-4 rounded-xl border border-emerald-100 text-center">
+              <p className="text-xs font-semibold text-[#003527] flex items-center justify-center gap-1.5">
+                <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }}>
+                  <UserCheck size={14} />
+                </motion.div>
+                Yukarıdaki telefon önizlemesinden Katılım bildirerek bu paneli canlı test edebilirsiniz!
+              </p>
+            </div>
+
+          </div>
+
+          {/* Decorative blur blobs */}
+          <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-amber-200/40 rounded-full blur-3xl z-0" />
+          <div className="absolute -top-6 -left-6 w-48 h-48 bg-emerald-200/40 rounded-full blur-3xl z-0" />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
