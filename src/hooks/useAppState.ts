@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Invitation, RSVPResponse } from '../types';
 import { INITIAL_INVITATION, INITIAL_RSVP_LIST } from '../data';
 
