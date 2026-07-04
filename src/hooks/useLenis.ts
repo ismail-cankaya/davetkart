@@ -4,6 +4,9 @@ import Lenis from 'lenis';
 const HEADER_OFFSET = -76;
 const SNAP_SECTION_ID = 'animasyon-ve-onizleme';
 const SNAP_TRIGGER = 60; // px of scroll intent before the hero snap kicks in
+// Snap is a wheel-gesture affordance: on touch devices Lenis scrolls natively,
+// so a programmatic scrollTo fights the finger's momentum and stutters.
+const FINE_POINTER_QUERY = '(hover: hover) and (pointer: fine)';
 const EASE_OUT_QUART = (t: number) => 1 - Math.pow(1 - t, 4);
 
 /**
@@ -56,12 +59,18 @@ export function useLenis() {
       return section.getBoundingClientRect().top + lenis.scroll - scrollMargin + HEADER_OFFSET;
     };
 
-    // Hero snap: any scroll intent inside the hero zone completes the journey
+    // Hero snap: any scroll intent inside the hero zone completes the journey.
+    // Live media query so the rule adapts when the environment changes
+    // (e.g. a convertible switching between touch and mouse input).
+    const finePointer = window.matchMedia(FINE_POINTER_QUERY);
     const onScroll = () => {
-      if (autoScrolling) return;
+      if (autoScrolling || !finePointer.matches) return;
       const section = document.getElementById(SNAP_SECTION_ID);
       if (!section) return;
       const snapPoint = getSnapPoint(section);
+      // When the hero overflows the viewport (small screens), snapping would
+      // fly past content — stats, scroll cue — the user hasn't seen yet.
+      if (snapPoint > window.innerHeight * 1.2) return;
       const inHeroZone = lenis.scroll > SNAP_TRIGGER && lenis.scroll < snapPoint - SNAP_TRIGGER;
       if (!inHeroZone) return;
       if (lenis.direction === 1) glideTo(section, 1.2, true);
