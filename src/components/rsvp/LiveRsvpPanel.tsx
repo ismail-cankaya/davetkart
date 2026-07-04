@@ -106,7 +106,7 @@ export const LiveRsvpPanel = React.memo(function LiveRsvpPanel({
             </div>
 
             {/* Guest List */}
-            <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+            <div className="space-y-3 max-h-72 overflow-y-auto pr-1" data-lenis-prevent>
               <AnimatePresence initial={false}>
                 {rsvpList.map((rsvp) => {
                   let badgeBg = 'bg-stone-100 text-[#404944]';

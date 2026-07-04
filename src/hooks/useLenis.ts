@@ -3,18 +3,17 @@ import Lenis from 'lenis';
 
 const HEADER_OFFSET = -76;
 const SNAP_SECTION_ID = 'animasyon-ve-onizleme';
-const SNAP_TRIGGER = 60; // px of scroll intent before the hero snap kicks in
-// Snap is a wheel-gesture affordance: on touch devices Lenis scrolls natively,
-// so a programmatic scrollTo fights the finger's momentum and stutters.
-const FINE_POINTER_QUERY = '(hover: hover) and (pointer: fine)';
+const SNAP_TRIGGER = 60; // px of scroll intent past the cue before the snap kicks in
 const EASE_OUT_QUART = (t: number) => 1 - Math.pow(1 - t, 4);
 
 /**
  * Buttery-smooth inertia scrolling (Lenis) + smooth anchor navigation
  * with sticky-header offset. Respects prefers-reduced-motion.
  *
- * Also snaps the hero: scrolling down glides automatically to the
- * explore section, scrolling back up glides to the top.
+ * Also snaps the hero: once its bottom edge — the "Keşfet" cue — is fully
+ * on screen, continued downward scrolling glides automatically to the
+ * explore section, and scrolling back up glides to that cue point (the top
+ * of the page on screens tall enough to show the whole hero at once).
  */
 export function useLenis() {
   useEffect(() => {
@@ -23,7 +22,12 @@ export function useLenis() {
     const lenis = new Lenis({
       lerp: 0.1,
       wheelMultiplier: 1,
-      touchMultiplier: 1.5
+      // Own touch scrolling too: the hero snap animates the scroll position,
+      // and a native touch fling would fight that animation frame-by-frame
+      // (the stutter seen on phones). Inner scrollables opt out with
+      // data-lenis-prevent.
+      syncTouch: true,
+      touchMultiplier: 1
     });
 
     let rafId: number;
@@ -54,27 +58,27 @@ export function useLenis() {
     // scroll-margin-top (e.g. Tailwind `scroll-mt-*`) on top of our offset,
     // so the zone boundary must use the same math or the landing point can
     // end up inside the zone and re-trigger the snap on every scroll.
-    const getSnapPoint = (section: HTMLElement) => {
+    const getSnapPoint = (section: HTMLElement, sectionTop: number) => {
       const scrollMargin = Number.parseFloat(getComputedStyle(section).scrollMarginTop) || 0;
-      return section.getBoundingClientRect().top + lenis.scroll - scrollMargin + HEADER_OFFSET;
+      return sectionTop - scrollMargin + HEADER_OFFSET;
     };
 
-    // Hero snap: any scroll intent inside the hero zone completes the journey.
-    // Live media query so the rule adapts when the environment changes
-    // (e.g. a convertible switching between touch and mouse input).
-    const finePointer = window.matchMedia(FINE_POINTER_QUERY);
+    // Hero snap: the zone opens only once the hero's bottom edge — where the
+    // "Keşfet" cue sits — is fully on screen, so on small viewports the stats
+    // above it are scrolled through normally instead of being flown past.
     const onScroll = () => {
-      if (autoScrolling || !finePointer.matches) return;
+      if (autoScrolling) return;
       const section = document.getElementById(SNAP_SECTION_ID);
       if (!section) return;
-      const snapPoint = getSnapPoint(section);
-      // When the hero overflows the viewport (small screens), snapping would
-      // fly past content — stats, scroll cue — the user hasn't seen yet.
-      if (snapPoint > window.innerHeight * 1.2) return;
-      const inHeroZone = lenis.scroll > SNAP_TRIGGER && lenis.scroll < snapPoint - SNAP_TRIGGER;
-      if (!inHeroZone) return;
+      const sectionTop = section.getBoundingClientRect().top + lenis.scroll;
+      // Scroll position at which the hero is fully revealed; 0 on screens
+      // tall enough to show the whole hero at once.
+      const heroFloor = Math.max(0, sectionTop - window.innerHeight);
+      const snapPoint = getSnapPoint(section, sectionTop);
+      const inSnapZone = lenis.scroll > heroFloor + SNAP_TRIGGER && lenis.scroll < snapPoint - SNAP_TRIGGER;
+      if (!inSnapZone) return;
       if (lenis.direction === 1) glideTo(section, 1.2, true);
-      else if (lenis.direction === -1) glideTo(0, 1.2, true);
+      else if (lenis.direction === -1) glideTo(heroFloor, 1.2, true);
     };
     lenis.on('scroll', onScroll);
 

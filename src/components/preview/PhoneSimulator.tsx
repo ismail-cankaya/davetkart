@@ -76,7 +76,7 @@ export function PhoneSimulator({
           </div>
 
           {/* High Quality Screen Area */}
-          <div ref={screenRef} className="w-full h-full rounded-[24px] md:rounded-[20px] overflow-hidden relative bg-emerald-950 flex flex-col">
+          <div ref={screenRef} data-lenis-prevent className="w-full h-full rounded-[24px] md:rounded-[20px] overflow-hidden relative bg-emerald-950 flex flex-col">
             {/* Dynamically render the selected template */}
             <TemplateRenderer
               templateId={activePresetId}
