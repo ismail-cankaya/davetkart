@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, MapPin, Maximize2, Smartphone } from 'lucide-react';
+import { Maximize2, Smartphone } from 'lucide-react';
 import { Invitation } from '../../types';
 import { RsvpModal } from './RsvpModal';
 import { TemplateRenderer } from '../templates/TemplateRenderer';
+
+const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
 
 interface PhoneSimulatorProps {
   phoneRef: React.RefObject<HTMLDivElement>;
@@ -34,6 +36,18 @@ export function PhoneSimulator({
   handleRsvpPhotoUpload,
   handleRsvpVideoUpload
 }: PhoneSimulatorProps) {
+  const screenRef = useRef<HTMLDivElement>(null);
+
+  const handleFullscreen = () => {
+    const el = screenRef.current;
+    if (!el) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      el.requestFullscreen?.();
+    }
+  };
+
   return (
     <div
       ref={phoneRef}
@@ -43,12 +57,12 @@ export function PhoneSimulator({
       <motion.div
         initial={isMobile ? { opacity: 0, y: 30, scale: 0.95 } : { opacity: 0, y: 60, scale: 0.7, rotateX: 15 }}
         whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-        viewport={{ once: true, margin: "0px" }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, margin: '0px' }}
+        transition={{ duration: 1.2, ease: EASE_LUXE }}
         className="relative will-change-transform"
       >
         {/* Ambient glow behind device */}
-        <div className="absolute -inset-4 md:-inset-8 bg-gradient-to-b from-emerald-200/20 via-amber-100/15 to-emerald-200/10 rounded-[60px] blur-xl md:blur-2xl pointer-events-none" />
+        <div className="absolute -inset-4 md:-inset-8 bg-gradient-to-b from-emerald-200/25 via-champagne/25 to-emerald-200/10 rounded-[60px] blur-xl md:blur-2xl pointer-events-none" />
 
         {/* Actual Device Frame */}
         <motion.div
@@ -62,13 +76,13 @@ export function PhoneSimulator({
           </div>
 
           {/* High Quality Screen Area */}
-          <div className="w-full h-full rounded-[24px] md:rounded-[20px] overflow-hidden relative bg-emerald-950 flex flex-col">
+          <div ref={screenRef} className="w-full h-full rounded-[24px] md:rounded-[20px] overflow-hidden relative bg-emerald-950 flex flex-col">
             {/* Dynamically render the selected template */}
-            <TemplateRenderer 
-              templateId={activePresetId} 
-              invitation={invitation} 
-              bgImage={activePreset.imageUrl} 
-              onRsvpClick={() => setIsRsvpModalOpen(true)} 
+            <TemplateRenderer
+              templateId={activePresetId}
+              invitation={invitation}
+              bgImage={activePreset.imageUrl}
+              onRsvpClick={() => setIsRsvpModalOpen(true)}
               mode="preview"
             />
 
@@ -94,16 +108,12 @@ export function PhoneSimulator({
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="w-full mt-6"
+        transition={{ duration: 0.8, delay: 0.2, ease: EASE_LUXE }}
+        className="w-full mt-6 flex justify-center"
       >
         <button
-          onClick={() => {
-            if (document.documentElement.requestFullscreen) {
-              document.documentElement.requestFullscreen();
-            }
-          }}
-          className="w-full max-w-[280px] lg:max-w-[335px] mx-auto bg-white/80 hover:bg-white text-[#003527] border border-[#003527]/10 py-3 rounded-xl font-bold text-xs shadow-sm hover:shadow-md cursor-pointer transition-all flex items-center justify-center gap-2"
+          onClick={handleFullscreen}
+          className="w-full max-w-[280px] lg:max-w-[335px] bg-white/80 hover:bg-white text-brand border border-brand/10 hover:border-brand/25 py-3 rounded-xl font-bold text-xs shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer transition-all duration-300 flex items-center justify-center gap-2"
         >
           <Maximize2 size={16} />
           Tam Ekranda Görüntüle
@@ -115,12 +125,12 @@ export function PhoneSimulator({
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        className="hidden lg:flex gap-2 items-center text-[#515f74] text-xs font-semibold mt-8"
+        transition={{ duration: 0.8, delay: 0.3, ease: EASE_LUXE }}
+        className="hidden lg:flex gap-2 items-center text-muted text-xs font-semibold mt-8"
       >
         <motion.div
           animate={{ y: [0, -4, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
         >
           <Smartphone size={14} />
         </motion.div>

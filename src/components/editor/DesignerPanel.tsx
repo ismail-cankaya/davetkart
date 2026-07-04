@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, Check, ArrowRight, Flame } from 'lucide-react';
+import { Sparkles, Check, ArrowRight, Flame, RotateCcw } from 'lucide-react';
 import { Invitation } from '../../types';
 import { INITIAL_INVITATION } from '../../data';
+
+const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
+
+const inputClass =
+  'w-full bg-white/5 border border-white/15 focus:border-gold focus:ring-2 focus:ring-gold/20 focus:outline-none rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 transition-all duration-300';
 
 interface DesignerPanelProps {
   invitation: Invitation;
@@ -18,11 +23,16 @@ export const DesignerPanel = React.memo(function DesignerPanel({
   setActivePresetId
 }: DesignerPanelProps) {
   const [localInvitation, setLocalInvitation] = useState<Invitation>(invitation);
-  const debounceRef = useRef<NodeJS.Timeout>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
     setLocalInvitation(invitation);
   }, [invitation]);
+
+  // Debounce temizliği — unmount'ta bekleyen timer sızıntısını önler
+  useEffect(() => () => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+  }, []);
 
   const handleLocalChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -37,38 +47,55 @@ export const DesignerPanel = React.memo(function DesignerPanel({
   return (
     <motion.section
       id="tasarimci"
-      className="py-12 md:py-20 bg-emerald-950 text-white relative"
+      className="py-14 md:py-24 bg-gradient-to-b from-brand-deep via-emerald-950 to-brand-deep text-white relative overflow-hidden scroll-mt-20"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px" }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: '0px' }}
+      transition={{ duration: 1, ease: EASE_LUXE }}
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-12">
+      {/* Ambient glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-800/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gold/10 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 md:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
+
           {/* Designer Setup Panel Form - Left Column */}
           <div className="lg:col-span-7 space-y-8">
-            <div>
-              <div className="bg-[#efe2c1] text-[#211b07] px-3.5 py-1 rounded-full text-[11px] font-semibold tracking-wide w-fit flex items-center gap-1 shadow-sm mb-4">
-                <Sparkles size={12} />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: EASE_LUXE }}
+            >
+              <div className="bg-champagne text-brand-deep px-3.5 py-1.5 rounded-full text-[11px] font-semibold tracking-wide w-fit flex items-center gap-1.5 shadow-sm mb-4">
+                <Sparkles size={12} className="text-gold" />
                 <span>Özelleştirilebilir Alanlar</span>
               </div>
-              <h2 className="font-serif text-3xl font-bold italic text-amber-100">
-                Kendi E-Davetiyeni Tasarla
+              <h2 className="font-serif text-3xl md:text-4xl font-bold text-white">
+                Kendi E-Davetiyeni <span className="italic font-medium text-champagne">Tasarla</span>
               </h2>
-              <p className="text-stone-300 text-sm mt-2 max-w-xl">
+              <p className="text-emerald-100/70 text-sm mt-3 max-w-xl leading-relaxed">
                 Aşağıdaki bilgileri düzenleyerek davetiyenizi anında kişiselleştirebilirsiniz. Yukarıdaki telefon simülatöründe ve canlı katılım panelinde sonuçları gerçek zamanlı gözlemleyin.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/15 space-y-6">
-              
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, ease: EASE_LUXE, delay: 0.1 }}
+              className="bg-white/[0.07] backdrop-blur-md p-6 md:p-8 rounded-3xl border border-white/10 space-y-6 shadow-2xl shadow-black/20"
+            >
+
               {/* Form entries */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
+
                 {/* Event Names / Couple Names */}
                 <div className="space-y-2">
-                  <label className="block text-xs font-bold tracking-wider uppercase text-amber-200">
+                  <label className="block text-xs font-bold tracking-wider uppercase text-champagne">
                     Davet Sahipleri / İsimler
                   </label>
                   <input
@@ -76,14 +103,14 @@ export const DesignerPanel = React.memo(function DesignerPanel({
                     name="names"
                     value={localInvitation.names}
                     onChange={handleLocalChange}
-                    placeholder="Örn. Sophia &amp; Elias"
-                    className="w-full bg-white/5 border border-white/15 focus:border-amber-300 focus:outline-none rounded-xl px-4 py-3 text-sm text-white transition-colors"
+                    placeholder="Örn. Sophia & Elias"
+                    className={inputClass}
                   />
                 </div>
 
                 {/* Entry Badge / Title */}
                 <div className="space-y-2">
-                  <label className="block text-xs font-bold tracking-wider uppercase text-amber-200">
+                  <label className="block text-xs font-bold tracking-wider uppercase text-champagne">
                     Üst Başlık (Slogan)
                   </label>
                   <input
@@ -92,13 +119,13 @@ export const DesignerPanel = React.memo(function DesignerPanel({
                     value={localInvitation.title}
                     onChange={handleLocalChange}
                     placeholder="Örn. HAYATIMIZIN EN ÖZEL GÜNÜ"
-                    className="w-full bg-white/5 border border-white/15 focus:border-amber-300 focus:outline-none rounded-xl px-4 py-3 text-sm text-white transition-colors"
+                    className={inputClass}
                   />
                 </div>
 
                 {/* Event Date Picker */}
                 <div className="space-y-2">
-                  <label className="block text-xs font-bold tracking-wider uppercase text-amber-200">
+                  <label className="block text-xs font-bold tracking-wider uppercase text-champagne">
                     Etkinlik Tarihi &amp; Saati
                   </label>
                   <input
@@ -106,13 +133,13 @@ export const DesignerPanel = React.memo(function DesignerPanel({
                     name="date"
                     value={localInvitation.date}
                     onChange={handleLocalChange}
-                    className="w-full bg-white/5 border border-white/15 focus:border-amber-300 focus:outline-none rounded-xl px-4 py-3 text-sm text-white transition-colors [color-scheme:dark]"
+                    className={`${inputClass} [color-scheme:dark]`}
                   />
                 </div>
 
                 {/* Event Location */}
                 <div className="space-y-2">
-                  <label className="block text-xs font-bold tracking-wider uppercase text-amber-200">
+                  <label className="block text-xs font-bold tracking-wider uppercase text-champagne">
                     Etkinlik Mekanı / Adres
                   </label>
                   <input
@@ -121,7 +148,7 @@ export const DesignerPanel = React.memo(function DesignerPanel({
                     value={localInvitation.venue}
                     onChange={handleLocalChange}
                     placeholder="Örn. Çırağan Sarayı, Beşiktaş"
-                    className="w-full bg-white/5 border border-white/15 focus:border-amber-300 focus:outline-none rounded-xl px-4 py-3 text-sm text-white transition-colors"
+                    className={inputClass}
                   />
                 </div>
 
@@ -129,7 +156,7 @@ export const DesignerPanel = React.memo(function DesignerPanel({
 
               {/* Message subtitle */}
               <div className="space-y-2">
-                <label className="block text-xs font-bold tracking-wider uppercase text-amber-200">
+                <label className="block text-xs font-bold tracking-wider uppercase text-champagne">
                   Davet Mesajı (Açıklama / Şiir)
                 </label>
                 <textarea
@@ -138,7 +165,7 @@ export const DesignerPanel = React.memo(function DesignerPanel({
                   value={localInvitation.subtitle}
                   onChange={handleLocalChange}
                   placeholder="Örn. Sizleri de bu mutlu günümüzde aramızda görmekten onur duyarız..."
-                  className="w-full bg-white/5 border border-white/15 focus:border-amber-300 focus:outline-none rounded-xl px-4 py-3 text-sm text-white transition-colors resize-none"
+                  className={`${inputClass} resize-none`}
                 />
               </div>
 
@@ -150,80 +177,87 @@ export const DesignerPanel = React.memo(function DesignerPanel({
                     setInvitation(INITIAL_INVITATION);
                     setActivePresetId('emerald');
                   }}
-                  className="text-stone-300 hover:text-white text-xs underline cursor-pointer"
+                  className="text-emerald-100/60 hover:text-white text-xs cursor-pointer flex items-center gap-1.5 transition-colors duration-300"
                 >
+                  <RotateCcw size={12} />
                   Bütün Formu Sıfırla
                 </button>
 
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('animasyon-ve-onizleme')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-md cursor-pointer transition-colors"
+                <a
+                  href="#animasyon-ve-onizleme"
+                  className="bg-champagne hover:bg-gold text-brand-deep font-bold px-6 py-3 rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-black/20 cursor-pointer transition-all duration-300 hover:-translate-y-0.5"
                 >
                   Önizleme
-                </button>
+                  <ArrowRight size={13} />
+                </a>
               </div>
 
-            </div>
+            </motion.div>
           </div>
 
           {/* Info & Simulated Device Guide - Right Column */}
           <div className="lg:col-span-5 space-y-6">
-            
-            <div className="bg-white/5 p-6 rounded-2xl border border-white/10 space-y-4">
-              <h3 className="font-serif text-lg font-bold text-amber-200 flex items-center gap-2 border-b border-white/10 pb-3">
-                <Sparkles className="text-amber-300 w-4 h-4" />
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, ease: EASE_LUXE, delay: 0.2 }}
+              className="bg-white/5 p-6 rounded-3xl border border-white/10 space-y-4"
+            >
+              <h3 className="font-serif text-lg font-bold text-champagne flex items-center gap-2 border-b border-white/10 pb-3">
+                <Sparkles className="text-gold w-4 h-4" />
                 Premium Dijital Özellikler
               </h3>
 
-              <div className="space-y-3 text-xs text-stone-300">
+              <div className="space-y-3 text-xs text-emerald-100/70">
                 <p>
                   Oluşturulan premium dijital davetiyeler, geleneksel kağıt baskının sunamadığı gelişmiş interaktif özelliklerle birlikte gelir:
                 </p>
-                <ul className="space-y-2 list-none pl-1">
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-amber-300 shrink-0 mt-0.5" />
-                    <span><strong>Akıllı Harita Navigasyonu</strong>: Misafirler davetiyeden tek tuşla konuma yol tarifi alabilir.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-amber-300 shrink-0 mt-0.5" />
-                    <span><strong>Takvime Ekle (iCal/Google)</strong>: Unutulmamasını sağlamak amacıyla tek tuşla ajandaya işlenebilir.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-amber-300 shrink-0 mt-0.5" />
-                    <span><strong>Ses &amp; Arka Plan Müziği</strong>: Misafirleriniz davetiyeyi açtığında seçtiğiniz enstrümantal hoş bir müzik karşılar.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-amber-300 shrink-0 mt-0.5" />
-                    <span><strong>Doğa Dostu</strong>: Kağıt israfına, kargo ve zarf karmaşasına son verir!</span>
-                  </li>
+                <ul className="space-y-2.5 list-none pl-1">
+                  {[
+                    ['Akıllı Harita Navigasyonu', 'Misafirler davetiyeden tek tuşla konuma yol tarifi alabilir.'],
+                    ['Takvime Ekle (iCal/Google)', 'Unutulmamasını sağlamak amacıyla tek tuşla ajandaya işlenebilir.'],
+                    ['Ses & Arka Plan Müziği', 'Misafirleriniz davetiyeyi açtığında seçtiğiniz enstrümantal hoş bir müzik karşılar.'],
+                    ['Doğa Dostu', 'Kağıt israfına, kargo ve zarf karmaşasına son verir!']
+                  ].map(([title, desc]) => (
+                    <li key={title} className="flex items-start gap-2.5">
+                      <span className="w-4 h-4 rounded-full bg-gold/15 text-gold flex items-center justify-center shrink-0 mt-0.5">
+                        <Check size={10} />
+                      </span>
+                      <span><strong className="text-white/90">{title}</strong>: {desc}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="bg-gradient-to-r from-amber-500 to-orange-500 p-6 rounded-2xl text-slate-950 shadow-lg relative overflow-hidden">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, ease: EASE_LUXE, delay: 0.3 }}
+              className="bg-gradient-to-br from-champagne via-[#e8d5a8] to-gold p-6 rounded-3xl text-brand-deep shadow-2xl shadow-black/20 relative overflow-hidden"
+            >
               <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-2 bg-white/20 w-fit px-2.5 py-0.5 rounded-full text-[10px] font-bold">
+                <div className="flex items-center gap-1.5 mb-3 bg-brand-deep/10 w-fit px-2.5 py-1 rounded-full text-[10px] font-bold">
                   <Flame size={12} /> Sınırlı Süre Promosyonu
                 </div>
-                <h4 className="font-serif text-xl font-bold">İlk Davetiyeniz %60 İndirimli!</h4>
-                <p className="text-xs font-medium mt-1 text-slate-900 leading-relaxed">
+                <h4 className="font-serif text-2xl font-bold">İlk Davetiyeniz %60 İndirimli!</h4>
+                <p className="text-xs font-medium mt-2 text-brand-deep/80 leading-relaxed">
                   Sitemize şimdi üye olarak ilk dijital davetiyenizi büyük bir indirimle oluşturabilir ve ilk 102 misafirinize tamamen ücretsiz katılım takibi yapabilirsiniz.
                 </p>
                 <a
                   href="#tasarimci"
-                  className="mt-4 inline-flex items-center gap-1 bg-slate-950 text-white font-bold text-xs px-4 py-2 rounded-lg hover:bg-slate-900 transition-colors"
+                  className="mt-4 inline-flex items-center gap-1.5 bg-brand-deep text-champagne font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-brand transition-all duration-300 hover:-translate-y-0.5 shadow-md"
                 >
                   <span>Hemen Başla</span>
                   <ArrowRight size={12} />
                 </a>
               </div>
               {/* Glowing graphic element */}
-              <div className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-white/10 w-96 h-96 rounded-full blur-2xl pointer-events-none" />
-            </div>
+              <div className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-white/25 w-96 h-96 rounded-full blur-2xl pointer-events-none" />
+            </motion.div>
 
           </div>
 

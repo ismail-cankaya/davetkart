@@ -2,13 +2,36 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Laptop, Send, ArrowRight } from 'lucide-react';
 
+const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
+
+const STEPS = [
+  {
+    step: '01',
+    title: 'Şablon Seçin',
+    desc: 'Düğün, nişan, baby shower, doğum günü veya kurumsal etkinlik — hayalinizdeki konsepte uygun premium şablonu seçin.',
+    icon: <Sparkles size={22} />
+  },
+  {
+    step: '02',
+    title: 'Kişiselleştirin',
+    desc: 'İsimleri, tarihi, mekanı ve özel mesajınızı girin. Canlı önizlemede her değişikliği anında görün.',
+    icon: <Laptop size={22} />
+  },
+  {
+    step: '03',
+    title: 'Paylaşın & Takip Edin',
+    desc: 'WhatsApp, SMS veya e-posta ile gönderin. Canlı katılım panelinden katılım durumlarını anlık takip edin.',
+    icon: <Send size={22} />
+  }
+];
+
 export const Features = React.memo(function Features() {
   return (
-    <section id="neden-dijital" className="py-20 md:py-32 bg-[#f8f9ff] relative overflow-hidden">
+    <section id="neden-dijital" className="py-20 md:py-32 bg-cream relative overflow-hidden scroll-mt-20">
       {/* Subtle background decoration */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        <div className="absolute top-20 right-10 w-72 h-72 bg-emerald-100/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-amber-50/40 rounded-full blur-3xl" />
+        <div className="absolute top-20 right-10 w-72 h-72 bg-emerald-100/40 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-champagne/30 rounded-full blur-3xl" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 md:px-12 relative z-10">
@@ -18,84 +41,55 @@ export const Features = React.memo(function Features() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: EASE_LUXE }}
         >
-          <span className="text-[#003527] font-semibold text-xs tracking-wider uppercase bg-[#003527]/5 px-3 py-1 rounded-full inline-block mb-4">
+          <span className="text-brand font-semibold text-xs tracking-[0.15em] uppercase bg-brand/5 border border-brand/10 px-3.5 py-1.5 rounded-full inline-block mb-4">
             Basit 3 Adım
           </span>
-          <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#0b1c30] mb-4">
-            Nasıl <span className="italic text-[#003527] font-medium">Çalışır?</span>
+          <h2 className="font-serif text-3xl md:text-5xl font-bold text-ink mb-4">
+            Nasıl <span className="italic text-brand font-medium">Çalışır?</span>
           </h2>
-          <p className="text-[#515f74] text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+          <p className="text-muted text-sm md:text-base max-w-xl mx-auto leading-relaxed">
             Dijital davetiyenizi dakikalar içinde oluşturun ve sevdiklerinizle anında paylaşın.
           </p>
         </motion.div>
 
         {/* Steps Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-10">
-          {[
-            {
-              step: '01',
-              title: 'Şablon Seçin',
-              desc: 'Düğün, nişan, baby shower, doğum günü veya kurumsal etkinlik — hayalinizdeki konsepte uygun premium şablonu seçin.',
-              icon: <Sparkles size={24} />,
-              gradient: 'from-emerald-500 to-teal-600',
-              bgLight: 'bg-emerald-50',
-              borderColor: 'border-emerald-200',
-              iconBg: 'bg-emerald-100 text-emerald-700'
-            },
-            {
-              step: '02',
-              title: 'Kişiselleştirin',
-              desc: 'İsimleri, tarihi, mekanı ve özel mesajınızı girin. Canlı önizlemede her değişikliği anında görün.',
-              icon: <Laptop size={24} />,
-              gradient: 'from-amber-500 to-orange-600',
-              bgLight: 'bg-amber-50',
-              borderColor: 'border-amber-200',
-              iconBg: 'bg-amber-100 text-amber-700'
-            },
-            {
-              step: '03',
-              title: 'Paylaşın & Takip Edin',
-              desc: 'WhatsApp, SMS veya e-posta ile gönderin. Canlı katılım panelinden katılım durumlarını anlık takip edin.',
-              icon: <Send size={24} />,
-              gradient: 'from-violet-500 to-purple-600',
-              bgLight: 'bg-violet-50',
-              borderColor: 'border-violet-200',
-              iconBg: 'bg-violet-100 text-violet-700'
-            }
-          ].map((item, idx) => (
+          {STEPS.map((item, idx) => (
             <motion.div
               key={item.step}
-              className={`relative group rounded-3xl ${item.bgLight} border ${item.borderColor} p-8 md:p-10 hover:shadow-2xl transition-all duration-700 hover:-translate-y-2`}
+              className="relative group rounded-3xl bg-white border border-ink/[0.06] p-8 md:p-10 shadow-sm hover:shadow-2xl hover:shadow-brand/10 hover:border-brand/15 transition-all duration-700 hover:-translate-y-2 overflow-hidden"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.15 }}
+              transition={{ duration: 0.8, ease: EASE_LUXE, delay: idx * 0.15 }}
             >
-              {/* Step Number */}
-              <div className="absolute -top-4 -right-2 md:-right-4">
-                <span className={`bg-gradient-to-br ${item.gradient} text-white text-2xl md:text-3xl font-serif font-bold w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center shadow-lg`}>
-                  {item.step}
-                </span>
-              </div>
+              {/* Ghost step numeral */}
+              <span className="absolute -top-6 right-2 font-serif text-[7rem] leading-none font-bold text-brand/[0.05] group-hover:text-gold/15 transition-colors duration-700 select-none pointer-events-none">
+                {item.step}
+              </span>
 
               {/* Icon */}
-              <div className={`w-14 h-14 rounded-2xl ${item.iconBg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500`}>
+              <div className="relative w-14 h-14 rounded-2xl bg-brand/[0.06] text-brand border border-brand/10 flex items-center justify-center mb-6 group-hover:bg-brand group-hover:text-champagne group-hover:scale-105 transition-all duration-500">
                 {item.icon}
               </div>
 
               {/* Content */}
-              <h3 className="font-serif text-xl md:text-2xl font-bold text-[#0b1c30] mb-3">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="font-serif text-sm font-bold text-gold">{item.step}</span>
+                <span className="h-px w-8 bg-gold/40" />
+              </div>
+              <h3 className="font-serif text-xl md:text-2xl font-bold text-ink mb-3">
                 {item.title}
               </h3>
-              <p className="text-[#515f74] text-sm leading-relaxed">
+              <p className="text-muted text-sm leading-relaxed">
                 {item.desc}
               </p>
 
               {/* Connector line (between cards on desktop) */}
               {idx < 2 && (
-                <div className="hidden md:block absolute top-1/2 -right-3 lg:-right-5 w-6 lg:w-10 h-[2px] bg-gradient-to-r from-[#003527]/20 to-transparent z-20" />
+                <div className="hidden md:block absolute top-1/2 -right-3 lg:-right-5 w-6 lg:w-10 h-px bg-gradient-to-r from-brand/25 to-transparent z-20" />
               )}
             </motion.div>
           ))}
@@ -107,16 +101,17 @@ export const Features = React.memo(function Features() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+          transition={{ duration: 0.8, ease: EASE_LUXE, delay: 0.4 }}
         >
           <a
             href="#tasarimci"
-            className="group inline-flex items-center gap-3 bg-[#003527] text-white px-10 py-5 rounded-full font-semibold text-sm hover:bg-[#064e3b] transition-all duration-500 shadow-lg hover:shadow-2xl hover:-translate-y-1"
+            className="group relative overflow-hidden inline-flex items-center gap-3 bg-brand text-white px-10 py-5 rounded-full font-semibold text-sm hover:bg-brand-soft transition-all duration-500 shadow-lg shadow-brand/20 hover:shadow-2xl hover:shadow-brand/30 hover:-translate-y-1"
           >
+            <span className="absolute inset-0 animate-shimmer pointer-events-none" />
             Hemen Başlayın
             <ArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform duration-300" />
           </a>
-          <p className="text-[#515f74] text-xs mt-4">Kredi kartı gerektirmez · İlk davetiye %60 indirimli</p>
+          <p className="text-muted text-xs mt-4">Kredi kartı gerektirmez · İlk davetiye %60 indirimli</p>
         </motion.div>
       </div>
     </section>

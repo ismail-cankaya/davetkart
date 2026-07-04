@@ -33,7 +33,7 @@ export const TEMPLATE_PRESETS = [
     name: 'Asil Gece (Midnight Gold)',
     primaryColor: '#1e1b4b',
     backgroundStyle: 'bg-slate-950',
-    titleColor: 'text-amber-150',
+    titleColor: 'text-amber-100',
     btnColor: 'bg-amber-400 hover:bg-amber-500 text-slate-950',
     imageUrl: '/images/corporate.png'
   }

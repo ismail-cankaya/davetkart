@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Invitation, RSVPResponse } from '../types';
 import { INITIAL_INVITATION, INITIAL_RSVP_LIST } from '../data';
+import { toast } from '../components/ui/Toast';
 
 export function useAppState() {
   const [invitation, setInvitation] = useState<Invitation>(() => {
@@ -77,7 +78,7 @@ export function useAppState() {
     setNewRsvp({ guestName: '', guestCount: 2, menuPreference: 'Et Menü', status: 'Katılıyor', message: '', photoUrl: '', videoUrl: '' });
     setIsRsvpModalOpen(false);
 
-    alert(`Teşekkürler, ${entry.guestName}! Katılım bildiriminiz başarıyla kaydedildi ve katılım paneline eklendi.`);
+    toast(`Teşekkürler, ${entry.guestName}! Katılım bildiriminiz kaydedildi ve canlı panele eklendi.`);
   };
 
   const handleDeleteRsvp = (id: string) => {
