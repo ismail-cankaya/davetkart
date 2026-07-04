@@ -27,7 +27,7 @@ export function MidnightGoldHero({ invitation, bgImage, onRsvpClick }: TemplateP
             initial={{ opacity: 0, letterSpacing: "0.1em" }}
             animate={{ opacity: 1, letterSpacing: "0.3em" }}
             transition={{ delay: 0.3, duration: 1 }}
-            className="text-amber-200 text-[9px] font-medium uppercase"
+            className="text-amber-100 text-[9px] font-semibold uppercase [text-shadow:0_1px_3px_rgba(2,6,23,0.9)]"
           >
             DAVETLİSİNİZ
           </motion.span>

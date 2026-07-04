@@ -41,7 +41,7 @@ export function EmeraldHero({ invitation, bgImage, onRsvpClick }: TemplateProps)
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-[9px] font-semibold tracking-[0.2em] text-amber-200/95 uppercase drop-shadow-sm leading-tight"
+              className="text-[9px] font-semibold tracking-[0.2em] text-amber-100 uppercase leading-tight [text-shadow:0_1px_3px_rgba(4,34,24,0.95),0_0_10px_rgba(4,34,24,0.7)]"
             >
               {invitation.title || 'HAYATIMIZIN EN ÖZEL GÜNÜ'}
             </motion.p>
@@ -78,14 +78,14 @@ export function EmeraldHero({ invitation, bgImage, onRsvpClick }: TemplateProps)
           <div className="w-12 h-[1px] bg-amber-200/40 mx-auto" />
 
           <div className="space-y-2 mt-2">
-            <div className="flex items-center justify-center gap-1.5 text-xs text-amber-100">
+            <div className="flex items-center justify-center gap-1.5 text-xs text-amber-100 [text-shadow:0_1px_3px_rgba(4,34,24,0.9)]">
               <Calendar size={13} className="text-amber-300" />
               <span className="font-medium tracking-wide">
                 {formatDateStr(invitation.date)}
               </span>
             </div>
 
-            <div className="flex items-center justify-center gap-1.5 text-xs text-stone-300 px-4">
+            <div className="flex items-center justify-center gap-1.5 text-xs text-stone-100 px-4 [text-shadow:0_1px_3px_rgba(4,34,24,0.9)]">
               <MapPin size={13} className="text-amber-300 shrink-0 mt-0.5" />
               <span className="leading-tight line-clamp-2">
                 {invitation.venue}
@@ -103,7 +103,7 @@ export function EmeraldHero({ invitation, bgImage, onRsvpClick }: TemplateProps)
           >
             KATILIM BİLDİR
           </motion.button>
-          <p className="text-[9px] text-stone-300/80 tracking-wide">
+          <p className="text-[9px] text-stone-100/95 tracking-wide [text-shadow:0_1px_3px_rgba(4,34,24,0.9)]">
             *Lütfen yanıtınızı en geç etkinlik haftasına kadar iletiniz.
           </p>
         </div>

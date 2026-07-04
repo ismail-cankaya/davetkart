@@ -41,7 +41,7 @@ export function SunsetHero({ invitation, bgImage, onRsvpClick }: TemplateProps) 
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-[10px] font-semibold tracking-[0.2em] text-orange-200 uppercase drop-shadow-sm leading-tight"
+              className="text-[10px] font-semibold tracking-[0.2em] text-amber-950 uppercase leading-tight [text-shadow:0_1px_2px_rgba(255,247,237,0.55)]"
             >
               {invitation.title || 'HAYATIMIZIN EN ÖZEL GÜNÜ'}
             </motion.p>
@@ -52,7 +52,7 @@ export function SunsetHero({ invitation, bgImage, onRsvpClick }: TemplateProps) 
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="text-4xl md:text-5xl lg:text-6xl text-white drop-shadow-md py-2"
+              className="text-4xl md:text-5xl lg:text-6xl text-orange-900 py-2 [text-shadow:0_2px_4px_rgba(255,247,237,0.5)]"
             >
               {invitation.names || 'Sophia & Elias'}
             </motion.h2>
@@ -63,24 +63,24 @@ export function SunsetHero({ invitation, bgImage, onRsvpClick }: TemplateProps) 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="text-[11px] text-orange-100/90 tracking-wider leading-relaxed max-w-xs mx-auto px-4"
+              className="text-[11px] text-amber-950/85 tracking-wider leading-relaxed max-w-xs mx-auto px-4"
             >
               {invitation.subtitle}
             </motion.p>
           </div>
 
-          <div className="w-16 h-[1px] bg-orange-200/50 mx-auto my-2" />
+          <div className="w-16 h-[1px] bg-amber-900/35 mx-auto my-2" />
 
           <div className="space-y-3 mt-2">
-            <div className="flex items-center justify-center gap-2 text-xs text-white">
-              <Calendar size={14} className="text-orange-300" />
+            <div className="flex items-center justify-center gap-2 text-xs text-amber-950">
+              <Calendar size={14} className="text-orange-700" />
               <span className="font-semibold tracking-wide">
                 {formatDateStr(invitation.date)}
               </span>
             </div>
 
-            <div className="flex items-center justify-center gap-2 text-xs text-orange-100 px-4">
-              <MapPin size={14} className="text-orange-300 shrink-0" />
+            <div className="flex items-center justify-center gap-2 text-xs text-amber-950 px-4 [text-shadow:0_1px_2px_rgba(255,247,237,0.85)]">
+              <MapPin size={14} className="text-orange-700 shrink-0" />
               <span className="leading-snug line-clamp-2">
                 {invitation.venue}
               </span>

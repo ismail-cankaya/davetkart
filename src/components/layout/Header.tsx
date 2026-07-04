@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react';
-import { Heart, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import { BrandMark } from '../ui/BrandMark';
 
 const NAV_LINKS = [
   { href: '#animasyon-ve-onizleme', label: 'Önizleme' },
@@ -50,10 +51,10 @@ export const Header = React.memo(function Header() {
         {/* Brand */}
         <a className="flex items-center gap-2.5 group" href="#">
           <span className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-brand text-champagne shadow-md shadow-brand/20 group-hover:shadow-lg group-hover:shadow-brand/30 group-hover:-translate-y-0.5 transition-all duration-500">
-            <Heart size={17} className="fill-champagne/25" />
+            <BrandMark size={19} />
           </span>
           <span className="font-serif text-lg md:text-xl font-bold text-brand tracking-tight">
-            E-Dijital <span className="italic font-medium text-gold">Davetiye</span>
+            davet<span className="italic font-medium text-gold">kart</span>
           </span>
         </a>
 

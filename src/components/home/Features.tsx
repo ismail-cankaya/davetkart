@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, Laptop, Send, ArrowRight } from 'lucide-react';
+import { Sparkles, Laptop, Send, ArrowRight, WandSparkles, Palette, Zap, Layers } from 'lucide-react';
 
 const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
 
@@ -94,6 +94,87 @@ export const Features = React.memo(function Features() {
             </motion.div>
           ))}
         </div>
+
+        {/* AI Theme Designer Spotlight */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: EASE_LUXE }}
+          className="relative mt-16 md:mt-24 rounded-[2rem] overflow-hidden bg-brand-deep text-white border border-gold/15 shadow-2xl shadow-brand/25"
+        >
+          {/* Ambient glows */}
+          <div className="absolute -top-24 -right-24 w-80 h-80 bg-emerald-700/25 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-32 -left-16 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center p-8 md:p-14">
+            <div className="lg:col-span-7 space-y-5">
+              <span className="inline-flex items-center gap-1.5 bg-gold/15 text-gold border border-gold/25 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-[0.12em] uppercase">
+                <Sparkles size={13} className="animate-pulse" /> Çok Yakında
+              </span>
+              <h3 className="font-serif text-2xl md:text-4xl font-bold leading-tight">
+                Yapay Zeka ile <span className="italic text-champagne font-medium">Size Özel</span> Tema Tasarımları
+              </h3>
+              <p className="text-emerald-100/70 text-sm md:text-base leading-relaxed max-w-xl">
+                Hayalinizdeki davetiyeyi birkaç cümleyle anlatın; yapay zeka renk paletinden tipografiye,
+                süslemelerden animasyonlara kadar tamamen size özel bir tema tasarlasın. Koleksiyonumuz
+                her geçen gün yeni tasarımlarla büyüyor — yapay zeka destekli tasarımcıyla seçenekler sınırsız.
+              </p>
+              <div className="flex flex-wrap gap-2.5 pt-1">
+                {[
+                  { icon: <Palette size={13} />, label: 'Kişiye özel renk paleti' },
+                  { icon: <Zap size={13} />, label: 'Saniyeler içinde önizleme' },
+                  { icon: <Layers size={13} />, label: 'Sürekli büyüyen koleksiyon' }
+                ].map(chip => (
+                  <span
+                    key={chip.label}
+                    className="inline-flex items-center gap-1.5 bg-white/[0.06] border border-white/10 text-emerald-50/90 px-3.5 py-2 rounded-full text-xs font-medium backdrop-blur-sm"
+                  >
+                    <span className="text-gold">{chip.icon}</span>
+                    {chip.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Visual */}
+            <div className="lg:col-span-5 flex justify-center lg:justify-end">
+              <div className="relative w-52 h-52 md:w-64 md:h-64">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+                  className="absolute inset-0 rounded-full border border-dashed border-gold/25"
+                />
+                <motion.div
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
+                  className="absolute inset-6 rounded-full border border-dashed border-champagne/20"
+                />
+                <motion.div
+                  animate={{ scale: [1, 1.06, 1] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute inset-0 m-auto w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-gradient-to-br from-gold/25 to-emerald-700/30 border border-gold/30 backdrop-blur-sm flex items-center justify-center text-champagne shadow-xl shadow-black/20"
+                >
+                  <WandSparkles size={40} />
+                </motion.div>
+                <motion.span
+                  animate={{ y: [0, -8, 0], opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute top-3 right-8 text-gold"
+                >
+                  <Sparkles size={18} />
+                </motion.span>
+                <motion.span
+                  animate={{ y: [0, 6, 0], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+                  className="absolute bottom-6 left-6 text-champagne"
+                >
+                  <Sparkles size={14} />
+                </motion.span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
         {/* CTA */}
         <motion.div

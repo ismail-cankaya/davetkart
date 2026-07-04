@@ -11,6 +11,7 @@ import { DesignerPanel } from './components/editor/DesignerPanel';
 import { Toaster } from './components/ui/Toast';
 
 const Features = React.lazy(() => import('./components/home/Features').then(m => ({ default: m.Features })));
+const AssistantWidget = React.lazy(() => import('./components/assistant/AssistantWidget').then(m => ({ default: m.AssistantWidget })));
 const Testimonials = React.lazy(() => import('./components/home/Testimonials').then(m => ({ default: m.Testimonials })));
 const LiveRsvpPanel = React.lazy(() => import('./components/rsvp/LiveRsvpPanel').then(m => ({ default: m.LiveRsvpPanel })));
 
@@ -86,6 +87,11 @@ function App() {
 
       <Footer />
       <Toaster />
+
+      {/* Asistan: uygulamanın geri kalanından bağımsız, ayrı chunk olarak yüklenir */}
+      <React.Suspense fallback={null}>
+        <AssistantWidget />
+      </React.Suspense>
     </div>
   );
 }

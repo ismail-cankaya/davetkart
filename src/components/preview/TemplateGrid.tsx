@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Check, PenLine } from 'lucide-react';
+import { Check, PenLine, WandSparkles } from 'lucide-react';
 import { TEMPLATE_PRESETS } from '../../data';
 
 const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
@@ -104,6 +104,28 @@ export function TemplateGrid({ activePresetId, handleTemplateChange, phoneRef }:
             </motion.div>
           );
         })}
+
+        {/* Coming soon: AI-designed themes */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '0px' }}
+          transition={{ duration: 0.7, ease: EASE_LUXE, delay: 0.35 }}
+          className="col-span-2 group relative rounded-2xl border-2 border-dashed border-brand/15 bg-white/60 hover:border-gold/50 hover:bg-white transition-all duration-500 p-5 flex items-center gap-4 cursor-default"
+        >
+          <div className="w-11 h-11 shrink-0 rounded-xl bg-gradient-to-br from-champagne to-gold/30 text-brand flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+            <WandSparkles size={20} />
+          </div>
+          <div className="text-left">
+            <h3 className="font-serif text-sm font-bold text-ink flex items-center gap-2">
+              Yeni Tasarımlar Yolda
+              <span className="text-[9px] font-sans font-semibold uppercase tracking-wider bg-gold/15 text-brand-deep px-2 py-0.5 rounded-full border border-gold/25">Yakında</span>
+            </h3>
+            <p className="text-[11px] text-muted mt-1 leading-relaxed">
+              Koleksiyon sürekli büyüyor; yapay zeka ile tamamen size özel tema tasarımları da çok yakında burada.
+            </p>
+          </div>
+        </motion.div>
       </div>
 
       {/* Quick Info Box - hidden on mobile */}
