@@ -1,3 +1,5 @@
+export type RsvpStatus = 'Katılıyor' | 'Bekleniyor' | 'Katılamıyor';
+
 export interface Invitation {
   title: string;
   subtitle: string;
@@ -13,9 +15,30 @@ export interface RSVPResponse {
   guestName: string;
   guestCount: number;
   menuPreference: string;
-  status: 'Katılıyor' | 'Bekleniyor' | 'Katılamıyor';
+  status: RsvpStatus;
   message?: string;
   photoUrl?: string;
   videoUrl?: string;
   createdAt: string;
+}
+
+/** Form state of an RSVP being composed, before it becomes an RSVPResponse. */
+export interface RsvpDraft {
+  guestName: string;
+  guestCount: number;
+  menuPreference: string;
+  status: RsvpStatus;
+  message: string;
+  photoUrl: string;
+  videoUrl: string;
+}
+
+export interface TemplatePreset {
+  id: string;
+  name: string;
+  primaryColor: string;
+  backgroundStyle: string;
+  titleColor: string;
+  btnColor: string;
+  imageUrl: string;
 }

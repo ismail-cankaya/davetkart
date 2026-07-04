@@ -1,24 +1,31 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Heart, X, ImageIcon, Play, Send } from 'lucide-react';
+import { useRsvpStore } from '../../stores/useRsvpStore';
+import { useUIStore } from '../../stores/useUIStore';
+import { toast } from '../ui/Toast';
 
-interface RsvpModalProps {
-  setIsRsvpModalOpen: (isOpen: boolean) => void;
-  handleAddRsvp: (e: React.FormEvent) => void;
-  newRsvp: any;
-  setNewRsvp: React.Dispatch<React.SetStateAction<any>>;
-  handleRsvpPhotoUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleRsvpVideoUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+export function RsvpModal() {
+  const draft = useRsvpStore(s => s.draft);
+  const updateDraft = useRsvpStore(s => s.updateDraft);
+  const attachDraftMedia = useRsvpStore(s => s.attachDraftMedia);
+  const submitDraft = useRsvpStore(s => s.submitDraft);
+  const setRsvpModalOpen = useUIStore(s => s.setRsvpModalOpen);
 
-export function RsvpModal({
-  setIsRsvpModalOpen,
-  handleAddRsvp,
-  newRsvp,
-  setNewRsvp,
-  handleRsvpPhotoUpload,
-  handleRsvpVideoUpload
-}: RsvpModalProps) {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const entry = submitDraft();
+    if (!entry) return;
+    setRsvpModalOpen(false);
+    toast(`Teşekkürler, ${entry.guestName}! Katılım bildiriminiz kaydedildi ve canlı panele eklendi.`);
+  };
+
+  const handleMediaChange = (field: 'photoUrl' | 'videoUrl') =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) void attachDraftMedia(field, file);
+    };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 150, scale: 0.95 }}
@@ -35,14 +42,14 @@ export function RsvpModal({
         <motion.button
           whileHover={{ scale: 1.1, rotate: 90 }}
           whileTap={{ scale: 0.9 }}
-          onClick={() => setIsRsvpModalOpen(false)}
+          onClick={() => setRsvpModalOpen(false)}
           className="p-1 text-stone-400 hover:text-white rounded-full bg-white/5 border border-white/10 transition-colors"
         >
           <X size={15} />
         </motion.button>
       </div>
 
-      <form onSubmit={handleAddRsvp} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-[11px] font-semibold text-stone-300 uppercase tracking-wider mb-1.5">
             Misafir Adı &amp; Soyadı
@@ -50,8 +57,8 @@ export function RsvpModal({
           <input
             type="text"
             required
-            value={newRsvp.guestName}
-            onChange={e => setNewRsvp((p: any) => ({ ...p, guestName: e.target.value }))}
+            value={draft.guestName}
+            onChange={e => updateDraft({ guestName: e.target.value })}
             placeholder="Örn. Can Doğan"
             className="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 transition-colors placeholder:text-stone-500"
           />
@@ -63,8 +70,8 @@ export function RsvpModal({
               Kişi Sayısı
             </label>
             <select
-              value={newRsvp.guestCount}
-              onChange={e => setNewRsvp((p: any) => ({ ...p, guestCount: Number(e.target.value) }))}
+              value={draft.guestCount}
+              onChange={e => updateDraft({ guestCount: Number(e.target.value) })}
               className="w-full bg-slate-900 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
             >
               <option value={1}>1 Kişi</option>
@@ -79,8 +86,8 @@ export function RsvpModal({
               Yemek Menüsü
             </label>
             <select
-              value={newRsvp.menuPreference}
-              onChange={e => setNewRsvp((p: any) => ({ ...p, menuPreference: e.target.value }))}
+              value={draft.menuPreference}
+              onChange={e => updateDraft({ menuPreference: e.target.value })}
               className="w-full bg-slate-900 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
             >
               <option value="Et Menü">Et Menü</option>
@@ -102,9 +109,9 @@ export function RsvpModal({
                 type="button"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setNewRsvp((prev: any) => ({ ...prev, status: st }))}
+                onClick={() => updateDraft({ status: st })}
                 className={`py-2 px-1 text-[10px] font-semibold rounded-lg border transition-all duration-300 ${
-                  newRsvp.status === st
+                  draft.status === st
                     ? 'bg-amber-400 border-amber-400 text-slate-950 font-bold shadow-lg shadow-amber-400/20'
                     : 'bg-white/5 border-white/10 text-stone-300 hover:bg-white/10'
                 }`}
@@ -121,8 +128,8 @@ export function RsvpModal({
           </label>
           <textarea
             rows={2}
-            value={newRsvp.message}
-            onChange={e => setNewRsvp((p: any) => ({ ...p, message: e.target.value }))}
+            value={draft.message}
+            onChange={e => updateDraft({ message: e.target.value })}
             placeholder="Örn. Mutluluklar dileriz..."
             className="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 transition-colors placeholder:text-stone-500 resize-none"
           />
@@ -134,9 +141,9 @@ export function RsvpModal({
               Fotoğraf Ekle
             </label>
             <label className="flex items-center justify-center w-full bg-white/5 border border-white/15 border-dashed hover:border-amber-400 hover:bg-white/10 rounded-xl px-3 py-2 text-xs text-white transition-colors cursor-pointer group">
-              <input type="file" accept="image/*" onChange={handleRsvpPhotoUpload} className="hidden" />
+              <input type="file" accept="image/*" onChange={handleMediaChange('photoUrl')} className="hidden" />
               <span className="flex items-center gap-1.5 group-hover:text-amber-400 text-stone-300">
-                <ImageIcon size={14} /> {newRsvp.photoUrl ? 'Değiştir' : 'Seç'}
+                <ImageIcon size={14} /> {draft.photoUrl ? 'Değiştir' : 'Seç'}
               </span>
             </label>
           </div>
@@ -145,9 +152,9 @@ export function RsvpModal({
               Kısa Video Ekle
             </label>
             <label className="flex items-center justify-center w-full bg-white/5 border border-white/15 border-dashed hover:border-amber-400 hover:bg-white/10 rounded-xl px-3 py-2 text-xs text-white transition-colors cursor-pointer group">
-              <input type="file" accept="video/*" onChange={handleRsvpVideoUpload} className="hidden" />
+              <input type="file" accept="video/*" onChange={handleMediaChange('videoUrl')} className="hidden" />
               <span className="flex items-center gap-1.5 group-hover:text-amber-400 text-stone-300">
-                <Play size={14} /> {newRsvp.videoUrl ? 'Değiştir' : 'Seç'}
+                <Play size={14} /> {draft.videoUrl ? 'Değiştir' : 'Seç'}
               </span>
             </label>
           </div>

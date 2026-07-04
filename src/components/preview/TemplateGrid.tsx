@@ -2,16 +2,26 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, PenLine, WandSparkles } from 'lucide-react';
 import { TEMPLATE_PRESETS } from '../../data';
+import { useInvitationStore } from '../../stores/useInvitationStore';
+import { useUIStore } from '../../stores/useUIStore';
 
 const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
 
 interface TemplateGridProps {
-  activePresetId: string;
-  handleTemplateChange: (id: string, phoneRef?: React.RefObject<HTMLDivElement>) => void;
   phoneRef: React.RefObject<HTMLDivElement>;
 }
 
-export function TemplateGrid({ activePresetId, handleTemplateChange, phoneRef }: TemplateGridProps) {
+export function TemplateGrid({ phoneRef }: TemplateGridProps) {
+  const activePresetId = useInvitationStore(s => s.activePresetId);
+  const selectTemplate = useInvitationStore(s => s.selectTemplate);
+  const isMobile = useUIStore(s => s.isMobile);
+
+  const handleSelect = (id: string) => {
+    selectTemplate(id);
+    // On mobile the simulator sits below the grid — bring it into view.
+    if (isMobile) phoneRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   return (
     <motion.div
       className="w-full lg:w-1/2 flex flex-col justify-center space-y-4 lg:space-y-6 pt-4"
@@ -64,7 +74,7 @@ export function TemplateGrid({ activePresetId, handleTemplateChange, phoneRef }:
               transition={{ duration: 0.7, ease: EASE_LUXE, delay: idx * 0.08 }}
               whileHover={{ y: -5 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => handleTemplateChange(pst.id, phoneRef)}
+              onClick={() => handleSelect(pst.id)}
               className={`group relative rounded-2xl overflow-hidden h-36 lg:h-48 cursor-pointer transition-shadow duration-700 ${
                 isActive
                   ? 'shadow-xl shadow-brand/20 ring-2 ring-brand ring-offset-2 ring-offset-cream'

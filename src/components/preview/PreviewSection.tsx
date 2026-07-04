@@ -2,37 +2,9 @@ import React, { useRef } from 'react';
 import { motion } from 'motion/react';
 import { PhoneSimulator } from './PhoneSimulator';
 import { TemplateGrid } from './TemplateGrid';
-import { Invitation } from '../../types';
 
-interface PreviewSectionProps {
-  isMobile: boolean;
-  activePresetId: string;
-  activePreset: any;
-  handleTemplateChange: (id: string, phoneRef?: React.RefObject<HTMLDivElement>) => void;
-  invitation: Invitation;
-  isRsvpModalOpen: boolean;
-  setIsRsvpModalOpen: (isOpen: boolean) => void;
-  handleAddRsvp: (e: React.FormEvent) => void;
-  newRsvp: any;
-  setNewRsvp: React.Dispatch<React.SetStateAction<any>>;
-  handleRsvpPhotoUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleRsvpVideoUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-export const PreviewSection = React.memo(function PreviewSection({
-  isMobile,
-  activePresetId,
-  activePreset,
-  handleTemplateChange,
-  invitation,
-  isRsvpModalOpen,
-  setIsRsvpModalOpen,
-  handleAddRsvp,
-  newRsvp,
-  setNewRsvp,
-  handleRsvpPhotoUpload,
-  handleRsvpVideoUpload
-}: PreviewSectionProps) {
+export const PreviewSection = React.memo(function PreviewSection() {
+  // Shared between the grid (scroll target on mobile) and the simulator (the device itself).
   const phoneRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -58,26 +30,9 @@ export const PreviewSection = React.memo(function PreviewSection({
         </motion.div>
 
         <div className="flex flex-col-reverse lg:flex-row gap-8 lg:gap-16 items-center lg:items-start justify-center">
-          <TemplateGrid 
-            activePresetId={activePresetId} 
-            handleTemplateChange={handleTemplateChange} 
-            phoneRef={phoneRef}
-          />
+          <TemplateGrid phoneRef={phoneRef} />
 
-          <PhoneSimulator
-            phoneRef={phoneRef}
-            isMobile={isMobile}
-            activePresetId={activePresetId}
-            activePreset={activePreset}
-            invitation={invitation}
-            isRsvpModalOpen={isRsvpModalOpen}
-            setIsRsvpModalOpen={setIsRsvpModalOpen}
-            handleAddRsvp={handleAddRsvp}
-            newRsvp={newRsvp}
-            setNewRsvp={setNewRsvp}
-            handleRsvpPhotoUpload={handleRsvpPhotoUpload}
-            handleRsvpVideoUpload={handleRsvpVideoUpload}
-          />
+          <PhoneSimulator phoneRef={phoneRef} />
         </div>
       </div>
     </section>

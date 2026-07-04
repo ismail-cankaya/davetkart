@@ -1,6 +1,6 @@
-import { Invitation, RSVPResponse } from './types';
+import { Invitation, RSVPResponse, RsvpDraft, TemplatePreset } from './types';
 
-export const TEMPLATE_PRESETS = [
+export const TEMPLATE_PRESETS: TemplatePreset[] = [
   {
     id: 'emerald',
     name: 'Zümrüt Zarafeti (Emerald)',
@@ -47,6 +47,16 @@ export const INITIAL_INVITATION: Invitation = {
   venue: 'Çırağan Sarayı Kempinski, İstanbul',
   phoneBackground: 'emerald',
   imageTheme: 'emerald'
+};
+
+export const INITIAL_RSVP_DRAFT: RsvpDraft = {
+  guestName: '',
+  guestCount: 2,
+  menuPreference: 'Et Menü',
+  status: 'Katılıyor',
+  message: '',
+  photoUrl: '',
+  videoUrl: ''
 };
 
 export const INITIAL_RSVP_LIST: RSVPResponse[] = [

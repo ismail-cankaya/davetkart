@@ -1,19 +1,22 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Users, RefreshCw, UserCheck, Clock, X, Utensils, Trash2, ImageIcon, Play } from 'lucide-react';
-import { RSVPResponse } from '../../types';
+import { useRsvpStore } from '../../stores/useRsvpStore';
 
-interface LiveRsvpPanelProps {
-  rsvpList: RSVPResponse[];
-  handleDeleteRsvp: (id: string) => void;
-  handleResetRsvps: () => void;
-}
+export const LiveRsvpPanel = React.memo(function LiveRsvpPanel() {
+  const rsvpList = useRsvpStore(s => s.rsvpList);
+  const deleteRsvp = useRsvpStore(s => s.deleteRsvp);
+  const resetRsvps = useRsvpStore(s => s.resetRsvps);
 
-export const LiveRsvpPanel = React.memo(function LiveRsvpPanel({ 
-  rsvpList, 
-  handleDeleteRsvp, 
-  handleResetRsvps 
-}: LiveRsvpPanelProps) {
+  // Confirmation dialogs are a UI concern; the stores expose the raw actions.
+  const handleDeleteRsvp = (id: string) => {
+    if (window.confirm('Bu katılım kaydını silmek istediğinize emin misiniz?')) deleteRsvp(id);
+  };
+
+  const handleResetRsvps = () => {
+    if (window.confirm('Katılım listesini orijinal durumuna sıfırlamak istiyor musunuz?')) resetRsvps();
+  };
+
   const countAttending = rsvpList.filter(r => r.status === 'Katılıyor').reduce((sum, r) => sum + r.guestCount, 0);
   const countPending = rsvpList.filter(r => r.status === 'Bekleniyor').reduce((sum, r) => sum + r.guestCount, 0);
   const countDeclines = rsvpList.filter(r => r.status === 'Katılamıyor').reduce((sum, r) => sum + r.guestCount, 0);

@@ -2,26 +2,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Check, ArrowRight, Flame, RotateCcw } from 'lucide-react';
 import { Invitation } from '../../types';
-import { INITIAL_INVITATION } from '../../data';
+import { useInvitationStore } from '../../stores/useInvitationStore';
 
 const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
 
 const inputClass =
   'w-full bg-white/5 border border-white/15 focus:border-gold focus:ring-2 focus:ring-gold/20 focus:outline-none rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 transition-all duration-300';
 
-interface DesignerPanelProps {
-  invitation: Invitation;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  setInvitation: React.Dispatch<React.SetStateAction<Invitation>>;
-  setActivePresetId: React.Dispatch<React.SetStateAction<string>>;
-}
+export const DesignerPanel = React.memo(function DesignerPanel() {
+  const invitation = useInvitationStore(s => s.invitation);
+  const updateField = useInvitationStore(s => s.updateField);
+  const resetInvitation = useInvitationStore(s => s.resetInvitation);
 
-export const DesignerPanel = React.memo(function DesignerPanel({
-  invitation,
-  handleInputChange,
-  setInvitation,
-  setActivePresetId
-}: DesignerPanelProps) {
+  // Local mirror keeps typing instant; the store (and live preview) is
+  // updated behind a debounce so every keystroke doesn't re-render the app.
   const [localInvitation, setLocalInvitation] = useState<Invitation>(invitation);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -35,12 +29,13 @@ export const DesignerPanel = React.memo(function DesignerPanel({
   }, []);
 
   const handleLocalChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+    const name = e.target.name as keyof Invitation;
+    const { value } = e.target;
     setLocalInvitation(prev => ({ ...prev, [name]: value }));
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      setInvitation(prev => ({ ...prev, [name]: value }));
+      updateField(name, value);
     }, 400);
   };
 
@@ -173,10 +168,7 @@ export const DesignerPanel = React.memo(function DesignerPanel({
               <div className="flex justify-between items-center pt-2">
                 <button
                   type="button"
-                  onClick={() => {
-                    setInvitation(INITIAL_INVITATION);
-                    setActivePresetId('emerald');
-                  }}
+                  onClick={resetInvitation}
                   className="text-emerald-100/60 hover:text-white text-xs cursor-pointer flex items-center gap-1.5 transition-colors duration-300"
                 >
                   <RotateCcw size={12} />

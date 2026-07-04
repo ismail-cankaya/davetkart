@@ -1,41 +1,25 @@
 import React, { useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Maximize2, Smartphone } from 'lucide-react';
-import { Invitation } from '../../types';
 import { RsvpModal } from './RsvpModal';
 import { TemplateRenderer } from '../templates/TemplateRenderer';
+import { useActivePreset, useInvitationStore } from '../../stores/useInvitationStore';
+import { useUIStore } from '../../stores/useUIStore';
 
 const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
 
 interface PhoneSimulatorProps {
   phoneRef: React.RefObject<HTMLDivElement>;
-  isMobile: boolean;
-  activePresetId: string;
-  activePreset: any;
-  invitation: Invitation;
-  isRsvpModalOpen: boolean;
-  setIsRsvpModalOpen: (isOpen: boolean) => void;
-  handleAddRsvp: (e: React.FormEvent) => void;
-  newRsvp: any;
-  setNewRsvp: React.Dispatch<React.SetStateAction<any>>;
-  handleRsvpPhotoUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleRsvpVideoUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function PhoneSimulator({
-  phoneRef,
-  isMobile,
-  activePresetId,
-  activePreset,
-  invitation,
-  isRsvpModalOpen,
-  setIsRsvpModalOpen,
-  handleAddRsvp,
-  newRsvp,
-  setNewRsvp,
-  handleRsvpPhotoUpload,
-  handleRsvpVideoUpload
-}: PhoneSimulatorProps) {
+export function PhoneSimulator({ phoneRef }: PhoneSimulatorProps) {
+  const invitation = useInvitationStore(s => s.invitation);
+  const activePresetId = useInvitationStore(s => s.activePresetId);
+  const activePreset = useActivePreset();
+  const isMobile = useUIStore(s => s.isMobile);
+  const isRsvpModalOpen = useUIStore(s => s.isRsvpModalOpen);
+  const setRsvpModalOpen = useUIStore(s => s.setRsvpModalOpen);
+
   const screenRef = useRef<HTMLDivElement>(null);
 
   const handleFullscreen = () => {
@@ -82,22 +66,13 @@ export function PhoneSimulator({
               templateId={activePresetId}
               invitation={invitation}
               bgImage={activePreset.imageUrl}
-              onRsvpClick={() => setIsRsvpModalOpen(true)}
+              onRsvpClick={() => setRsvpModalOpen(true)}
               mode="preview"
             />
 
             {/* RSVP Modal */}
             <AnimatePresence>
-              {isRsvpModalOpen && (
-                <RsvpModal
-                  setIsRsvpModalOpen={setIsRsvpModalOpen}
-                  handleAddRsvp={handleAddRsvp}
-                  newRsvp={newRsvp}
-                  setNewRsvp={setNewRsvp}
-                  handleRsvpPhotoUpload={handleRsvpPhotoUpload}
-                  handleRsvpVideoUpload={handleRsvpVideoUpload}
-                />
-              )}
+              {isRsvpModalOpen && <RsvpModal />}
             </AnimatePresence>
           </div>
         </motion.div>
