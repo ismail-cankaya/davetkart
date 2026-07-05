@@ -2,6 +2,34 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 
 const HEADER_OFFSET = -76;
+
+// Module-scoped handle so imperative flows (e.g. the /create wizard) can
+// glide with the same physics as anchor clicks. Null when Lenis is inactive
+// (prefers-reduced-motion) — callers fall back to native scrolling.
+let lenisInstance: Lenis | null = null;
+
+/**
+ * Smooth-scroll to an element id or an absolute position, through Lenis when
+ * it is running and natively otherwise. `immediate` jumps without animation.
+ */
+export function scrollToTarget(target: string | number, options?: { immediate?: boolean }) {
+  const el = typeof target === 'string' ? document.getElementById(target) : null;
+  if (typeof target === 'string' && !el) return;
+  const dest = el ?? (target as number);
+
+  if (lenisInstance) {
+    lenisInstance.scrollTo(dest, {
+      offset: el ? HEADER_OFFSET : 0,
+      duration: 1.2,
+      immediate: options?.immediate,
+      easing: (t: number) => 1 - Math.pow(1 - t, 4)
+    });
+  } else if (el) {
+    el.scrollIntoView({ behavior: options?.immediate ? 'auto' : 'smooth', block: 'start' });
+  } else {
+    window.scrollTo({ top: dest as number, behavior: options?.immediate ? 'auto' : 'smooth' });
+  }
+}
 // First section after the landing hero (template showcase) — the hero snap's
 // target. On other pages the zone math collapses and the snap stays inert
 // (on /create the same section sits at the top, so no zone can form).
@@ -37,6 +65,7 @@ export function useLenis() {
       syncTouchLerp: 0.12,
       touchMultiplier: 1
     });
+    lenisInstance = lenis;
 
     let rafId: number;
     const raf = (time: number) => {
@@ -130,6 +159,7 @@ export function useLenis() {
       cancelAnimationFrame(rafId);
       window.clearTimeout(unlockTimer);
       document.removeEventListener('click', onClick);
+      lenisInstance = null;
       lenis.destroy();
     };
   }, []);

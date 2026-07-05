@@ -31,9 +31,16 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Opaque brand emerald + champagne text stays legible on both the cream
+   sections and the dark designer/footer panels. */
 ::selection {
-  background-color: rgba(4, 56, 43, 0.15);
-  color: var(--color-brand-deep);
+  background-color: var(--color-brand-soft);
+  color: var(--color-champagne);
+}
+
+::-moz-selection {
+  background-color: var(--color-brand-soft);
+  color: var(--color-champagne);
 }
 
 /* ————— Lenis smooth-scroll integration ————— */
@@ -135,6 +142,12 @@ html.lenis body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ————— Elegant lattice pattern for wizard category cards ————— */
+.pattern-elegant {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%2304382b' stroke-width='0.75' opacity='0.5'%3E%3Ccircle cx='28' cy='28' r='18'/%3E%3Ccircle cx='0' cy='0' r='18'/%3E%3Ccircle cx='56' cy='0' r='18'/%3E%3Ccircle cx='0' cy='56' r='18'/%3E%3Ccircle cx='56' cy='56' r='18'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 56px 56px;
 }
 
 /* ————— Subtle film-grain texture overlay ————— */

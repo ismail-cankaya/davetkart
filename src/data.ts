@@ -1,4 +1,63 @@
-import { Invitation, RSVPResponse, RsvpDraft, TemplatePreset } from './types';
+import { EventCategory, Invitation, RSVPResponse, RsvpDraft, TemplatePreset } from './types';
+
+export const EVENT_CATEGORIES: EventCategory[] = [
+  {
+    id: 'dugun',
+    label: 'Düğün',
+    description: 'Hayatınızın en özel gününe zarif bir davet',
+    nameLabels: ['Gelin Adı', 'Damat Adı'],
+    suggestedTitle: 'HAYATIMIZIN EN ANLAMLI GÜNÜ'
+  },
+  {
+    id: 'kina',
+    label: 'Kına Gecesi',
+    description: 'Geleneksel gecenize modern bir dokunuş',
+    nameLabels: ['Gelin Adı', 'Damat Adı'],
+    suggestedTitle: 'KINA GECEMİZE DAVETLİSİNİZ'
+  },
+  {
+    id: 'nisan',
+    label: 'Nişan',
+    description: 'Mutluluğa atılan ilk adımı birlikte kutlayın',
+    nameLabels: ['Partner 1', 'Partner 2'],
+    suggestedTitle: 'NİŞANIMIZA DAVETLİSİNİZ'
+  },
+  {
+    id: 'sunnet',
+    label: 'Sünnet',
+    description: 'Şehzadenizin büyük günü için görkemli davet',
+    nameLabels: ['Çocuğun Adı', 'Aile Adı'],
+    suggestedTitle: 'SÜNNET DÜĞÜNÜMÜZE DAVETLİSİNİZ'
+  },
+  {
+    id: 'dogum-gunu',
+    label: 'Doğum Günü',
+    description: 'Yeni yaşınızı sevdiklerinizle karşılayın',
+    nameLabels: ['Doğum Günü Sahibi', 'Ev Sahibi (opsiyonel)'],
+    suggestedTitle: 'DOĞUM GÜNÜ PARTİSİNE DAVETLİSİNİZ'
+  },
+  {
+    id: 'mezuniyet',
+    label: 'Mezuniyet',
+    description: 'Emeklerinizin taçlandığı anı paylaşın',
+    nameLabels: ['Mezun Adı', 'Okul / Bölüm'],
+    suggestedTitle: 'MEZUNİYET TÖRENİME DAVETLİSİNİZ'
+  },
+  {
+    id: 'baby-shower',
+    label: 'Baby Shower',
+    description: 'Minik misafirinizi hep birlikte karşılayın',
+    nameLabels: ['Anne Adayı', 'Bebeğin Adı'],
+    suggestedTitle: 'ARAMIZA HOŞ GELDİN BEBEĞİM'
+  },
+  {
+    id: 'parti',
+    label: 'Parti',
+    description: 'Unutulmaz bir gece için şık bir başlangıç',
+    nameLabels: ['Ev Sahibi 1', 'Ev Sahibi 2 (opsiyonel)'],
+    suggestedTitle: 'PARTİMİZE DAVETLİSİNİZ'
+  }
+];
 
 export const TEMPLATE_PRESETS: TemplatePreset[] = [
   {

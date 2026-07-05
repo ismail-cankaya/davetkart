@@ -61,6 +61,17 @@ export interface RsvpDraft {
   videoUrl: string;
 }
 
+/** Event category presented in the /create wizard's first step. */
+export interface EventCategory {
+  id: string;
+  label: string;
+  description: string;
+  /** Field labels for the two-person name inputs (e.g. Gelin / Damat). */
+  nameLabels: [string, string];
+  /** Suggested top badge text applied when the category is picked. */
+  suggestedTitle: string;
+}
+
 export interface TemplatePreset {
   id: string;
   name: string;
