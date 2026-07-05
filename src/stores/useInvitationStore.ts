@@ -6,7 +6,8 @@ import { persistenceService } from '../services/persistence';
 /** Palette carried by each modular preset; legacy presets keep the current palette. */
 const PRESET_PALETTES: Record<string, PaletteId> = {
   'moda-gece': 'midnight',
-  'moda-tas': 'stone'
+  'moda-tas': 'stone',
+  'dugun-sade': 'stone'
 };
 
 interface InvitationState {

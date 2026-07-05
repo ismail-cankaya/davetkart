@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+/* Sade (Theme1) — kaligrafik vurgu yazısı. Playfair Display ve Inter
+   index.css'te global olarak yüklüdür; bu dosya yalnızca temaya özel
+   el yazısı fontunu ekler. */
+.theme1-script {
+  font-family: 'Great Vibes', 'Playfair Display', cursive;
+  font-weight: 400;
+}

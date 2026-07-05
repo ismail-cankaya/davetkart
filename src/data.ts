@@ -61,6 +61,15 @@ export const EVENT_CATEGORIES: EventCategory[] = [
 
 export const TEMPLATE_PRESETS: TemplatePreset[] = [
   {
+    id: 'dugun-sade',
+    name: 'Sade (Düğün • Tema 1)',
+    primaryColor: '#faf8f3',
+    backgroundStyle: 'bg-stone-100',
+    titleColor: 'text-stone-800',
+    btnColor: 'bg-stone-900 hover:bg-stone-700 text-stone-50',
+    imageUrl: '/images/dugun-sade.svg'
+  },
+  {
     id: 'moda-gece',
     name: 'Gece Sarayı (Modüler • Koyu)',
     primaryColor: '#020617',

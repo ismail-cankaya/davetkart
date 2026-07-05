@@ -3,7 +3,7 @@ import { EmeraldHero, EmeraldLive } from './Emerald';
 import { SunsetHero, SunsetLive } from './Sunset';
 import { BabyShowerHero, BabyShowerLive } from './BabyShower';
 import { MidnightGoldHero, MidnightGoldLive } from './MidnightGold';
-import { DugunTemplate } from './dugun';
+import { DugunTemplate, Theme1 as DugunTheme1 } from './dugun';
 import { KinaTemplate } from './kina';
 import { NisanTemplate } from './nisan';
 import { Invitation } from '../../types';
@@ -20,6 +20,14 @@ interface TemplateRendererProps {
 /** Presets rendered through the modular section system (palette-driven). */
 const MODULAR_PRESET_IDS = new Set(['moda-gece', 'moda-tas']);
 
+/**
+ * Kategori bazlı tema kartları — her kart doğrudan tek bir tema bileşenine
+ * bağlanır (dugun/Theme1, Theme2… büyüdükçe buraya eklenir).
+ */
+const THEME_PRESETS: Record<string, React.ComponentType<TemplateProps>> = {
+  'dugun-sade': DugunTheme1
+};
+
 /** Category → flavored composition root. Unknown categories fall back to düğün. */
 const MODULAR_TEMPLATES: Record<string, React.ComponentType<TemplateProps>> = {
   dugun: DugunTemplate,
@@ -29,6 +37,12 @@ const MODULAR_TEMPLATES: Record<string, React.ComponentType<TemplateProps>> = {
 
 export function TemplateRenderer({ templateId, invitation, bgImage, onRsvpClick, mode = 'preview' }: TemplateRendererProps) {
   const isLive = mode === 'live';
+
+  // Tema kartları kategori eşlemesini atlayıp doğrudan kendi temasını açar.
+  const ThemePreset = THEME_PRESETS[templateId];
+  if (ThemePreset) {
+    return <ThemePreset invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} mode={mode} />;
+  }
 
   // Modular presets compose their own sections from the invitation's
   // visibility flags; the category picks the flavor (dugun/kina/nisan).
