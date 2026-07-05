@@ -152,7 +152,7 @@ export function TemplateGrid({ phoneRef }: TemplateGridProps) {
         <div>
           <h4 className="font-semibold text-xs text-brand-deep uppercase tracking-wider">Metinleri Düzenleyin</h4>
           <p className="text-xs text-muted mt-1">
-            Aşağıdaki <strong>"Davetiye Tasarımcısı"</strong> bölümünden davetiye içeriklerini dilediğiniz gibi güncelleyebilirsiniz.
+            <strong>"Davetiye Tasarımcısı"</strong> bölümünden davetiye içeriklerini dilediğiniz gibi güncelleyebilirsiniz.
           </p>
         </div>
       </motion.div>

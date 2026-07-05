@@ -67,12 +67,15 @@ function PublishBar() {
   );
 }
 
-/** Design studio: live preview, template collections and the designer panel. */
+/**
+ * Design studio, top to bottom: the detailed editing panel first, then the
+ * template collections with the live phone preview, then the publish bar.
+ */
 export default function CreatePage() {
   return (
     <>
-      <PreviewSection />
       <DesignerPanel />
+      <PreviewSection />
       <PublishBar />
     </>
   );

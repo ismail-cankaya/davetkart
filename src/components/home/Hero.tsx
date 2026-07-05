@@ -150,7 +150,7 @@ export const Hero = React.memo(function Hero() {
 
       {/* Scroll indicator */}
       <motion.a
-        href="#neden-dijital"
+        href="#animasyon-ve-onizleme"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6, duration: 1 }}

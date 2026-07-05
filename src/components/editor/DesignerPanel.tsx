@@ -73,7 +73,7 @@ export const DesignerPanel = React.memo(function DesignerPanel() {
                 Kendi E-Davetiyeni <span className="italic font-medium text-champagne">Tasarla</span>
               </h2>
               <p className="text-emerald-100/70 text-sm mt-3 max-w-xl leading-relaxed">
-                Aşağıdaki bilgileri düzenleyerek davetiyenizi anında kişiselleştirebilirsiniz. Yukarıdaki telefon simülatöründe ve canlı katılım panelinde sonuçları gerçek zamanlı gözlemleyin.
+                Aşağıdaki bilgileri düzenleyerek davetiyenizi anında kişiselleştirebilirsiniz. Aşağıdaki telefon simülatöründe ve canlı katılım panelinde sonuçları gerçek zamanlı gözlemleyin.
               </p>
             </motion.div>
 
