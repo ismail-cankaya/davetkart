@@ -77,7 +77,7 @@ export function AssistantChat({
           <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-brand rounded-full" />
         </div>
         <div className="relative flex-grow min-w-0">
-          <p className="font-serif font-bold text-sm leading-tight">Davetkart Asistanı</p>
+          <p className="font-serif font-bold text-sm leading-tight">DavetKart Asistanı</p>
           <p className="text-[10px] text-champagne/70 tracking-wide">Çevrimiçi · Genellikle anında yanıtlar</p>
         </div>
         <div className="relative flex items-center gap-0.5 shrink-0">

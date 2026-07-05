@@ -27,7 +27,7 @@ export const Footer = React.memo(function Footer() {
             <span className="flex items-center justify-center w-9 h-9 rounded-xl bg-white/5 border border-gold/20 text-gold">
               <BrandMark size={18} />
             </span>
-            davet<span className="italic font-medium text-champagne -ml-1">kart</span>
+            Davet<span className="italic font-medium text-champagne -ml-1">Kart</span>
           </span>
           <p className="text-emerald-100/50 text-xs leading-relaxed">
             Özel anlarınız için özenle tasarlanmış, doğa dostu, pratik ve lüks dijital davetiyeler. Hayatınızın en mutlu gününü sevdiklerinizle lüks zarafetle paylaşın.
@@ -85,7 +85,7 @@ export const Footer = React.memo(function Footer() {
       {/* Legal Credits */}
       <div className="border-t border-white/5 bg-black/30 py-6 text-center text-emerald-100/40 text-xs relative z-10">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p>© 2026 Davetkart. Tüm hakları saklıdır.</p>
+          <p>© 2026 DavetKart. Tüm hakları saklıdır.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-champagne transition-colors">Kullanım Şartları</a>
             <a href="#" className="hover:text-champagne transition-colors">Gizlilik Sözleşmesi</a>

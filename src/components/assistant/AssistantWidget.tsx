@@ -82,7 +82,7 @@ export function AssistantWidget() {
               <BrandMark size={15} />
               <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-400 border-2 border-brand rounded-full" />
             </span>
-            <span className="font-serif font-bold text-xs">Davetkart Asistanı</span>
+            <span className="font-serif font-bold text-xs">DavetKart Asistanı</span>
             <ChevronUp size={14} className="text-champagne/80" />
           </motion.button>
         )}

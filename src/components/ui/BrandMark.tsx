@@ -6,9 +6,9 @@ interface BrandMarkProps {
 }
 
 /**
- * Davetkart marka işareti: tam ortasında kalp bulunan bir zarf.
- * Renk `currentColor` üzerinden gelir; kalp dolgulu çizilir ve
- * zarf kapağı çizgileri kalbin altında sonlanır.
+ * DavetKart marka işareti: ortasında dolgulu bir kalp ve metin satırları
+ * bulunan dikey bir davetiye kartı — markanın "Kart" kimliğini taşır.
+ * Renk `currentColor` üzerinden gelir.
  */
 export function BrandMark({ size = 18, className }: BrandMarkProps) {
   return (
@@ -24,14 +24,14 @@ export function BrandMark({ size = 18, className }: BrandMarkProps) {
       className={className}
       aria-hidden="true"
     >
-      <rect x="2" y="4.5" width="20" height="15.5" rx="2.8" />
-      <path d="M3.2 6.8 9.4 11" />
-      <path d="M20.8 6.8 14.6 11" />
+      <rect x="4.75" y="2.75" width="14.5" height="18.5" rx="2.6" />
       <path
-        d="M12 16.2c-2.5-2-3.6-3.2-3.6-4.6 0-1.2 1-2 2-2 .66 0 1.24.34 1.6.94.36-.6.94-.94 1.6-.94 1 0 2 .8 2 2 0 1.4-1.1 2.6-3.6 4.6Z"
+        d="M12 13.6c-2.3-1.84-3.3-2.95-3.3-4.24 0-1.1.92-1.84 1.84-1.84.6 0 1.14.31 1.46.86.32-.55.86-.86 1.46-.86.92 0 1.84.74 1.84 1.84 0 1.29-1 2.4-3.3 4.24Z"
         fill="currentColor"
         stroke="none"
       />
+      <path d="M8.6 16.6h6.8" />
+      <path d="M10.2 19h3.6" />
     </svg>
   );
 }

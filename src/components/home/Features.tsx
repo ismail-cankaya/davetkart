@@ -110,7 +110,7 @@ export const Features = React.memo(function Features() {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center p-8 md:p-14">
             <div className="lg:col-span-7 space-y-5">
               <span className="inline-flex items-center gap-1.5 bg-gold/15 text-gold border border-gold/25 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-[0.12em] uppercase">
-                <Sparkles size={13} className="animate-pulse" /> Çok Yakında
+                <Sparkles size={13} className="animate-pulse" /> İlk Sürümde Sizlerle
               </span>
               <h3 className="font-serif text-2xl md:text-4xl font-bold leading-tight">
                 Yapay Zeka ile <span className="italic text-champagne font-medium">Size Özel</span> Tema Tasarımları

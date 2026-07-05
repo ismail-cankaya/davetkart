@@ -4,7 +4,7 @@ import { AssistantMessage } from './types';
 const WELCOME_MESSAGE: AssistantMessage = {
   id: 'welcome',
   role: 'assistant',
-  text: 'Merhaba! 👋 Ben Davetkart Asistanı. Davetiye tasarımı, şablon seçimi ve katılım takibi konularında yardımcı olmak için buradayım. Size nasıl yardımcı olabilirim?',
+  text: 'Merhaba! 👋 Ben DavetKart Asistanı. Davetiye tasarımı, şablon seçimi ve katılım takibi konularında yardımcı olmak için buradayım. Size nasıl yardımcı olabilirim?',
   createdAt: Date.now()
 };
 
@@ -15,7 +15,7 @@ const WELCOME_MESSAGE: AssistantMessage = {
  */
 async function generateReply(_userText: string): Promise<string> {
   await new Promise(resolve => setTimeout(resolve, 1100 + Math.random() * 900));
-  return 'Mesajınız için teşekkürler! Yapay zeka desteğim çok yakında aktif olacak. O zamana kadar şablonları canlı önizlemeden inceleyebilir, "Davetiye Tasarımcısı" bölümünden davetiyenizi kişiselleştirebilirsiniz. ✨';
+  return 'Mesajınız için teşekkürler! Şablonları canlı önizlemeden inceleyebilir, "Davetiye Tasarımcısı" bölümünden davetiyenizi kişiselleştirebilir ve katılım yanıtlarını canlı panelden takip edebilirsiniz. Nasıl yardımcı olabilirim? ✨';
 }
 
 /** Sohbet durumu ve mesaj gönderme mantığı — arayüzden tamamen bağımsız. */

@@ -54,7 +54,7 @@ export const Header = React.memo(function Header() {
             <BrandMark size={19} />
           </span>
           <span className="font-serif text-lg md:text-xl font-bold text-brand tracking-tight">
-            davet<span className="italic font-medium text-gold">kart</span>
+            Davet<span className="italic font-medium text-gold">Kart</span>
           </span>
         </a>
 

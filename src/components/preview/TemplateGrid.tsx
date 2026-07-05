@@ -128,11 +128,11 @@ export function TemplateGrid({ phoneRef }: TemplateGridProps) {
           </div>
           <div className="text-left">
             <h3 className="font-serif text-sm font-bold text-ink flex items-center gap-2">
-              Yeni Tasarımlar Yolda
-              <span className="text-[9px] font-sans font-semibold uppercase tracking-wider bg-gold/15 text-brand-deep px-2 py-0.5 rounded-full border border-gold/25">Yakında</span>
+              Yapay Zeka ile Size Özel Tasarımlar
+              <span className="text-[9px] font-sans font-semibold uppercase tracking-wider bg-gold/15 text-brand-deep px-2 py-0.5 rounded-full border border-gold/25">Yeni</span>
             </h3>
             <p className="text-[11px] text-muted mt-1 leading-relaxed">
-              Koleksiyon sürekli büyüyor; yapay zeka ile tamamen size özel tema tasarımları da çok yakında burada.
+              Hayalinizdeki temayı birkaç cümleyle anlatın; yapay zeka tamamen size özel bir tasarım oluştursun. İlk sürümden itibaren DavetKart'ta.
             </p>
           </div>
         </motion.div>
