@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Sparkles, Laptop, Send, ArrowRight, WandSparkles, Palette, Zap, Layers } from 'lucide-react';
 
@@ -184,14 +185,14 @@ export const Features = React.memo(function Features() {
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: EASE_LUXE, delay: 0.4 }}
         >
-          <a
-            href="#tasarimci"
+          <Link
+            to="/create"
             className="group relative overflow-hidden inline-flex items-center gap-3 bg-brand text-white px-10 py-5 rounded-full font-semibold text-sm hover:bg-brand-soft transition-all duration-500 shadow-lg shadow-brand/20 hover:shadow-2xl hover:shadow-brand/30 hover:-translate-y-1"
           >
             <span className="absolute inset-0 animate-shimmer pointer-events-none" />
             Hemen Başlayın
             <ArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform duration-300" />
-          </a>
+          </Link>
           <p className="text-muted text-xs mt-4">Kredi kartı gerektirmez · İlk davetiye %60 indirimli</p>
         </motion.div>
       </div>

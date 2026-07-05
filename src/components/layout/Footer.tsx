@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Send } from 'lucide-react';
 import { toast } from '../ui/Toast';
 import { BrandMark } from '../ui/BrandMark';
@@ -37,11 +38,11 @@ export const Footer = React.memo(function Footer() {
         <div className="md:col-span-2 space-y-3">
           <h4 className="text-xs uppercase font-bold text-champagne tracking-[0.12em]">Koleksiyonlar</h4>
           <ul className="space-y-2.5 text-xs text-emerald-100/50">
-            <li><a href="#koleksiyonlar" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Düğün &amp; Nikah</a></li>
-            <li><a href="#koleksiyonlar" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Sünnet Düğünü</a></li>
-            <li><a href="#koleksiyonlar" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Baby Shower</a></li>
-            <li><a href="#koleksiyonlar" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Doğum Günü</a></li>
-            <li><a href="#koleksiyonlar" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Kurumsal Gala</a></li>
+            <li><Link to="/create" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Düğün &amp; Nikah</Link></li>
+            <li><Link to="/create" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Sünnet Düğünü</Link></li>
+            <li><Link to="/create" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Baby Shower</Link></li>
+            <li><Link to="/create" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Doğum Günü</Link></li>
+            <li><Link to="/create" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Kurumsal Gala</Link></li>
           </ul>
         </div>
 
@@ -49,7 +50,7 @@ export const Footer = React.memo(function Footer() {
           <h4 className="text-xs uppercase font-bold text-champagne tracking-[0.12em]">Kurumsal</h4>
           <ul className="space-y-2.5 text-xs text-emerald-100/50">
             <li><a href="#" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Hakkımızda</a></li>
-            <li><a href="#neden-dijital" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Özellikler</a></li>
+            <li><Link to="/" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Özellikler</Link></li>
             <li><a href="#" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Fiyatlandırma</a></li>
             <li><a href="#" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Sürdürülebilirlik</a></li>
             <li><a href="#" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">İletişim</a></li>

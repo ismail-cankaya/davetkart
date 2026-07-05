@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, animate, useInView } from 'motion/react';
 import { Sparkles, ArrowRight } from 'lucide-react';
 
@@ -91,20 +92,20 @@ export const Hero = React.memo(function Hero() {
           transition={{ duration: 0.8, ease: EASE_LUXE, delay: 0.7 }}
           className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto"
         >
-          <a
-            href="#tasarimci"
+          <Link
+            to="/create"
             className="group relative overflow-hidden bg-brand text-white px-8 py-4 rounded-full font-semibold text-sm hover:bg-brand-soft transition-all duration-500 shadow-lg shadow-brand/20 flex items-center justify-center gap-2 hover:-translate-y-1 hover:shadow-xl hover:shadow-brand/30"
           >
             <span className="absolute inset-0 animate-shimmer pointer-events-none" />
             Davetiyeni Oluştur
             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
-          </a>
-          <a
-            href="#koleksiyonlar"
+          </Link>
+          <Link
+            to="/create"
             className="bg-white/70 backdrop-blur-sm text-brand border border-brand/15 px-8 py-4 rounded-full font-semibold text-sm hover:bg-white hover:border-brand/30 transition-all duration-500 flex items-center justify-center gap-2 hover:-translate-y-0.5 shadow-sm hover:shadow-md"
           >
             Şablonları İncele
-          </a>
+          </Link>
         </motion.div>
 
         {/* Hero Stats with count-up */}
@@ -149,7 +150,7 @@ export const Hero = React.memo(function Hero() {
 
       {/* Scroll indicator */}
       <motion.a
-        href="#animasyon-ve-onizleme"
+        href="#neden-dijital"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6, duration: 1 }}

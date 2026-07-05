@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 
 const HEADER_OFFSET = -76;
-const SNAP_SECTION_ID = 'animasyon-ve-onizleme';
+// First section after the landing hero (Features) — the hero snap's target.
+// Pages without this section (e.g. /create) simply run without the snap.
+const SNAP_SECTION_ID = 'neden-dijital';
 const SNAP_TRIGGER = 60; // px of scroll intent past the cue before the snap kicks in
 const EASE_OUT_QUART = (t: number) => 1 - Math.pow(1 - t, 4);
 

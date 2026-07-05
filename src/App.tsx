@@ -1,52 +1,48 @@
 import React from 'react';
-import { useLenis } from './hooks/useLenis';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import { AppLayout } from './components/layout/AppLayout';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import HomePage from './pages/HomePage';
 
-import { Header } from './components/layout/Header';
-import { Footer } from './components/layout/Footer';
-import { Hero } from './components/home/Hero';
-import { PreviewSection } from './components/preview/PreviewSection';
-import { DesignerPanel } from './components/editor/DesignerPanel';
-import { Toaster } from './components/ui/Toast';
+// Pages beyond the landing load as separate chunks (FCP optimization).
+const CreatePage = React.lazy(() => import('./pages/CreatePage'));
+const LoginPage = React.lazy(() => import('./pages/LoginPage'));
+const RegisterPage = React.lazy(() => import('./pages/RegisterPage'));
+const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
+const InvitePage = React.lazy(() => import('./pages/InvitePage'));
 
-const Features = React.lazy(() => import('./components/home/Features').then(m => ({ default: m.Features })));
-const AssistantWidget = React.lazy(() => import('./components/assistant/AssistantWidget').then(m => ({ default: m.AssistantWidget })));
-const Testimonials = React.lazy(() => import('./components/home/Testimonials').then(m => ({ default: m.Testimonials })));
-const LiveRsvpPanel = React.lazy(() => import('./components/rsvp/LiveRsvpPanel').then(m => ({ default: m.LiveRsvpPanel })));
-
-/**
- * Composition root. All shared state lives in the feature stores
- * (src/stores) — sections subscribe to what they need themselves,
- * so no state or callbacks are threaded through props from here.
- */
-function App() {
-  // Buttery-smooth scrolling & anchor navigation
-  useLenis();
-
-  return (
-    <div className="min-h-screen bg-cream text-ink font-sans relative">
-      <Header />
-
-      <main className="flex-grow flex flex-col">
-        <Hero />
-        <PreviewSection />
-        <DesignerPanel />
-
-        <React.Suspense fallback={<div className="py-20 flex justify-center items-center"><div className="w-8 h-8 border-4 border-brand border-t-transparent rounded-full animate-spin"></div></div>}>
-          <Features />
-          <LiveRsvpPanel />
-          <Testimonials />
-        </React.Suspense>
-      </main>
-
-      <Footer />
-      <Toaster />
-
-      {/* Asistan: uygulamanın geri kalanından bağımsız, ayrı chunk olarak yüklenir */}
-      <React.Suspense fallback={null}>
-        <AssistantWidget />
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      { path: '/', element: <HomePage /> },
+      { path: '/create', element: <CreatePage /> },
+      { path: '/login', element: <LoginPage /> },
+      { path: '/register', element: <RegisterPage /> },
+      {
+        path: '/dashboard',
+        element: (
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        )
+      }
+    ]
+  },
+  {
+    // Guest-facing invitation: rendered chrome-free outside the AppLayout.
+    path: '/invite/:id',
+    element: (
+      <React.Suspense fallback={<div className="h-dvh w-full bg-emerald-950" />}>
+        <InvitePage />
       </React.Suspense>
-    </div>
-  );
+    )
+  },
+  { path: '*', element: <Navigate to="/" replace /> }
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
 }
 
 export default App;
