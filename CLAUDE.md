@@ -37,8 +37,14 @@ To maintain a high-quality, production-ready SaaS application, all new developme
 - **Separation of Concerns:** Keep business logic outside of UI components. UI components should only concern themselves with rendering data and emitting events.
 - **Atomic Design:** Build UI using small, reusable, and testable components (e.g., under `src/components/ui`).
 
-### 4. General Coding Standards
+### 4. Microservices & API Architecture
+- **Decoupled Backend:** This is strictly a Frontend project. No backend logic (like direct DB access) should exist in this codebase. It will communicate with a Microservices backend (including a dedicated Auth service).
+- **Routing Strategy:** Use a professional router (e.g., `react-router-dom`) to manage separated pages: `/login`, `/register`, `/dashboard`, `/create`, `/invite/:id`.
+- **API Client:** Use robust API clients like **Axios** (with interceptors) or **TanStack Query (React Query)** to handle server state, caching, loading/error states, and automatic JWT token injection. Do not rely solely on raw `fetch`.
+- **Authentication:** Manage JWT tokens securely using a dedicated Zustand store (e.g., `useAuthStore`). Protect private routes (like `/dashboard`) and handle seamless login/logout flows communicating with the Auth Microservice.
+- **AI Security:** Custom AI prompts and generation requests must be sent to the Backend. The Frontend must NEVER hold or expose Google GenAI (or any other) Secret API Keys. The Backend will act as a secure proxy to the AI services.
+
+### 5. General Coding Standards
 - **Strict TypeScript:** Write strict, strongly typed TypeScript code. Define explicit interfaces/types for all data structures and API responses. Avoid `any`.
 - **Code Splitting:** Continue utilizing `React.lazy` and `React.Suspense` for heavy components to optimize First Contentful Paint (FCP).
 - **Documentation:** Use Github-style Markdown when creating documentation and include clear comments for complex business logic.
-
