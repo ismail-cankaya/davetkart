@@ -1,7 +1,13 @@
 import { create } from 'zustand';
-import { Invitation, TemplatePreset } from '../types';
+import { Invitation, PaletteId, TemplatePreset } from '../types';
 import { INITIAL_INVITATION, TEMPLATE_PRESETS } from '../data';
 import { persistenceService } from '../services/persistence';
+
+/** Palette carried by each modular preset; legacy presets keep the current palette. */
+const PRESET_PALETTES: Record<string, PaletteId> = {
+  'moda-gece': 'midnight',
+  'moda-tas': 'stone'
+};
 
 interface InvitationState {
   invitation: Invitation;
@@ -24,7 +30,12 @@ export const useInvitationStore = create<InvitationState>()((set) => ({
   selectTemplate: (presetId) =>
     set((state) => ({
       activePresetId: presetId,
-      invitation: { ...state.invitation, imageTheme: presetId, phoneBackground: presetId }
+      invitation: {
+        ...state.invitation,
+        imageTheme: presetId,
+        phoneBackground: presetId,
+        palette: PRESET_PALETTES[presetId] ?? state.invitation.palette
+      }
     })),
 
   resetInvitation: () =>
@@ -41,8 +52,10 @@ export function useActivePreset(): TemplatePreset {
 // Hydrate once from the persistence boundary, then write back on every change.
 void persistenceService.getInvitation().then((saved) => {
   if (saved) {
+    // Merge over the factory defaults so records persisted before the modular
+    // fields existed (showGift, timelineEvents…) hydrate with sane values.
     useInvitationStore.setState({
-      invitation: saved,
+      invitation: { ...INITIAL_INVITATION, ...saved },
       activePresetId: saved.imageTheme || INITIAL_INVITATION.imageTheme
     });
   }

@@ -1,0 +1,1 @@
+export { KinaTemplate } from './KinaTemplate';

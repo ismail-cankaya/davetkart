@@ -2,10 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { WandSparkles } from 'lucide-react';
 import { Invitation } from '../../types';
+import { DEFAULT_INVITE_MESSAGES } from '../../data';
 import { useInvitationStore } from '../../stores/useInvitationStore';
 import { useActiveCategory, useCreateWizardStore } from '../../stores/useCreateWizardStore';
 import { CoupleNameFields } from './CoupleNameFields';
+import { ToggleRow } from './ToggleRow';
+import { TimelineEditor } from './TimelineEditor';
+import { GalleryUploader } from './GalleryUploader';
+import { Switch } from '../ui/Switch';
 import { scrollToTarget } from '../../hooks/useLenis';
+import { cn } from '../../utils/cn';
 
 const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
 
@@ -13,9 +19,31 @@ const labelClass = 'block text-xs font-bold tracking-wider uppercase text-champa
 const inputClass =
   'w-full bg-white/5 border border-white/15 focus:border-gold focus:ring-2 focus:ring-gold/20 focus:outline-none rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 transition-all duration-300';
 
+/** Invitation fields edited through the debounced text pipeline. */
+type TextField = 'subtitle' | 'date' | 'venue' | 'mapUrl' | 'bankName' | 'accountHolder' | 'iban' | 'rsvpDeadline';
+
+/** Module visibility flags surfaced as Grup C toggles. */
+type FlagField = 'showEnvelope' | 'showTimer' | 'showTimeline' | 'showGallery' | 'showGift' | 'showRSVP' | 'askMenuPreference';
+
+/** Section header shared by the three wizard groups. */
+function GroupHeading({ step, title, hint }: { step: string; title: string; hint: string }) {
+  return (
+    <div className="flex items-start gap-3.5">
+      <span className="shrink-0 w-8 h-8 rounded-full bg-gold/15 border border-gold/30 text-champagne text-xs font-bold flex items-center justify-center">
+        {step}
+      </span>
+      <div>
+        <h3 className="text-base font-bold text-white">{title}</h3>
+        <p className="text-xs text-white/45 mt-0.5 leading-relaxed">{hint}</p>
+      </div>
+    </div>
+  );
+}
+
 /**
- * Wizard step 2b — event details. "Davetiyeni Oluştur" hands the flow over to
- * the generation loading screen.
+ * Wizard step 2b — the full data-collection form:
+ *   Grup A (temel bilgiler) → Grup B (konum) → Grup C (modül tercihleri).
+ * "Davetiyeni Oluştur" hands the flow over to the generation loading screen.
  */
 export function DetailsFormStep() {
   const invitation = useInvitationStore(s => s.invitation);
@@ -28,28 +56,52 @@ export function DetailsFormStep() {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
-    setLocal(invitation);
+    // Skip the sync while an edit is pending here — it will commit shortly and
+    // trigger this effect again with our own values.
+    if (!debounceRef.current) setLocal(invitation);
   }, [invitation]);
 
   useEffect(() => () => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
   }, []);
 
+  /** Commit every locally-diverged text field to the store immediately. */
+  const flushLocal = (snapshot: Invitation = local) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = undefined;
+    }
+    (Object.keys(snapshot) as Array<keyof Invitation>).forEach((key) => {
+      if (snapshot[key] !== invitation[key]) updateField(key, snapshot[key]);
+    });
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const name = e.target.name as keyof Invitation;
+    const name = e.target.name as TextField;
     const { value } = e.target;
     setLocal(prev => ({ ...prev, [name]: value }));
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => updateField(name, value), 400);
+    debounceRef.current = setTimeout(() => {
+      debounceRef.current = undefined;
+      updateField(name, value);
+    }, 400);
+  };
+
+  /** Toggles bypass the debounce — but flush pending text first so nothing is lost. */
+  const setFlag = (name: FlagField, value: boolean) => {
+    const snapshot = { ...local, [name]: value };
+    setLocal(snapshot);
+    flushLocal(snapshot);
+  };
+
+  const applySuggestedMessage = (message: string) => {
+    setLocal(prev => ({ ...prev, subtitle: message }));
+    updateField('subtitle', message);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Flush anything still sitting behind the debounce before generating.
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    (Object.keys(local) as Array<keyof Invitation>).forEach((key) => {
-      if (local[key] !== invitation[key]) updateField(key, local[key]);
-    });
+    flushLocal();
     startGeneration();
     scrollToTarget(0, { immediate: true });
   };
@@ -75,8 +127,8 @@ export function DetailsFormStep() {
             Davetiyenizin <span className="italic text-champagne font-medium">bilgilerini</span> girin
           </h2>
           <p className="text-emerald-100/70 text-sm mt-3 max-w-lg mx-auto leading-relaxed">
-            Bu bilgiler seçtiğiniz temaya işlenir; son adımdaki stüdyoda hepsini yeniden
-            düzenleyebilirsiniz.
+            Bu bilgiler seçtiğiniz temaya işlenir; hangi bölümlerin görüneceğine siz karar
+            verirsiniz. Son adımdaki stüdyoda hepsini yeniden düzenleyebilirsiniz.
           </p>
         </div>
 
@@ -85,15 +137,51 @@ export function DetailsFormStep() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: EASE_LUXE, delay: 0.1 }}
-          className="bg-white/[0.07] backdrop-blur-md p-6 md:p-8 rounded-3xl border border-white/10 space-y-6 shadow-2xl shadow-black/20"
+          className="bg-white/[0.07] backdrop-blur-md p-6 md:p-8 rounded-3xl border border-white/10 space-y-8 shadow-2xl shadow-black/20"
         >
-          <CoupleNameFields
-            labels={category?.nameLabels ?? ['Partner 1', 'Partner 2']}
-            labelClass={labelClass}
-            inputClass={inputClass}
-          />
+          {/* ————— Grup A: Temel Bilgiler ————— */}
+          <div className="space-y-5">
+            <GroupHeading
+              step="A"
+              title="Temel Bilgiler"
+              hint="Etkinlik sahipleri, davet mesajınız ve büyük günün tarihi."
+            />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <CoupleNameFields
+              labels={category?.nameLabels ?? ['Partner 1', 'Partner 2']}
+              labelClass={labelClass}
+              inputClass={inputClass}
+            />
+
+            <div className="space-y-2">
+              <label className={labelClass}>Davet Mesajı</label>
+              <textarea
+                name="subtitle"
+                rows={3}
+                value={local.subtitle}
+                onChange={handleChange}
+                placeholder="Misafirlerinize iletmek istediğiniz anlamlı bir davet metni yazın..."
+                className={cn(inputClass, 'resize-none')}
+              />
+              <div className="flex flex-wrap gap-2 pt-1">
+                {DEFAULT_INVITE_MESSAGES.map((message) => (
+                  <button
+                    key={message}
+                    type="button"
+                    onClick={() => applySuggestedMessage(message)}
+                    className={cn(
+                      'text-[11px] rounded-full border px-3 py-1.5 text-left transition-colors duration-300 cursor-pointer',
+                      local.subtitle === message
+                        ? 'border-gold/60 bg-gold/15 text-champagne'
+                        : 'border-white/10 bg-white/[0.03] text-white/55 hover:border-white/25 hover:text-white/80'
+                    )}
+                  >
+                    {message.length > 52 ? `${message.slice(0, 52)}…` : message}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="space-y-2">
               <label className={labelClass}>Etkinlik Tarihi &amp; Saati</label>
               <input
@@ -101,33 +189,163 @@ export function DetailsFormStep() {
                 name="date"
                 value={local.date}
                 onChange={handleChange}
-                className={`${inputClass} [color-scheme:dark]`}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className={labelClass}>Etkinlik Mekanı / Adres</label>
-              <input
-                type="text"
-                name="venue"
-                value={local.venue}
-                onChange={handleChange}
-                placeholder="Örn. Çırağan Sarayı, Beşiktaş"
-                className={inputClass}
+                className={cn(inputClass, '[color-scheme:dark]')}
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className={labelClass}>Davet Mesajı (Açıklama / Şiir)</label>
-            <textarea
-              name="subtitle"
-              rows={3}
-              value={local.subtitle}
-              onChange={handleChange}
-              placeholder="Örn. Sizleri de bu mutlu günümüzde aramızda görmekten onur duyarız..."
-              className={`${inputClass} resize-none`}
+          <div className="h-px bg-white/10" />
+
+          {/* ————— Grup B: Konum ve Ulaşım ————— */}
+          <div className="space-y-5">
+            <GroupHeading
+              step="B"
+              title="Konum ve Ulaşım"
+              hint="Misafirleriniz tek dokunuşla yol tarifi alabilsin."
             />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className={labelClass}>Mekan Adı</label>
+                <input
+                  type="text"
+                  name="venue"
+                  value={local.venue}
+                  onChange={handleChange}
+                  placeholder="Örn. Çırağan Sarayı, İstanbul"
+                  className={inputClass}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className={labelClass}>Google Harita Konum Linki</label>
+                <input
+                  type="url"
+                  name="mapUrl"
+                  value={local.mapUrl}
+                  onChange={handleChange}
+                  placeholder="https://maps.app.goo.gl/..."
+                  className={inputClass}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="h-px bg-white/10" />
+
+          {/* ————— Grup C: Modüler Bölüm Tercihleri ————— */}
+          <div className="space-y-5">
+            <GroupHeading
+              step="C"
+              title="Davetiye Bölümleri"
+              hint="Davetiyenizde hangi modüllerin yer alacağını seçin — her biri anında önizlemeye yansır."
+            />
+
+            <div className="space-y-3">
+              <ToggleRow
+                question="Zarf Açılış Animasyonu"
+                hint="Davetiyeniz açılmadan önce ekranda şık bir zarf açılma efekti olsun mu?"
+                checked={local.showEnvelope}
+                onChange={(value) => setFlag('showEnvelope', value)}
+              />
+
+              <ToggleRow
+                question="Geri Sayım Sayacı"
+                hint="Etkinlik gününe kalan süreyi gösteren geri sayım sayacı eklensin mi?"
+                checked={local.showTimer}
+                onChange={(value) => setFlag('showTimer', value)}
+              />
+
+              <ToggleRow
+                question="Program Akışı (Timeline)"
+                hint="Nikah, yemek, eğlence gibi adımları şık bir zaman çizelgesiyle gösterin."
+                checked={local.showTimeline}
+                onChange={(value) => setFlag('showTimeline', value)}
+              >
+                <TimelineEditor inputClass={inputClass} />
+              </ToggleRow>
+
+              <ToggleRow
+                question="Fotoğraf Galerisi"
+                hint="Özel anlarınızın yer aldığı bir fotoğraf galerisi eklemek ister misiniz?"
+                checked={local.showGallery}
+                onChange={(value) => setFlag('showGallery', value)}
+              >
+                <GalleryUploader />
+              </ToggleRow>
+
+              <ToggleRow
+                question="Hediye / İBAN Bilgileri"
+                hint="Banka hesap bilgilerinizi göstermek ister misiniz?"
+                checked={local.showGift}
+                onChange={(value) => setFlag('showGift', value)}
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className={labelClass}>Banka Adı</label>
+                    <input
+                      type="text"
+                      name="bankName"
+                      value={local.bankName}
+                      onChange={handleChange}
+                      placeholder="Örn. Ziraat Bankası"
+                      className={inputClass}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className={labelClass}>Hesap Sahibi</label>
+                    <input
+                      type="text"
+                      name="accountHolder"
+                      value={local.accountHolder}
+                      onChange={handleChange}
+                      placeholder="Ad Soyad"
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className={labelClass}>IBAN</label>
+                  <input
+                    type="text"
+                    name="iban"
+                    value={local.iban}
+                    onChange={handleChange}
+                    placeholder="TR__ ____ ____ ____ ____ ____ __"
+                    className={cn(inputClass, 'font-mono tracking-wide')}
+                  />
+                </div>
+              </ToggleRow>
+
+              <ToggleRow
+                question="Katılım Bildirimi (LCV / RSVP)"
+                hint="Katılımcılardan katılım durumlarını bildirmelerini istiyor musunuz?"
+                checked={local.showRSVP}
+                onChange={(value) => setFlag('showRSVP', value)}
+              >
+                <div className="space-y-2">
+                  <label className={labelClass}>Son Katılım Bildirme Tarihi (LCV)</label>
+                  <input
+                    type="date"
+                    name="rsvpDeadline"
+                    value={local.rsvpDeadline}
+                    onChange={handleChange}
+                    className={cn(inputClass, '[color-scheme:dark]')}
+                  />
+                </div>
+                <div className="flex items-center justify-between gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
+                  <div>
+                    <p className="text-sm font-semibold text-white">Menü Tercihi Sorulsun</p>
+                    <p className="text-xs text-white/45 mt-0.5">Misafirler et / tavuk / vejetaryen seçimi yapabilsin.</p>
+                  </div>
+                  <Switch
+                    checked={local.askMenuPreference}
+                    onChange={(value) => setFlag('askMenuPreference', value)}
+                    label="Menü tercihi sorulsun"
+                  />
+                </div>
+              </ToggleRow>
+            </div>
           </div>
 
           <motion.button

@@ -1,4 +1,4 @@
-import { EventCategory, Invitation, RSVPResponse, RsvpDraft, TemplatePreset } from './types';
+import { EventCategory, Invitation, RSVPResponse, RsvpDraft, TemplatePreset, TimelineEvent } from './types';
 
 export const EVENT_CATEGORIES: EventCategory[] = [
   {
@@ -61,6 +61,24 @@ export const EVENT_CATEGORIES: EventCategory[] = [
 
 export const TEMPLATE_PRESETS: TemplatePreset[] = [
   {
+    id: 'moda-gece',
+    name: 'Gece Sarayı (Modüler • Koyu)',
+    primaryColor: '#020617',
+    backgroundStyle: 'bg-slate-950',
+    titleColor: 'text-amber-100',
+    btnColor: 'bg-amber-300 hover:bg-amber-400 text-slate-950',
+    imageUrl: '/images/moda-gece.svg'
+  },
+  {
+    id: 'moda-tas',
+    name: 'Taş Bahçesi (Modüler • Pastel)',
+    primaryColor: '#fafaf9',
+    backgroundStyle: 'bg-stone-100',
+    titleColor: 'text-stone-800',
+    btnColor: 'bg-stone-900 hover:bg-stone-800 text-stone-50',
+    imageUrl: '/images/moda-tas.svg'
+  },
+  {
     id: 'emerald',
     name: 'Zümrüt Zarafeti (Emerald)',
     primaryColor: '#064e3b',
@@ -98,14 +116,74 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
   }
 ];
 
+/** Ready-made invitation messages the wizard offers as one-tap suggestions. */
+export const DEFAULT_INVITE_MESSAGES: string[] = [
+  'Sizleri de bu mutlu günümüzde aramızda görmekten onur duyarız.',
+  'Hayatımızın en özel anına tanıklık etmenizi yürekten diliyoruz.',
+  'Bir ömür boyu sürecek yolculuğumuzun ilk adımında yanımızda olun.',
+  'Bu anlamlı günü sevdiklerimizle paylaşmak, mutluluğumuzu ikiye katlayacak.'
+];
+
+/** Starter program flow shown when the timeline module is enabled. */
+export const DEFAULT_TIMELINE_EVENTS: TimelineEvent[] = [
+  {
+    id: 'tl-1',
+    time: '17:00',
+    title: 'Karşılama & Kokteyl',
+    description: 'Misafirlerimizi hoş geldin kokteyli ile karşılıyoruz.'
+  },
+  {
+    id: 'tl-2',
+    time: '19:00',
+    title: 'Nikah Töreni',
+    description: 'Evet dediğimiz o büyülü ana hep birlikte tanıklık edin.'
+  },
+  {
+    id: 'tl-3',
+    time: '20:00',
+    title: 'Akşam Yemeği',
+    description: 'Özenle hazırlanan menümüz eşliğinde keyifli bir akşam.'
+  },
+  {
+    id: 'tl-4',
+    time: '22:00',
+    title: 'İlk Dans & Eğlence',
+    description: 'Gece boyu sürecek müzik ve dans ile kutlamaya devam.'
+  }
+];
+
+/** Pre-set gift amounts (₺) offered in the gift registry section. */
+export const DEFAULT_GIFT_OPTIONS: number[] = [1000, 2500, 5000];
+
 export const INITIAL_INVITATION: Invitation = {
   title: 'HAYATIMIZIN EN ANLAMLI GÜNÜ',
   subtitle: 'Sizleri de bu mutlu günümüzde aramızda görmekten onur duyarız.',
   names: 'Sophia & Elias',
   date: '2026-09-12T19:00',
   venue: 'Çırağan Sarayı Kempinski, İstanbul',
-  phoneBackground: 'emerald',
-  imageTheme: 'emerald'
+  mapUrl: '',
+  phoneBackground: 'moda-gece',
+  imageTheme: 'moda-gece',
+  categoryId: 'dugun',
+  palette: 'midnight',
+
+  showEnvelope: true,
+  showTimer: true,
+  showTimeline: true,
+  showGallery: false,
+  showGift: false,
+  showRSVP: true,
+
+  bankName: '',
+  accountHolder: '',
+  iban: '',
+  giftOptions: DEFAULT_GIFT_OPTIONS,
+
+  rsvpDeadline: '',
+  askMenuPreference: true,
+
+  timelineEvents: DEFAULT_TIMELINE_EVENTS,
+  galleryImages: []
 };
 
 export const INITIAL_RSVP_DRAFT: RsvpDraft = {

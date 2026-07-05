@@ -34,7 +34,10 @@ export function CategoryStep() {
   const handleSelect = (id: string) => {
     const category = EVENT_CATEGORIES.find(c => c.id === id);
     selectCategory(id);
-    // Seed the badge text so the preview speaks the event's language right away.
+    // Seed the badge text so the preview speaks the event's language right away,
+    // and record the category on the invitation so the modular templates can
+    // pick the matching flavor (dugun/kina/nisan).
+    updateField('categoryId', id);
     if (category) updateField('title', category.suggestedTitle);
     // The theme step mounts on this state change; wait a frame before gliding.
     window.setTimeout(() => scrollToTarget('sihirbaz-tema'), 120);

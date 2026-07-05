@@ -1,0 +1,1 @@
+export { NisanTemplate } from './NisanTemplate';

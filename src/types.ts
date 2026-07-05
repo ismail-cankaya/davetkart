@@ -28,14 +28,56 @@ export interface AuthRedirectState {
   from?: string;
 }
 
+/** Color mood of the modular invitation: elite dark (slate) or elite pastel/stone. */
+export type PaletteId = 'midnight' | 'stone';
+
+/** A single entry of the event's program flow (nikah, yemek, eğlence…). */
+export interface TimelineEvent {
+  id: string;
+  /** Display time, e.g. "16:30". */
+  time: string;
+  title: string;
+  description: string;
+}
+
 export interface Invitation {
   title: string;
   subtitle: string;
   names: string;
   date: string;
   venue: string;
+  /** Google Maps share link guests use for directions. */
+  mapUrl: string;
   phoneBackground: string;
   imageTheme: string;
+  /** Wizard category driving the modular template flavor (dugun/kina/nisan…). */
+  categoryId: string;
+  palette: PaletteId;
+
+  // ——— Module visibility (Grup C wizard toggles) ———
+  showEnvelope: boolean;
+  showTimer: boolean;
+  showTimeline: boolean;
+  showGallery: boolean;
+  showGift: boolean;
+  showRSVP: boolean;
+
+  // ——— Gift / IBAN details ———
+  bankName: string;
+  accountHolder: string;
+  iban: string;
+  /** Pre-set gift amounts (₺) guests can pick in the gift section. */
+  giftOptions: number[];
+
+  // ——— RSVP details ———
+  /** Last day guests can submit their RSVP (yyyy-MM-dd). */
+  rsvpDeadline: string;
+  askMenuPreference: boolean;
+
+  // ——— Content collections ———
+  timelineEvents: TimelineEvent[];
+  /** Uploaded gallery photo URLs (served by the media boundary). */
+  galleryImages: string[];
 }
 
 export interface RSVPResponse {
