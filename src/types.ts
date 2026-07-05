@@ -1,5 +1,33 @@
 export type RsvpStatus = 'Katılıyor' | 'Bekleniyor' | 'Katılamıyor';
 
+export interface AuthUser {
+  id: string;
+  fullName: string;
+  email: string;
+}
+
+/** JWT session issued by the Auth microservice. */
+export interface AuthSession {
+  user: AuthUser;
+  token: string;
+}
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+export interface RegisterPayload {
+  fullName: string;
+  email: string;
+  password: string;
+}
+
+/** Router location state used to send the user back after authentication. */
+export interface AuthRedirectState {
+  from?: string;
+}
+
 export interface Invitation {
   title: string;
   subtitle: string;
