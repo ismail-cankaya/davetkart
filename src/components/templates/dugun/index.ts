@@ -1,2 +1,4 @@
-export { DugunTemplate } from './DugunTemplate';
-export { Theme1 } from './Theme1';
+export { DugunSade } from './DugunSade';
+export { DugunManzara } from './DugunManzara';
+export { DugunSekilli } from './DugunSekilli';
+export { DugunModern } from './DugunModern';

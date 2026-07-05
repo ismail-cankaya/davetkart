@@ -1,1 +1,4 @@
-export { NisanTemplate } from './NisanTemplate';
+export { NisanSade } from './NisanSade';
+export { NisanManzara } from './NisanManzara';
+export { NisanSekilli } from './NisanSekilli';
+export { NisanModern } from './NisanModern';

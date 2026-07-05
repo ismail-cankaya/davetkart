@@ -10,7 +10,13 @@ import { PaletteId } from '../../../types';
  */
 export interface SectionTheme {
   id: PaletteId;
-  /** Page-level background + base text color. */
+  /**
+   * Opaque page background. Only full-bleed covers (composition root,
+   * envelope gate) paint this; sections stay transparent so the per-template
+   * backdrop layers (hero photo, patterns, category decor) show through.
+   */
+  base: string;
+  /** Base text color applied to every section (no background). */
   page: string;
   /** Elevated card / panel surface. */
   surface: string;
@@ -40,7 +46,8 @@ export interface SectionTheme {
 
 const MIDNIGHT: SectionTheme = {
   id: 'midnight',
-  page: 'bg-slate-950 text-slate-100',
+  base: 'bg-slate-950',
+  page: 'text-slate-100',
   surface: 'bg-white/[0.04] backdrop-blur-sm',
   border: 'border-white/10',
   heading: 'text-slate-50',
@@ -60,7 +67,8 @@ const MIDNIGHT: SectionTheme = {
 
 const STONE: SectionTheme = {
   id: 'stone',
-  page: 'bg-stone-50 text-stone-800',
+  base: 'bg-stone-50',
+  page: 'text-stone-800',
   surface: 'bg-white/80 backdrop-blur-sm',
   border: 'border-stone-200',
   heading: 'text-stone-900',

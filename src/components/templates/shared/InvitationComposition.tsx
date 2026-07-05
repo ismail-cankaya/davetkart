@@ -18,6 +18,8 @@ interface InvitationCompositionProps {
   invitation: Invitation;
   flavor: TemplateFlavor;
   mode: 'preview' | 'live';
+  themeOverride?: ReturnType<typeof getSectionTheme>;
+  renderHeroBackground?: () => React.ReactNode;
 }
 
 /**
@@ -25,8 +27,8 @@ interface InvitationCompositionProps {
  * flags off the invitation and renders only the enabled modules, themed by
  * the invitation's palette and flavored by its category template.
  */
-export function InvitationComposition({ invitation, flavor, mode }: InvitationCompositionProps) {
-  const theme = getSectionTheme(invitation.palette);
+export function InvitationComposition({ invitation, flavor, mode, themeOverride, renderHeroBackground }: InvitationCompositionProps) {
+  const theme = themeOverride || getSectionTheme(invitation.palette);
   const [envelopeOpened, setEnvelopeOpened] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -39,7 +41,16 @@ export function InvitationComposition({ invitation, flavor, mode }: InvitationCo
   );
 
   return (
-    <div data-mode={mode} className={cn('relative w-full h-full', theme.page)}>
+    <div data-mode={mode} className={cn('relative w-full h-full overflow-hidden', theme.base, theme.page)}>
+      
+      {/* 1. Category-specific background pattern stays fixed behind all sections */}
+      {flavor.BackgroundPattern && (
+        <div className="absolute inset-0 pointer-events-none opacity-40 z-0">
+          <flavor.BackgroundPattern className={cn('w-full h-full', theme.accent)} />
+        </div>
+      )}
+
+      {/* 2. Envelope layer */}
       <AnimatePresence>
         {envelopeVisible && (
           <Envelope
@@ -51,41 +62,51 @@ export function InvitationComposition({ invitation, flavor, mode }: InvitationCo
         )}
       </AnimatePresence>
 
+      {/* 3. Scrollable content */}
       <div
         ref={scrollRef}
         data-lenis-prevent
         className={cn(
-          'w-full h-full overflow-x-hidden',
+          'relative z-10 w-full h-full overflow-x-hidden',
           envelopeVisible ? 'overflow-y-hidden' : 'overflow-y-auto'
         )}
       >
-        {/* Hero fills at least one "screen" of the scroll container and can
-            grow with its content instead of overlapping the next section. */}
-        <div className="min-h-full flex flex-col">
-          <Summary invitation={invitation} theme={theme} flavor={flavor} />
+        {/* Hero fills at least one "screen" of the scroll container */}
+        <div className="min-h-full flex flex-col relative">
+          {/* Dynamic background effect strictly for the Hero section */}
+          {renderHeroBackground && (
+            <div className="absolute inset-0 z-0 pointer-events-none">
+              {renderHeroBackground()}
+            </div>
+          )}
+          <div className="relative z-10 w-full h-full flex flex-col grow">
+            <Summary invitation={invitation} theme={theme} flavor={flavor} />
+          </div>
         </div>
 
-        <Suspense fallback={sectionFallback}>
-          {invitation.showTimeline && (
-            <Timeline invitation={invitation} theme={theme} flavor={flavor} scrollContainer={scrollRef} />
-          )}
+        <div className="relative z-10">
+          <Suspense fallback={sectionFallback}>
+            {invitation.showTimeline && (
+              <Timeline invitation={invitation} theme={theme} flavor={flavor} scrollContainer={scrollRef} />
+            )}
 
-          <Details invitation={invitation} theme={theme} flavor={flavor} />
+            <Details invitation={invitation} theme={theme} flavor={flavor} />
 
-          {invitation.showGallery && <Gallery invitation={invitation} theme={theme} flavor={flavor} />}
+            {invitation.showGallery && <Gallery invitation={invitation} theme={theme} flavor={flavor} />}
 
-          {invitation.showGift && <GiftRegistry invitation={invitation} theme={theme} flavor={flavor} />}
+            {invitation.showGift && <GiftRegistry invitation={invitation} theme={theme} flavor={flavor} />}
 
-          {invitation.showRSVP && <RSVPForm invitation={invitation} theme={theme} flavor={flavor} />}
-        </Suspense>
+            {invitation.showRSVP && <RSVPForm invitation={invitation} theme={theme} flavor={flavor} />}
+          </Suspense>
 
-        {/* Footer signature */}
-        <footer className={cn('py-8 text-center', theme.page)}>
-          <p className={cn('text-[10px] font-medium tracking-[0.3em] uppercase opacity-60', theme.body)}>
-            {invitation.names || 'DavetKart'}
-          </p>
-          <p className={cn('text-[9px] mt-1.5 opacity-40', theme.body)}>DavetKart ile hazırlandı</p>
-        </footer>
+          {/* Footer signature */}
+          <footer className={cn('py-8 text-center')}>
+            <p className={cn('text-[10px] font-medium tracking-[0.3em] uppercase opacity-60', theme.body)}>
+              {invitation.names || 'DavetKart'}
+            </p>
+            <p className={cn('text-[9px] mt-1.5 opacity-40', theme.body)}>DavetKart ile hazırlandı</p>
+          </footer>
+        </div>
       </div>
     </div>
   );

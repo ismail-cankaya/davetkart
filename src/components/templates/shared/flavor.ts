@@ -9,6 +9,8 @@ export interface TemplateFlavor {
   categoryId: string;
   /** Wax-seal / hero ornament (inline SVG component). */
   Ornament: React.ComponentType<{ size?: number; className?: string }>;
+  /** Background pattern specific to the category, rendered fixed behind sections. */
+  BackgroundPattern?: React.ComponentType<{ className?: string }>;
   /** Envelope front label, e.g. "Düğün Davetiyesi". */
   envelopeLabel: string;
   /** Serif line under the hero names. */

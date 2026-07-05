@@ -61,8 +61,8 @@ export const EVENT_CATEGORIES: EventCategory[] = [
 
 export const TEMPLATE_PRESETS: TemplatePreset[] = [
   {
-    id: 'dugun-sade',
-    name: 'Sade (Düğün • Tema 1)',
+    id: 'sade',
+    name: 'Sade Stil',
     primaryColor: '#faf8f3',
     backgroundStyle: 'bg-stone-100',
     titleColor: 'text-stone-800',
@@ -70,58 +70,31 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     imageUrl: '/images/dugun-sade.svg'
   },
   {
-    id: 'moda-gece',
-    name: 'Gece Sarayı (Modüler • Koyu)',
-    primaryColor: '#020617',
-    backgroundStyle: 'bg-slate-950',
-    titleColor: 'text-amber-100',
-    btnColor: 'bg-amber-300 hover:bg-amber-400 text-slate-950',
-    imageUrl: '/images/moda-gece.svg'
-  },
-  {
-    id: 'moda-tas',
-    name: 'Taş Bahçesi (Modüler • Pastel)',
-    primaryColor: '#fafaf9',
-    backgroundStyle: 'bg-stone-100',
-    titleColor: 'text-stone-800',
-    btnColor: 'bg-stone-900 hover:bg-stone-800 text-stone-50',
-    imageUrl: '/images/moda-tas.svg'
-  },
-  {
-    id: 'emerald',
-    name: 'Zümrüt Zarafeti (Emerald)',
-    primaryColor: '#064e3b',
-    backgroundStyle: 'bg-emerald-950',
-    titleColor: 'text-amber-200',
-    btnColor: 'bg-amber-500 hover:bg-amber-600 text-emerald-950',
+    id: 'manzara',
+    name: 'Manzara Konsepti',
+    primaryColor: '#0f172a',
+    backgroundStyle: 'bg-slate-900',
+    titleColor: 'text-white',
+    btnColor: 'bg-emerald-500 hover:bg-emerald-400 text-white',
     imageUrl: '/images/emerald.png'
   },
   {
-    id: 'sunset',
-    name: 'Akdeniz Günbatımı (Sunset)',
-    primaryColor: '#7c2d12',
-    backgroundStyle: 'bg-orange-950',
-    titleColor: 'text-orange-100',
-    btnColor: 'bg-orange-500 hover:bg-orange-600 text-orange-950',
-    imageUrl: '/images/sunset.png'
-  },
-  {
-    id: 'baby',
-    name: 'Pastel Gökyüzü (Baby Shower)',
-    primaryColor: '#0c4a6e',
-    backgroundStyle: 'bg-sky-950',
-    titleColor: 'text-sky-100',
-    btnColor: 'bg-sky-400 hover:bg-sky-500 text-sky-950',
-    imageUrl: '/images/baby.png'
-  },
-  {
-    id: 'corporate',
-    name: 'Asil Gece (Midnight Gold)',
-    primaryColor: '#1e1b4b',
-    backgroundStyle: 'bg-slate-950',
-    titleColor: 'text-amber-100',
-    btnColor: 'bg-amber-400 hover:bg-amber-500 text-slate-950',
+    id: 'sekilli',
+    name: 'Şekilli / Motifli',
+    primaryColor: '#1a1c23',
+    backgroundStyle: 'bg-[#1a1c23]',
+    titleColor: 'text-amber-400',
+    btnColor: 'bg-gradient-to-r from-amber-400 to-amber-600 text-stone-900',
     imageUrl: '/images/corporate.png'
+  },
+  {
+    id: 'modern',
+    name: 'Modern / Dinamik',
+    primaryColor: '#09090b',
+    backgroundStyle: 'bg-zinc-950',
+    titleColor: 'text-white',
+    btnColor: 'bg-indigo-600 hover:bg-indigo-500 text-white',
+    imageUrl: '/images/moda-gece.svg'
   }
 ];
 
