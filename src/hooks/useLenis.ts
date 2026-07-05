@@ -17,17 +17,25 @@ export function scrollToTarget(target: string | number, options?: { immediate?: 
   if (typeof target === 'string' && !el) return;
   const dest = el ?? (target as number);
 
+  if (options?.immediate) {
+    // Instant jumps go through the native API: Lenis no-ops a scrollTo whose
+    // destination equals its internal target, which can be stale right after
+    // a browser-driven (native) scroll — while it always adopts native jumps.
+    const top = el ? el.getBoundingClientRect().top + window.scrollY + HEADER_OFFSET : (dest as number);
+    window.scrollTo({ top, behavior: 'auto' });
+    return;
+  }
+
   if (lenisInstance) {
     lenisInstance.scrollTo(dest, {
       offset: el ? HEADER_OFFSET : 0,
       duration: 1.2,
-      immediate: options?.immediate,
       easing: (t: number) => 1 - Math.pow(1 - t, 4)
     });
   } else if (el) {
-    el.scrollIntoView({ behavior: options?.immediate ? 'auto' : 'smooth', block: 'start' });
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } else {
-    window.scrollTo({ top: dest as number, behavior: options?.immediate ? 'auto' : 'smooth' });
+    window.scrollTo({ top: dest as number, behavior: 'smooth' });
   }
 }
 // First section after the landing hero (template showcase) — the hero snap's
