@@ -58,7 +58,10 @@ export function InvitationComposition({
   );
 
   return (
-    <div data-mode={mode} className={cn('relative w-full h-full overflow-hidden', theme.base, theme.page)}>
+    // @container: içerideki @sm/@md varyantları viewport'a değil bu kökün
+    // genişliğine bakar — dar telefon simülatöründe de gerçek mobilde de
+    // tipografi/sayaç aynı şekilde ölçeklenir.
+    <div data-mode={mode} className={cn('relative w-full h-full overflow-hidden @container', theme.base, theme.page)}>
       
       {/* 1. Category-specific background pattern stays fixed behind all sections */}
       {flavor.BackgroundPattern && (

@@ -34,11 +34,12 @@ const DUGUN1_THEME: SectionTheme = {
 
 /**
  * Sol/sağ buket kolonları hero'nun dikey kenarlarını boydan boya kaplar
- * (h-full + object-contain: esneyip uzamazlar, en fazla %28 genişlik).
- * Metin konteyneri heroContentClassName ile aynı ölçüde içeri alınır ve
- * summaryDensity="compact" tipografiyi dar alana orantılı küçültür.
- * Tüm ölçüler viewport'a değil kapsayıcıya göredir; masaüstünde süsler
- * viewport kenarına değil, ortalanmış max-w-4xl sarmalayıcıya yaslanır.
+ * (h-full + object-contain: esneyip uzamazlar). Genişlikleri kök @container
+ * ölçüsüne göre kademelenir: dar ekranda ince birer kenar aksanına inerler
+ * (%14), genişledikçe %28'e kadar açılırlar; metin konteynerinin yatay
+ * padding'i her kademede süs genişliğiyle eşleşir ki yazılar süslerin
+ * üzerine binmesin. Masaüstünde süsler viewport kenarına değil, ortalanmış
+ * max-w-4xl sarmalayıcıya yaslanır.
  */
 export function Dugun1({ invitation, mode = 'preview' }: TemplateProps) {
   return (
@@ -48,7 +49,7 @@ export function Dugun1({ invitation, mode = 'preview' }: TemplateProps) {
       mode={mode}
       themeOverride={DUGUN1_THEME}
       summaryDensity="compact"
-      heroContentClassName="mx-auto max-w-4xl px-[25%]"
+      heroContentClassName="mx-auto max-w-4xl px-[15%] @xl:px-[22%] @3xl:px-[25%]"
       renderHeroBackground={() => (
         <div className="relative h-full w-full max-w-4xl mx-auto">
           <motion.img
@@ -58,7 +59,7 @@ export function Dugun1({ invitation, mode = 'preview' }: TemplateProps) {
             initial={{ opacity: 0, x: -28 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.5, ease: EASE_LUXE, delay: 0.4 }}
-            className="absolute left-0 top-0 h-full w-auto max-w-[28%] object-contain object-left z-10 mix-blend-multiply select-none"
+            className="absolute left-0 top-0 h-full w-auto max-w-[14%] @xl:max-w-[21%] @3xl:max-w-[28%] object-contain object-left z-10 mix-blend-multiply select-none"
           />
           <motion.img
             src={rightOrnament}
@@ -67,7 +68,7 @@ export function Dugun1({ invitation, mode = 'preview' }: TemplateProps) {
             initial={{ opacity: 0, x: 28 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.5, ease: EASE_LUXE, delay: 0.4 }}
-            className="absolute right-0 top-0 h-full w-auto max-w-[28%] object-contain object-right z-10 mix-blend-multiply select-none"
+            className="absolute right-0 top-0 h-full w-auto max-w-[14%] @xl:max-w-[21%] @3xl:max-w-[28%] object-contain object-right z-10 mix-blend-multiply select-none"
           />
         </div>
       )}

@@ -9,8 +9,10 @@ import { ChevronDownIcon } from './icons';
 
 /**
  * Yoğunluk modu: 'compact', süslemelerin metin alanını daralttığı şablonlarda
- * (örn. yanlardan/kemerle çerçevelenen hero'lar) tipografiyi ve boşlukları
- * orantılı küçültür, geri sayım karoları dar alanda 2x2 sarabilir.
+ * (örn. yanlardan/kemerle çerçevelenen hero'lar) boşlukları sıkılaştırır ve
+ * arka plan katmanlarını (grid/glow) kapatır. Tüm ölçüler viewport'a değil
+ * kök @container genişliğine göre ölçeklenir; geri sayım karoları her
+ * genişlikte tek satırda kalır.
  */
 export type SummaryDensity = 'default' | 'compact';
 
@@ -55,16 +57,24 @@ function CountdownTile({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center rounded-xl border',
-        compact ? 'px-1.5 py-2.5 w-[56px]' : 'px-2 py-3 w-[68px]',
+        // Sabit genişlik yok: karo, grid hücresini doldurur ve kapsayıcıyla
+        // birlikte daralır — dar önizleme çerçevesinde bile satır atlamaz.
+        'flex flex-col items-center justify-center rounded-xl border w-full min-w-0',
+        compact ? 'px-1 py-2 @sm:py-2.5' : 'px-1 py-2.5 @sm:py-3',
         theme.surface,
         theme.border
       )}
     >
-      <span className={cn('font-serif font-bold tabular-nums leading-none', compact ? 'text-lg' : 'text-2xl', theme.heading)}>
+      <span className={cn('font-serif font-bold tabular-nums leading-none', compact ? 'text-base @sm:text-xl' : 'text-lg @sm:text-2xl', theme.heading)}>
         {String(value).padStart(2, '0')}
       </span>
-      <span className={cn('font-semibold tracking-[0.2em] uppercase mt-1.5', compact ? 'text-[8px]' : 'text-[9px]', theme.body)}>
+      <span
+        className={cn(
+          'font-semibold uppercase mt-1 @sm:mt-1.5 tracking-[0.12em] @sm:tracking-[0.2em]',
+          compact ? 'text-[7px] @sm:text-[8px]' : 'text-[8px] @sm:text-[9px]',
+          theme.body
+        )}
+      >
         {label}
       </span>
     </div>
@@ -80,7 +90,8 @@ function Countdown({ date, theme, compact = false }: { date: string; theme: Sect
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.9, ease: EASE_LUXE, delay: 1.6 }}
-      className={cn('flex flex-wrap items-center justify-center', compact ? 'gap-2' : 'gap-2.5')}
+      // 4 sabit sütun: Gün/Saat/Dakika/Saniye her genişlikte tek satırda kalır.
+      className={cn('grid grid-cols-4 w-full mx-auto', compact ? 'gap-1 @sm:gap-2 max-w-[300px]' : 'gap-1.5 @sm:gap-2.5 max-w-[340px]')}
     >
       <CountdownTile value={days} label="Gün" theme={theme} compact={compact} />
       <CountdownTile value={hours} label="Saat" theme={theme} compact={compact} />
@@ -105,7 +116,7 @@ export function Summary({ invitation, theme, flavor, density = 'default' }: Summ
     <section
       className={cn(
         'relative flex-1 flex flex-col items-center justify-center',
-        compact ? 'px-4 py-10 overflow-visible' : 'px-6 py-16 overflow-hidden',
+        compact ? 'px-3 @sm:px-4 py-10 overflow-visible' : 'px-6 py-16 overflow-hidden',
         theme.page
       )}
     >
@@ -163,7 +174,7 @@ export function Summary({ invitation, theme, flavor, density = 'default' }: Summ
         <h1
           className={cn(
             'font-serif font-bold leading-tight break-words',
-            compact ? 'text-3xl md:text-4xl' : 'text-4xl md:text-5xl',
+            compact ? 'text-3xl @sm:text-4xl @2xl:text-5xl' : 'text-4xl @md:text-5xl',
             theme.heading
           )}
         >
@@ -199,7 +210,7 @@ export function Summary({ invitation, theme, flavor, density = 'default' }: Summ
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: EASE_LUXE, delay: 1.2 }}
-          className={cn('leading-relaxed font-light max-w-xs', compact ? 'text-xs' : 'text-sm', theme.body)}
+          className={cn('leading-relaxed font-light max-w-xs', compact ? 'text-sm' : 'text-sm @md:text-base', theme.body)}
         >
           {invitation.subtitle}
         </motion.p>
@@ -211,10 +222,10 @@ export function Summary({ invitation, theme, flavor, density = 'default' }: Summ
           transition={{ duration: 1, ease: EASE_LUXE, delay: 1.4 }}
           className="flex flex-col items-center gap-1"
         >
-          <span className={cn('font-serif italic', compact ? 'text-base' : 'text-lg', theme.heading)}>
+          <span className={cn('font-serif italic', compact ? 'text-lg @sm:text-xl' : 'text-lg @md:text-xl', theme.heading)}>
             {formatDateStr(invitation.date)}
           </span>
-          <span className={cn('font-medium tracking-[0.15em] uppercase', compact ? 'text-[10px]' : 'text-[11px]', theme.body)}>
+          <span className={cn('font-medium tracking-[0.15em] uppercase', compact ? 'text-[11px]' : 'text-[11px] @md:text-xs', theme.body)}>
             {invitation.venue}
           </span>
         </motion.div>

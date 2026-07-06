@@ -75,11 +75,10 @@ export function TemplateGrid({ phoneRef }: TemplateGridProps) {
               whileHover={{ y: -5 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => handleSelect(pst.id)}
-              className={`group relative rounded-2xl overflow-hidden h-36 lg:h-48 cursor-pointer transition-shadow duration-700 ${
-                isActive
+              className={`group relative rounded-2xl overflow-hidden h-36 lg:h-48 cursor-pointer transition-shadow duration-700 ${isActive
                   ? 'shadow-xl shadow-brand/20 ring-2 ring-brand ring-offset-2 ring-offset-cream'
                   : 'shadow-sm hover:shadow-2xl hover:shadow-ink/15'
-              }`}
+                }`}
             >
               <img
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[1200ms] ease-out filter brightness-90 md:brightness-[0.82] group-hover:brightness-95"
@@ -132,7 +131,7 @@ export function TemplateGrid({ phoneRef }: TemplateGridProps) {
               <span className="text-[9px] font-sans font-semibold uppercase tracking-wider bg-gold/15 text-brand-deep px-2 py-0.5 rounded-full border border-gold/25">Yeni</span>
             </h3>
             <p className="text-[11px] text-muted mt-1 leading-relaxed">
-              Hayalinizdeki temayı birkaç cümleyle anlatın; yapay zeka tamamen size özel bir tasarım oluştursun. İlk sürümden itibaren DavetKart'ta.
+              Hayalinizdeki temayı birkaç cümleyle anlatın; yapay zeka tamamen size özel bir tasarım oluştursun. Yapay Zeka DavetKart'ta.
             </p>
           </div>
         </motion.div>

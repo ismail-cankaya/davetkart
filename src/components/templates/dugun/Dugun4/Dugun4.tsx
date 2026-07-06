@@ -33,11 +33,12 @@ const DUGUN4_THEME: SectionTheme = {
 };
 
 /**
- * Suluboya zemin hero'yu sıfıra sıfır kaplar (object-cover, boşluk kalmaz).
- * Kemer, en-boy oranı korunarak (object-contain) alt kenara oturur; basamaklar
- * daima ekranın altındadır ve görsel hiçbir oranda basıklaşmaz/sünmez.
- * Metinler heroContentClassName ile kemer açıklığına (sütunların arasına)
- * sınırlanmış bir kutuya alınır; compact yoğunluk dar alana uyum sağlar.
+ * Suluboya zemin hero'yu sıfıra sıfır kaplar; kemer görseli de object-cover
+ * ile dikeyde/yatayda tam kaplar (üstte boşluk kalmaz, gerekirse kenarlardan
+ * kırpılır — sütunlar zaten kenarlarda olduğundan kayıp dekoratiftir).
+ * Yoğun çiçek dokusunun üzerinde metin okunabilsin diye görseller ile içerik
+ * arasına yukarıdan aşağıya yumuşayan yarı saydam bir perde serilir; metin
+ * kutusu böylece kemer açıklığına sıkışmak zorunda kalmadan genişler.
  */
 export function Dugun4({ invitation, mode = 'preview' }: TemplateProps) {
   return (
@@ -47,7 +48,7 @@ export function Dugun4({ invitation, mode = 'preview' }: TemplateProps) {
       mode={mode}
       themeOverride={DUGUN4_THEME}
       summaryDensity="compact"
-      heroContentClassName="absolute z-20 h-auto top-[33%] bottom-[18%] left-1/2 -translate-x-1/2 w-[70%] max-w-xs"
+      heroContentClassName="mx-auto w-full max-w-md"
       renderHeroBackground={() => (
         <div className="absolute inset-0">
           <img
@@ -57,21 +58,21 @@ export function Dugun4({ invitation, mode = 'preview' }: TemplateProps) {
             className="absolute inset-0 w-full h-full object-cover z-0 select-none"
           />
           {/* Kemer, masaüstünde viewport'a yayılmasın diye içerik kolonuna
-              (max-w-3xl) hizalanır; kutu konumu sarmalayıcıda tutulur ki
-              motion'ın transform animasyonu yerleşimi ezmesin. */}
-          <div className="absolute inset-0 max-w-3xl mx-auto">
-            <div className="absolute bottom-0 inset-x-0 h-[85%] z-10">
-              <motion.img
-                src={floralArch}
-                alt=""
-                draggable={false}
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.8, ease: EASE_LUXE, delay: 0.2 }}
-                className="w-full h-full object-contain object-bottom mix-blend-multiply select-none"
-              />
-            </div>
+              (max-w-3xl) hizalanır; dar ekranlarda kolonu tamamen doldurur. */}
+          <div className="absolute inset-0 max-w-3xl mx-auto z-10">
+            <motion.img
+              src={floralArch}
+              alt=""
+              draggable={false}
+              initial={{ opacity: 0, scale: 1.04 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.8, ease: EASE_LUXE, delay: 0.2 }}
+              className="w-full h-full object-cover object-bottom mix-blend-multiply select-none"
+            />
           </div>
+          {/* Okunabilirlik perdesi: üst/alt uçlarda güçlü, ortada hafif —
+              çiçek dokusu görünür kalırken metin kontrastı garanti edilir. */}
+          <div className="absolute inset-0 z-20 bg-gradient-to-b from-white/80 via-white/40 to-white/85" />
         </div>
       )}
     />
