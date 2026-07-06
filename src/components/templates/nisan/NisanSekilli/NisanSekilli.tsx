@@ -1,8 +1,9 @@
 import React from 'react';
-import { InvitationComposition } from '../shared/InvitationComposition';
-import { NISAN_SEKILLI } from './themes';
-import { NISAN_FLAVOR } from './flavors';
-import { TemplateProps } from '../types';
+import { InvitationComposition } from '../../shared/InvitationComposition';
+import { NISAN_SEKILLI } from '../themes';
+import { NISAN_FLAVOR } from '../flavors';
+import { TemplateProps } from '../../types';
+import bgImage from './assets/bg.png';
 
 export function NisanSekilli({ invitation, mode = 'preview' }: TemplateProps) {
   return (

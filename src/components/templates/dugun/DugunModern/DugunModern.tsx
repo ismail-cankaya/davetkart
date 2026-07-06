@@ -1,10 +1,11 @@
 import React from 'react';
-import { InvitationComposition } from '../shared/InvitationComposition';
-import { MODERN_THEME } from '../shared/themeTokens';
-import { DUGUN_FLAVOR } from './flavors';
-import { TemplateProps } from '../types';
+import { InvitationComposition } from '../../shared/InvitationComposition';
+import { MODERN_THEME } from '../../shared/themeTokens';
+import { DUGUN_FLAVOR } from '../flavors';
+import { TemplateProps } from '../../types';
+import bgImage from './assets/bg-desktop.svg';
 
-export function DugunModern({ invitation, bgImage, mode = 'preview' }: TemplateProps) {
+export function DugunModern({ invitation, mode = 'preview' }: TemplateProps) {
   return (
     <InvitationComposition 
       invitation={invitation} 

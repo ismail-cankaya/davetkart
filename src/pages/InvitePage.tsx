@@ -29,7 +29,6 @@ export default function InvitePage() {
       <TemplateRenderer
         templateId={activePreset.id}
         invitation={invitation}
-        bgImage={activePreset.imageUrl}
         onRsvpClick={() => setRsvpModalOpen(true)}
         mode="live"
       />

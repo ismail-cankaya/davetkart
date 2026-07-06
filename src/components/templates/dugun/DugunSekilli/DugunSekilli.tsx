@@ -1,8 +1,9 @@
 import React from 'react';
-import { InvitationComposition } from '../shared/InvitationComposition';
-import { SEKILLI_THEME } from '../shared/themeTokens';
-import { DUGUN_FLAVOR } from './flavors';
-import { TemplateProps } from '../types';
+import { InvitationComposition } from '../../shared/InvitationComposition';
+import { SEKILLI_THEME } from '../../shared/themeTokens';
+import { DUGUN_FLAVOR } from '../flavors';
+import { TemplateProps } from '../../types';
+import bgImage from './assets/bg.png';
 
 export function DugunSekilli({ invitation, mode = 'preview' }: TemplateProps) {
   return (

@@ -1,10 +1,11 @@
 import React from 'react';
-import { InvitationComposition } from '../shared/InvitationComposition';
-import { KINA_MODERN } from './themes';
-import { KINA_FLAVOR } from './flavors';
-import { TemplateProps } from '../types';
+import { InvitationComposition } from '../../shared/InvitationComposition';
+import { KINA_MODERN } from '../themes';
+import { KINA_FLAVOR } from '../flavors';
+import { TemplateProps } from '../../types';
+import bgImage from './assets/bg-desktop.svg';
 
-export function KinaModern({ invitation, bgImage, mode = 'preview' }: TemplateProps) {
+export function KinaModern({ invitation, mode = 'preview' }: TemplateProps) {
   return (
     <InvitationComposition 
       invitation={invitation} 

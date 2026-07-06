@@ -8,7 +8,6 @@ import { TemplateProps } from './types';
 interface TemplateRendererProps {
   templateId: string;
   invitation: Invitation;
-  bgImage: string;
   onRsvpClick: () => void;
   mode?: 'preview' | 'live';
 }
@@ -34,7 +33,7 @@ const THEME_PRESETS: Record<string, React.ComponentType<TemplateProps>> = {
   'nisan-modern': NisanModern,
 };
 
-export function TemplateRenderer({ templateId, invitation, bgImage, onRsvpClick, mode = 'preview' }: TemplateRendererProps) {
+export function TemplateRenderer({ templateId, invitation, onRsvpClick, mode = 'preview' }: TemplateRendererProps) {
   // Combine category and style, fallback to 'dugun' if category lacks templates
   const category = ['dugun', 'kina', 'nisan'].includes(invitation.categoryId) ? invitation.categoryId : 'dugun';
   
@@ -45,9 +44,9 @@ export function TemplateRenderer({ templateId, invitation, bgImage, onRsvpClick,
   // Tema ID'si eşleniyorsa o temayı render et.
   const ThemePreset = THEME_PRESETS[presetKey] || THEME_PRESETS[`dugun-${templateId}`];
   if (ThemePreset) {
-    return <ThemePreset invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} mode={mode} />;
+    return <ThemePreset invitation={invitation} onRsvpClick={onRsvpClick} mode={mode} />;
   }
 
   // Varsayılan olarak DugunSade kullan
-  return <DugunSade invitation={invitation} bgImage={bgImage} onRsvpClick={onRsvpClick} mode={mode} />;
+  return <DugunSade invitation={invitation} onRsvpClick={onRsvpClick} mode={mode} />;
 }

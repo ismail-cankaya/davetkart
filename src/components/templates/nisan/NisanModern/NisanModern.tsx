@@ -1,10 +1,11 @@
 import React from 'react';
-import { InvitationComposition } from '../shared/InvitationComposition';
-import { NISAN_MODERN } from './themes';
-import { NISAN_FLAVOR } from './flavors';
-import { TemplateProps } from '../types';
+import { InvitationComposition } from '../../shared/InvitationComposition';
+import { NISAN_MODERN } from '../themes';
+import { NISAN_FLAVOR } from '../flavors';
+import { TemplateProps } from '../../types';
+import bgImage from './assets/bg-desktop.svg';
 
-export function NisanModern({ invitation, bgImage, mode = 'preview' }: TemplateProps) {
+export function NisanModern({ invitation, mode = 'preview' }: TemplateProps) {
   return (
     <InvitationComposition 
       invitation={invitation} 

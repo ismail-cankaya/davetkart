@@ -1,10 +1,11 @@
 import React from 'react';
-import { InvitationComposition } from '../shared/InvitationComposition';
-import { MANZARA_THEME } from '../shared/themeTokens';
-import { DUGUN_FLAVOR } from './flavors';
-import { TemplateProps } from '../types';
+import { InvitationComposition } from '../../shared/InvitationComposition';
+import { MANZARA_THEME } from '../../shared/themeTokens';
+import { DUGUN_FLAVOR } from '../flavors';
+import { TemplateProps } from '../../types';
+import bgImage from './assets/bg.png';
 
-export function DugunManzara({ invitation, bgImage, mode = 'preview' }: TemplateProps) {
+export function DugunManzara({ invitation, mode = 'preview' }: TemplateProps) {
   return (
     <InvitationComposition 
       invitation={invitation} 

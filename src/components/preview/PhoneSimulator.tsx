@@ -65,7 +65,6 @@ export function PhoneSimulator({ phoneRef }: PhoneSimulatorProps) {
             <TemplateRenderer
               templateId={activePresetId}
               invitation={invitation}
-              bgImage={activePreset.imageUrl}
               onRsvpClick={() => setRsvpModalOpen(true)}
               mode="preview"
             />
