@@ -30,14 +30,5 @@
     <circle cx="19" cy="34" r="38" opacity="0.45"/>
   </g>
 
-  <text x="300" y="318" text-anchor="middle" font-family="Georgia, serif" font-size="17" letter-spacing="9" fill="#8f7355">DÜĞÜN DAVETİYESİ</text>
-  <text x="300" y="420" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="58" fill="#1c1917">Sophia &amp; Elias</text>
-
   <rect x="190" y="466" width="220" height="1.6" fill="url(#line)"/>
-
-  <text x="300" y="524" text-anchor="middle" font-family="Georgia, serif" font-size="20" letter-spacing="6" fill="#57534e">12 EYLÜL 2026</text>
-  <text x="300" y="566" text-anchor="middle" font-family="Georgia, serif" font-size="14" letter-spacing="3" fill="#a8a29e">NİKAH &#183; YEMEK &#183; EĞLENCE</text>
-
-  <!-- El yazısı imza hissi -->
-  <text x="300" y="688" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="42" fill="#8f7355" opacity="0.9">sade</text>
 </svg>

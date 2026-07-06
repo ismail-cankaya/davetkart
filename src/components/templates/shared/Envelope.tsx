@@ -36,7 +36,8 @@ export function Envelope({ invitation, theme, flavor, onOpened }: EnvelopeProps)
     <motion.div
       className={cn(
         'absolute inset-0 z-40 flex flex-col items-center justify-center overflow-hidden cursor-pointer select-none',
-        theme.page
+        theme.page,
+        theme.base
       )}
       onClick={handleOpen}
       initial={{ opacity: 1 }}
