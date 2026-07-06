@@ -2,3 +2,8 @@ export { DugunSade } from './DugunSade';
 export { DugunManzara } from './DugunManzara';
 export { DugunSekilli } from './DugunSekilli';
 export { DugunModern } from './DugunModern';
+export { Dugun1 } from './Dugun1';
+export { Dugun2 } from './Dugun2';
+export { Dugun3 } from './Dugun3';
+export { Dugun4 } from './Dugun4';
+export { Dugun5 } from './Dugun5';

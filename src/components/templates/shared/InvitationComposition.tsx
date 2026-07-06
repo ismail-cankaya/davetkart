@@ -5,7 +5,7 @@ import { cn } from '../../../utils/cn';
 import { getSectionTheme } from './palette';
 import { TemplateFlavor } from './flavor';
 import { Envelope } from './Envelope';
-import { Summary } from './Summary';
+import { Summary, SummaryDensity } from './Summary';
 
 // Below-the-fold sections stay lazy — the hero paints without them.
 const Timeline = React.lazy(() => import('./Timeline').then((m) => ({ default: m.Timeline })));
@@ -20,6 +20,15 @@ interface InvitationCompositionProps {
   mode: 'preview' | 'live';
   themeOverride?: ReturnType<typeof getSectionTheme>;
   renderHeroBackground?: () => React.ReactNode;
+  /**
+   * Hero metin konteynerinin yerleşimini şablona göre özelleştirir; süslerin
+   * kapladığı alanı padding'le güvenli bölgeye çevirmek (Dugun1) veya metni
+   * kemer açıklığı gibi sınırlı bir kutuya oturtmak (Dugun4) için kullanılır.
+   * cn/twMerge ile varsayılan sınıfların üzerine yazılır.
+   */
+  heroContentClassName?: string;
+  /** Summary tipografi yoğunluğu; dar hero alanlarında 'compact' kullanılır. */
+  summaryDensity?: SummaryDensity;
 }
 
 /**
@@ -27,7 +36,15 @@ interface InvitationCompositionProps {
  * flags off the invitation and renders only the enabled modules, themed by
  * the invitation's palette and flavored by its category template.
  */
-export function InvitationComposition({ invitation, flavor, mode, themeOverride, renderHeroBackground }: InvitationCompositionProps) {
+export function InvitationComposition({
+  invitation,
+  flavor,
+  mode,
+  themeOverride,
+  renderHeroBackground,
+  heroContentClassName,
+  summaryDensity = 'default'
+}: InvitationCompositionProps) {
   const theme = themeOverride || getSectionTheme(invitation.palette);
   const [envelopeOpened, setEnvelopeOpened] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -79,8 +96,8 @@ export function InvitationComposition({ invitation, flavor, mode, themeOverride,
               {renderHeroBackground()}
             </div>
           )}
-          <div className="relative z-10 w-full h-full flex flex-col grow">
-            <Summary invitation={invitation} theme={theme} flavor={flavor} />
+          <div className={cn('relative z-10 w-full h-full flex flex-col grow', heroContentClassName)}>
+            <Summary invitation={invitation} theme={theme} flavor={flavor} density={summaryDensity} />
           </div>
         </div>
 

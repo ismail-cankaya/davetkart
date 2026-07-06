@@ -1,0 +1,79 @@
+import React from 'react';
+import { motion } from 'motion/react';
+import { InvitationComposition } from '../../shared/InvitationComposition';
+import { SectionTheme, EASE_LUXE } from '../../shared/palette';
+import { DUGUN_FLAVOR } from '../flavors';
+import { TemplateProps } from '../../types';
+import backgroundWash from './assets/dugun4-background.png';
+import floralArch from './assets/dugun4.png';
+
+/**
+ * Dugun4 — "Pembe Kemer" teması: pembe suluboya zemin ve çiçekli kemer
+ * sahnesine uygun toz pembe zemin, gül ahşabı başlıklar ve gül vurguları.
+ */
+const DUGUN4_THEME: SectionTheme = {
+  id: 'stone',
+  base: 'theme-cormorant bg-[#fdf4f5]',
+  page: 'text-[#5c3140]',
+  surface: 'bg-white/75 backdrop-blur-md',
+  border: 'border-[#f2dde2]',
+  heading: 'text-[#5c3140]',
+  body: 'text-[#9b7280]',
+  accent: 'text-[#c26d85]',
+  accentBg: 'bg-[#c26d85]',
+  accentSoft: 'bg-[#c26d85]/10',
+  input:
+    'w-full bg-white/80 border border-[#f2dde2] rounded-lg px-3.5 py-2.5 text-sm text-[#5c3140] placeholder:text-[#d3a9b4] focus:outline-none focus:border-[#c26d85] focus:ring-2 focus:ring-[#c26d85]/20 transition-all duration-300',
+  buttonPrimary:
+    'bg-[#a54d68] hover:bg-[#b95d79] text-white shadow-lg shadow-[#a54d68]/20',
+  buttonGhost:
+    'border border-[#e6c4cd] text-[#8e5468] hover:bg-[#f9e9ed] hover:border-[#d6a4b1]',
+  divider: 'bg-[#f2dde2]',
+  timelineLine: 'from-[#c26d85] via-[#dfa8b8]/60 to-transparent'
+};
+
+/**
+ * Suluboya zemin hero'yu sıfıra sıfır kaplar (object-cover, boşluk kalmaz).
+ * Kemer, en-boy oranı korunarak (object-contain) alt kenara oturur; basamaklar
+ * daima ekranın altındadır ve görsel hiçbir oranda basıklaşmaz/sünmez.
+ * Metinler heroContentClassName ile kemer açıklığına (sütunların arasına)
+ * sınırlanmış bir kutuya alınır; compact yoğunluk dar alana uyum sağlar.
+ */
+export function Dugun4({ invitation, mode = 'preview' }: TemplateProps) {
+  return (
+    <InvitationComposition
+      invitation={invitation}
+      flavor={DUGUN_FLAVOR}
+      mode={mode}
+      themeOverride={DUGUN4_THEME}
+      summaryDensity="compact"
+      heroContentClassName="absolute z-20 h-auto top-[33%] bottom-[18%] left-1/2 -translate-x-1/2 w-[70%] max-w-xs"
+      renderHeroBackground={() => (
+        <div className="absolute inset-0">
+          <img
+            src={backgroundWash}
+            alt=""
+            draggable={false}
+            className="absolute inset-0 w-full h-full object-cover z-0 select-none"
+          />
+          {/* Kemer, masaüstünde viewport'a yayılmasın diye içerik kolonuna
+              (max-w-3xl) hizalanır; kutu konumu sarmalayıcıda tutulur ki
+              motion'ın transform animasyonu yerleşimi ezmesin. */}
+          <div className="absolute inset-0 max-w-3xl mx-auto">
+            <div className="absolute bottom-0 inset-x-0 h-[85%] z-10">
+              <motion.img
+                src={floralArch}
+                alt=""
+                draggable={false}
+                initial={{ opacity: 0, scale: 1.04 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1.8, ease: EASE_LUXE, delay: 0.2 }}
+                className="w-full h-full object-contain object-bottom mix-blend-multiply select-none"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+    />
+  );
+}

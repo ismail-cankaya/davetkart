@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Cormorant+Garamond:ital,wght@0,400..700;1,400..700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-serif: "Playfair Display", Georgia, Cambria, serif;
+  --font-cormorant: "Cormorant Garamond", "Playfair Display", Georgia, serif;
 
   /* Brand palette — deep emerald + champagne gold on warm ivory */
   --color-brand: #04382b;
@@ -41,6 +42,14 @@ body {
 ::-moz-selection {
   background-color: var(--color-brand-soft);
   color: var(--color-champagne);
+}
+
+/* ————— Premium serif swap for the Dugun template family ————— */
+/* A template opts in by carrying `theme-cormorant` on its SectionTheme.base;
+   shared sections keep using `font-serif`, the family swap happens here so it
+   wins deterministically regardless of utility order. */
+.theme-cormorant .font-serif {
+  font-family: var(--font-cormorant);
 }
 
 /* ————— Lenis smooth-scroll integration ————— */

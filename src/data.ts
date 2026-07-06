@@ -1,4 +1,9 @@
 import { EventCategory, Invitation, RSVPResponse, RsvpDraft, TemplatePreset, TimelineEvent } from './types';
+import dugun1Preview from './components/templates/dugun/Dugun1/assets/dugun1-left.png';
+import dugun2Preview from './components/templates/dugun/Dugun2/assets/dugun2-top.png';
+import dugun3Preview from './components/templates/dugun/Dugun3/assets/dugun3-bottom.png';
+import dugun4Preview from './components/templates/dugun/Dugun4/assets/dugun4.png';
+import dugun5Preview from './components/templates/dugun/Dugun5/assets/dugun5-bottom.png';
 
 export const EVENT_CATEGORIES: EventCategory[] = [
   {
@@ -95,6 +100,52 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     titleColor: 'text-white',
     btnColor: 'bg-indigo-600 hover:bg-indigo-500 text-white',
     imageUrl: '/images/moda-gece.svg'
+  },
+  // Katmanlı görsel düğün şablon ailesi (Dugun1–Dugun5)
+  {
+    id: 'dugun-1',
+    name: 'Zarif Çerçeve (Düğün 1)',
+    primaryColor: '#faf8f5',
+    backgroundStyle: 'bg-stone-50',
+    titleColor: 'text-stone-800',
+    btnColor: 'bg-stone-900 hover:bg-stone-700 text-stone-50',
+    imageUrl: dugun1Preview
+  },
+  {
+    id: 'dugun-2',
+    name: 'Pastel Buket (Düğün 2)',
+    primaryColor: '#fbfaf5',
+    backgroundStyle: 'bg-[#fbfaf5]',
+    titleColor: 'text-[#3c4034]',
+    btnColor: 'bg-[#4a5540] hover:bg-[#5d6a50] text-[#f7f6ee]',
+    imageUrl: dugun2Preview
+  },
+  {
+    id: 'dugun-3',
+    name: 'Bordo Zambak (Düğün 3)',
+    primaryColor: '#faf6f3',
+    backgroundStyle: 'bg-[#faf6f3]',
+    titleColor: 'text-[#452430]',
+    btnColor: 'bg-[#54263a] hover:bg-[#6b3049] text-[#faf3ef]',
+    imageUrl: dugun3Preview
+  },
+  {
+    id: 'dugun-4',
+    name: 'Pembe Kemer (Düğün 4)',
+    primaryColor: '#fdf4f5',
+    backgroundStyle: 'bg-[#fdf4f5]',
+    titleColor: 'text-[#5c3140]',
+    btnColor: 'bg-[#a54d68] hover:bg-[#b95d79] text-white',
+    imageUrl: dugun4Preview
+  },
+  {
+    id: 'dugun-5',
+    name: 'Bahar Bahçesi (Düğün 5)',
+    primaryColor: '#f4f7f0',
+    backgroundStyle: 'bg-[#f4f7f0]',
+    titleColor: 'text-[#39503f]',
+    btnColor: 'bg-[#3d5245] hover:bg-[#4c6555] text-[#f2f5ee]',
+    imageUrl: dugun5Preview
   }
 ];
 

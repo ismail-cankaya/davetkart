@@ -7,10 +7,18 @@ import { SectionTheme, EASE_LUXE } from './palette';
 import { TemplateFlavor } from './flavor';
 import { ChevronDownIcon } from './icons';
 
+/**
+ * Yoğunluk modu: 'compact', süslemelerin metin alanını daralttığı şablonlarda
+ * (örn. yanlardan/kemerle çerçevelenen hero'lar) tipografiyi ve boşlukları
+ * orantılı küçültür, geri sayım karoları dar alanda 2x2 sarabilir.
+ */
+export type SummaryDensity = 'default' | 'compact';
+
 interface SummaryProps {
   invitation: Invitation;
   theme: SectionTheme;
   flavor: TemplateFlavor;
+  density?: SummaryDensity;
 }
 
 /** Remaining time to the event, recomputed every second. */
@@ -33,26 +41,37 @@ function useCountdown(targetDate: string) {
   };
 }
 
-function CountdownTile({ value, label, theme }: { value: number; label: string; theme: SectionTheme }) {
+function CountdownTile({
+  value,
+  label,
+  theme,
+  compact = false
+}: {
+  value: number;
+  label: string;
+  theme: SectionTheme;
+  compact?: boolean;
+}) {
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center rounded-xl border px-2 py-3 w-[68px]',
+        'flex flex-col items-center justify-center rounded-xl border',
+        compact ? 'px-1.5 py-2.5 w-[56px]' : 'px-2 py-3 w-[68px]',
         theme.surface,
         theme.border
       )}
     >
-      <span className={cn('font-serif text-2xl font-bold tabular-nums leading-none', theme.heading)}>
+      <span className={cn('font-serif font-bold tabular-nums leading-none', compact ? 'text-lg' : 'text-2xl', theme.heading)}>
         {String(value).padStart(2, '0')}
       </span>
-      <span className={cn('text-[9px] font-semibold tracking-[0.2em] uppercase mt-1.5', theme.body)}>
+      <span className={cn('font-semibold tracking-[0.2em] uppercase mt-1.5', compact ? 'text-[8px]' : 'text-[9px]', theme.body)}>
         {label}
       </span>
     </div>
   );
 }
 
-function Countdown({ date, theme }: { date: string; theme: SectionTheme }) {
+function Countdown({ date, theme, compact = false }: { date: string; theme: SectionTheme; compact?: boolean }) {
   const { valid, days, hours, minutes, seconds } = useCountdown(date);
   if (!valid) return null;
 
@@ -61,12 +80,12 @@ function Countdown({ date, theme }: { date: string; theme: SectionTheme }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.9, ease: EASE_LUXE, delay: 1.6 }}
-      className="flex items-center justify-center gap-2.5"
+      className={cn('flex flex-wrap items-center justify-center', compact ? 'gap-2' : 'gap-2.5')}
     >
-      <CountdownTile value={days} label="Gün" theme={theme} />
-      <CountdownTile value={hours} label="Saat" theme={theme} />
-      <CountdownTile value={minutes} label="Dakika" theme={theme} />
-      <CountdownTile value={seconds} label="Saniye" theme={theme} />
+      <CountdownTile value={days} label="Gün" theme={theme} compact={compact} />
+      <CountdownTile value={hours} label="Saat" theme={theme} compact={compact} />
+      <CountdownTile value={minutes} label="Dakika" theme={theme} compact={compact} />
+      <CountdownTile value={seconds} label="Saniye" theme={theme} compact={compact} />
     </motion.div>
   );
 }
@@ -76,32 +95,50 @@ function Countdown({ date, theme }: { date: string; theme: SectionTheme }) {
  * soft radial glow and a faint grid, followed by the message, the date and
  * (optionally) the live countdown.
  */
-export function Summary({ invitation, theme, flavor }: SummaryProps) {
+export function Summary({ invitation, theme, flavor, density = 'default' }: SummaryProps) {
   const isDark = theme.id === 'midnight';
+  const compact = density === 'compact';
   const { Ornament } = flavor;
   const nameWords = (invitation.names || 'Davetlisiniz').split(' ');
 
   return (
-    <section className={cn('relative flex-1 flex flex-col items-center justify-center overflow-hidden px-6 py-16', theme.page)}>
-      {/* Faint grid backdrop */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.35]"
-        style={{
-          backgroundImage: `linear-gradient(${isDark ? 'rgba(148,163,184,0.07)' : 'rgba(120,113,108,0.09)'} 1px, transparent 1px), linear-gradient(90deg, ${isDark ? 'rgba(148,163,184,0.07)' : 'rgba(120,113,108,0.09)'} 1px, transparent 1px)`,
-          backgroundSize: '44px 44px',
-          maskImage: 'radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 100%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 100%)'
-        }}
-      />
-      {/* Radial glow */}
+    <section
+      className={cn(
+        'relative flex-1 flex flex-col items-center justify-center',
+        compact ? 'px-4 py-10 overflow-visible' : 'px-6 py-16 overflow-hidden',
+        theme.page
+      )}
+    >
+      {/* Grid ve parıltı katmanları yalnızca varsayılan modda — kompakt
+          şablonların kendi zengin hero görselleri var, üstüne binmesinler. */}
+      {!compact && (
+        <>
+          {/* Faint grid backdrop */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.35]"
+            style={{
+              backgroundImage: `linear-gradient(${isDark ? 'rgba(148,163,184,0.07)' : 'rgba(120,113,108,0.09)'} 1px, transparent 1px), linear-gradient(90deg, ${isDark ? 'rgba(148,163,184,0.07)' : 'rgba(120,113,108,0.09)'} 1px, transparent 1px)`,
+              backgroundSize: '44px 44px',
+              maskImage: 'radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 100%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 100%)'
+            }}
+          />
+          {/* Radial glow */}
+          <div
+            className={cn(
+              'absolute top-[12%] left-1/2 -translate-x-1/2 w-[480px] h-[480px] rounded-full blur-3xl pointer-events-none',
+              isDark ? 'bg-amber-300/[0.07]' : 'bg-rose-200/40'
+            )}
+          />
+        </>
+      )}
+
       <div
         className={cn(
-          'absolute top-[12%] left-1/2 -translate-x-1/2 w-[480px] h-[480px] rounded-full blur-3xl pointer-events-none',
-          isDark ? 'bg-amber-300/[0.07]' : 'bg-rose-200/40'
+          'relative z-10 flex flex-col items-center text-center w-full',
+          compact ? 'max-w-sm gap-4' : 'max-w-md gap-6'
         )}
-      />
-
-      <div className="relative z-10 flex flex-col items-center text-center max-w-md gap-6">
+      >
         {/* Ornament */}
         <motion.div
           initial={{ opacity: 0, scale: 0.6, rotate: -12 }}
@@ -109,7 +146,7 @@ export function Summary({ invitation, theme, flavor }: SummaryProps) {
           transition={{ duration: 1, ease: EASE_LUXE }}
           className={theme.accent}
         >
-          <Ornament size={44} />
+          <Ornament size={compact ? 34 : 44} />
         </motion.div>
 
         {/* Eyebrow */}
@@ -123,7 +160,13 @@ export function Summary({ invitation, theme, flavor }: SummaryProps) {
         </motion.span>
 
         {/* Names — staggered word reveal */}
-        <h1 className={cn('font-serif text-4xl md:text-5xl font-bold leading-tight', theme.heading)}>
+        <h1
+          className={cn(
+            'font-serif font-bold leading-tight break-words',
+            compact ? 'text-3xl md:text-4xl' : 'text-4xl md:text-5xl',
+            theme.heading
+          )}
+        >
           {nameWords.map((word, i) => (
             <motion.span
               key={`${word}-${i}`}
@@ -143,7 +186,8 @@ export function Summary({ invitation, theme, flavor }: SummaryProps) {
           animate={{ scaleX: 1 }}
           transition={{ duration: 1.1, ease: EASE_LUXE, delay: 1 }}
           className={cn(
-            'h-px w-40',
+            'h-px',
+            compact ? 'w-24' : 'w-40',
             isDark
               ? 'bg-gradient-to-r from-transparent via-amber-200/70 to-transparent'
               : 'bg-gradient-to-r from-transparent via-stone-400 to-transparent'
@@ -155,7 +199,7 @@ export function Summary({ invitation, theme, flavor }: SummaryProps) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: EASE_LUXE, delay: 1.2 }}
-          className={cn('text-sm leading-relaxed font-light max-w-xs', theme.body)}
+          className={cn('leading-relaxed font-light max-w-xs', compact ? 'text-xs' : 'text-sm', theme.body)}
         >
           {invitation.subtitle}
         </motion.p>
@@ -167,13 +211,15 @@ export function Summary({ invitation, theme, flavor }: SummaryProps) {
           transition={{ duration: 1, ease: EASE_LUXE, delay: 1.4 }}
           className="flex flex-col items-center gap-1"
         >
-          <span className={cn('font-serif italic text-lg', theme.heading)}>{formatDateStr(invitation.date)}</span>
-          <span className={cn('text-[11px] font-medium tracking-[0.15em] uppercase', theme.body)}>
+          <span className={cn('font-serif italic', compact ? 'text-base' : 'text-lg', theme.heading)}>
+            {formatDateStr(invitation.date)}
+          </span>
+          <span className={cn('font-medium tracking-[0.15em] uppercase', compact ? 'text-[10px]' : 'text-[11px]', theme.body)}>
             {invitation.venue}
           </span>
         </motion.div>
 
-        {invitation.showTimer && <Countdown date={invitation.date} theme={theme} />}
+        {invitation.showTimer && <Countdown date={invitation.date} theme={theme} compact={compact} />}
       </div>
 
       {/* Scroll hint */}

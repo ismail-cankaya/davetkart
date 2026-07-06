@@ -7,7 +7,13 @@ import { persistenceService } from '../services/persistence';
 const PRESET_PALETTES: Record<string, PaletteId> = {
   'moda-gece': 'midnight',
   'moda-tas': 'stone',
-  'dugun-sade': 'stone'
+  'dugun-sade': 'stone',
+  // Katmanlı düğün şablon ailesi — hepsi açık zeminli temalar
+  'dugun-1': 'stone',
+  'dugun-2': 'stone',
+  'dugun-3': 'stone',
+  'dugun-4': 'stone',
+  'dugun-5': 'stone'
 };
 
 interface InvitationState {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DugunSade, DugunManzara, DugunSekilli, DugunModern } from './dugun';
+import { DugunSade, DugunManzara, DugunSekilli, DugunModern, Dugun1, Dugun2, Dugun3, Dugun4, Dugun5 } from './dugun';
 import { KinaSade, KinaManzara, KinaSekilli, KinaModern } from './kina';
 import { NisanSade, NisanManzara, NisanSekilli, NisanModern } from './nisan';
 import { Invitation } from '../../types';
@@ -21,6 +21,12 @@ const THEME_PRESETS: Record<string, React.ComponentType<TemplateProps>> = {
   'dugun-manzara': DugunManzara,
   'dugun-sekilli': DugunSekilli,
   'dugun-modern': DugunModern,
+  // Düğün — katmanlı görsel şablon ailesi (Feature-based Colocation)
+  'dugun-1': Dugun1,
+  'dugun-2': Dugun2,
+  'dugun-3': Dugun3,
+  'dugun-4': Dugun4,
+  'dugun-5': Dugun5,
   // Kına
   'kina-sade': KinaSade,
   'kina-manzara': KinaManzara,
