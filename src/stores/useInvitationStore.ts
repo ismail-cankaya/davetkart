@@ -34,6 +34,8 @@ interface InvitationState {
   updateField: <K extends keyof Invitation>(name: K, value: Invitation[K]) => void;
   /** Switch the visual template; keeps the invitation's theme fields in sync. */
   selectTemplate: (presetId: string) => void;
+  /** Load an existing record (dashboard "continue editing") into the editor. */
+  loadInvitation: (invitation: Invitation) => void;
   /** Restore the invitation and template to their factory defaults. */
   resetInvitation: () => void;
 }
@@ -55,6 +57,14 @@ export const useInvitationStore = create<InvitationState>()((set) => ({
         palette: PRESET_PALETTES[presetId] ?? state.invitation.palette
       }
     })),
+
+  // Merge over the factory defaults so records created before newer modular
+  // fields existed (showGift, timelineEvents…) load with sane values.
+  loadInvitation: (invitation) =>
+    set({
+      invitation: { ...INITIAL_INVITATION, ...invitation },
+      activePresetId: invitation.imageTheme || INITIAL_INVITATION.imageTheme
+    }),
 
   resetInvitation: () =>
     set({ invitation: INITIAL_INVITATION, activePresetId: INITIAL_INVITATION.imageTheme })

@@ -80,6 +80,19 @@ export interface Invitation {
   galleryImages: string[];
 }
 
+/** Lifecycle of an invitation stored on the Invitation microservice. */
+export type InvitationStatus = 'published' | 'saved';
+
+/** An invitation record as returned by `GET /api/invitations`. */
+export interface InvitationRecord {
+  id: string;
+  status: InvitationStatus;
+  /** ISO timestamp of the last server-side update. */
+  updatedAt: string;
+  /** Full design payload; reloaded into the editor to continue editing. */
+  invitation: Invitation;
+}
+
 export interface RSVPResponse {
   id: string;
   guestName: string;

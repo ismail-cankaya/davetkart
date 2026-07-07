@@ -21,6 +21,10 @@ interface CreateWizardState {
   completeGeneration: () => void;
   /** "Tasarımını Düzenle" — back to the build flow, selections intact. */
   backToBuild: () => void;
+  /** Dashboard "Düzenlemeye Devam Et" — jump straight into the editor workspace. */
+  resumeEditor: (categoryId: string) => void;
+  /** Dashboard "Yeni Davetiye Oluştur" — reset the wizard to a blank first step. */
+  startNew: () => void;
 }
 
 export const useCreateWizardStore = create<CreateWizardState>()((set) => ({
@@ -38,7 +42,9 @@ export const useCreateWizardStore = create<CreateWizardState>()((set) => ({
   markThemeChosen: () => set({ themeChosen: true }),
   startGeneration: () => set({ stage: 'generating' }),
   completeGeneration: () => set({ stage: 'editor' }),
-  backToBuild: () => set({ stage: 'build' })
+  backToBuild: () => set({ stage: 'build' }),
+  resumeEditor: (categoryId) => set({ stage: 'editor', categoryId, themeChosen: true }),
+  startNew: () => set({ stage: 'build', categoryId: null, themeChosen: false })
 }));
 
 /** Resolved category object for the current selection (null before step 1). */
