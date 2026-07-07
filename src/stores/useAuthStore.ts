@@ -12,7 +12,7 @@ interface AuthState {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>()((set) => ({
+export const useAuthStore = create<AuthState>()((set, get) => ({
   user: null,
   token: null,
   isAuthenticated: false,
@@ -32,8 +32,15 @@ export const useAuthStore = create<AuthState>()((set) => ({
   },
 
   logout: () => {
+    const { token } = get();
+    // Clear local state first: if the server-side revoke below comes back
+    // 401, the response interceptor calls logout() again — token is already
+    // null by then, so the revoke is not re-issued (no loop).
     authService.clearSession();
     set({ user: null, token: null, isAuthenticated: false });
+    if (token) {
+      authService.revokeSession(token);
+    }
   }
 }));
 

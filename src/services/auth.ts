@@ -1,17 +1,24 @@
 import { AuthSession, LoginCredentials, RegisterPayload } from '../types';
+import { api } from './api';
 
 /**
  * Frontend boundary of the dedicated Auth microservice.
  *
- * The store talks only to this interface. The production adapter will call
- * the Auth service through the shared `api` client (POST /auth/login,
- * POST /auth/register); swapping it in requires no changes outside this file.
- * The shipped adapter is an offline mock so the UX flow works end-to-end
- * before the backend exists.
+ * The store talks only to this interface. The HTTP adapter calls the Laravel
+ * backend through the shared `api` client (POST /auth/login,
+ * POST /auth/register) — the response is `{ user, token }`, exactly the
+ * frontend `AuthSession` shape. localStorage is used only to cache the
+ * session across reloads (JWTs stay server-issued).
  */
 export interface AuthService {
   login(credentials: LoginCredentials): Promise<AuthSession>;
   register(payload: RegisterPayload): Promise<AuthSession>;
+  /**
+   * Best-effort server-side token revocation (POST /auth/logout). The token
+   * is passed explicitly because the store clears its state before calling
+   * this — a rejected/expired token must not re-trigger the 401 logout loop.
+   */
+  revokeSession(token: string): void;
   /** Re-hydrate a cached session (offline support only — JWTs stay server-issued). */
   restoreSession(): AuthSession | null;
   persistSession(session: AuthSession): void;
@@ -20,38 +27,26 @@ export interface AuthService {
 
 const SESSION_KEY = 'davetkart_auth_session';
 
-/** Fabricates an *unsigned* placeholder token. The real JWT comes from the Auth service. */
-function createMockToken(email: string): string {
-  const payload = { sub: email, iss: 'davetkart-mock', iat: Date.now() };
-  return `mock.${btoa(JSON.stringify(payload))}`;
-}
-
-function createMockSession(fullName: string, email: string): AuthSession {
-  return {
-    user: { id: `usr-${Date.now()}`, fullName, email },
-    token: createMockToken(email)
-  };
-}
-
-/** Simulated network latency so loading states behave like production. */
-const simulateLatency = () => new Promise<void>(resolve => setTimeout(resolve, 700));
-
-const mockAuthAdapter: AuthService = {
-  async login({ email }) {
-    await simulateLatency();
-    // The mock derives a display name from the e-mail; the real service
-    // returns the stored profile.
-    const fullName = email
-      .split('@')[0]
-      .split(/[._-]/)
-      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-      .join(' ');
-    return createMockSession(fullName || 'Davetkart Üyesi', email);
+const httpAuthAdapter: AuthService = {
+  async login(credentials) {
+    const { data } = await api.post<AuthSession>('/auth/login', credentials);
+    return data;
   },
 
-  async register({ fullName, email }) {
-    await simulateLatency();
-    return createMockSession(fullName, email);
+  async register(payload) {
+    const { data } = await api.post<AuthSession>('/auth/register', payload);
+    return data;
+  },
+
+  revokeSession(token) {
+    // Fire-and-forget: local logout must never block on the network.
+    void api
+      .post('/auth/logout', undefined, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .catch(() => {
+        // Token already expired/revoked server-side — nothing to do.
+      });
   },
 
   restoreSession() {
@@ -80,4 +75,4 @@ const mockAuthAdapter: AuthService = {
   }
 };
 
-export const authService: AuthService = mockAuthAdapter;
+export const authService: AuthService = httpAuthAdapter;
