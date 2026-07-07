@@ -13,7 +13,18 @@ const PRESET_PALETTES: Record<string, PaletteId> = {
   'dugun-2': 'stone',
   'dugun-3': 'stone',
   'dugun-4': 'stone',
-  'dugun-5': 'stone'
+  'dugun-5': 'stone',
+  // Kategoriye özel yeni tema koleksiyonu
+  'sunnet-klasik': 'midnight',
+  'sunnet-modern': 'stone',
+  'dogum-gunu-neseli': 'stone',
+  'dogum-gunu-sik': 'midnight',
+  'mezuniyet-akademik': 'midnight',
+  'mezuniyet-dinamik': 'midnight',
+  'baby-shower-pastel': 'stone',
+  'baby-shower-boho': 'stone',
+  'parti-neon': 'midnight',
+  'parti-gala': 'midnight'
 };
 
 interface InvitationState {

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="560" viewBox="0 0 400 560">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#15294f"/>
+      <stop offset="0.55" stop-color="#101f3e"/>
+      <stop offset="1" stop-color="#0a1428"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="560" fill="url(#bg)"/>
+  <rect x="16" y="16" width="368" height="528" fill="none" stroke="#eab308" stroke-opacity="0.4" stroke-width="2"/>
+  <rect x="26" y="26" width="348" height="508" fill="none" stroke="#eab308" stroke-opacity="0.15"/>
+  <g stroke="#facc15" stroke-width="3" fill="none" stroke-linejoin="round">
+    <path d="M132 108l68-30 68 30-68 30-68-30Z"/>
+    <path d="M160 122v28c0 9 18 18 40 18s40-9 40-18v-28"/>
+    <path d="M268 108v34"/>
+    <circle cx="268" cy="148" r="4"/>
+  </g>
+  <path d="M110 470c-16-26-18-52-8-84M118 428c-8-2-13-8-15-17 9 2 13 8 15 17ZM116 452c-9 0-15-4-19-13 9-1 15 4 19 13Z" stroke="#eab308" stroke-opacity="0.5" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M290 470c16-26 18-52 8-84M282 428c8-2 13-8 15-17-9 2-13 8-15 17ZM284 452c9 0 15-4 19-13-9-1-15 4-19 13Z" stroke="#eab308" stroke-opacity="0.5" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <text x="200" y="272" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="28" fill="#facc15" letter-spacing="1.5">Kep &amp; Cübbe</text>
+  <text x="200" y="306" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="13" fill="#cbd5e1" letter-spacing="6">MEZUNİYET TÖRENİ</text>
+  <line x1="140" y1="330" x2="260" y2="330" stroke="#eab308" stroke-opacity="0.6"/>
+</svg>

@@ -146,6 +146,102 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     titleColor: 'text-[#39503f]',
     btnColor: 'bg-[#3d5245] hover:bg-[#4c6555] text-[#f2f5ee]',
     imageUrl: dugun5Preview
+  },
+  // ——— Kategoriye özel yeni tema koleksiyonu ———
+  // Sünnet
+  {
+    id: 'sunnet-klasik',
+    name: 'Şehzade (Sünnet · Klasik)',
+    primaryColor: '#0a1633',
+    backgroundStyle: 'bg-[#0a1633]',
+    titleColor: 'text-amber-200',
+    btnColor: 'bg-gradient-to-r from-amber-300 to-amber-500 text-[#0a1633]',
+    imageUrl: '/images/sunnet-klasik.svg'
+  },
+  {
+    id: 'sunnet-modern',
+    name: 'Ferah Turkuaz (Sünnet · Modern)',
+    primaryColor: '#f2fbfb',
+    backgroundStyle: 'bg-[#f2fbfb]',
+    titleColor: 'text-slate-800',
+    btnColor: 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white',
+    imageUrl: '/images/sunnet-modern.svg'
+  },
+  // Doğum Günü
+  {
+    id: 'dogum-gunu-neseli',
+    name: 'Konfeti (Doğum Günü · Neşeli)',
+    primaryColor: '#fff7fa',
+    backgroundStyle: 'bg-[#fff7fa]',
+    titleColor: 'text-rose-950',
+    btnColor: 'bg-gradient-to-r from-fuchsia-500 via-rose-500 to-orange-400 text-white',
+    imageUrl: '/images/dogum-gunu-neseli.svg'
+  },
+  {
+    id: 'dogum-gunu-sik',
+    name: 'Altın Gece (Doğum Günü · Şık)',
+    primaryColor: '#0c0c0f',
+    backgroundStyle: 'bg-[#0c0c0f]',
+    titleColor: 'text-white',
+    btnColor: 'bg-gradient-to-r from-amber-300 to-yellow-500 text-black',
+    imageUrl: '/images/dogum-gunu-sik.svg'
+  },
+  // Mezuniyet
+  {
+    id: 'mezuniyet-akademik',
+    name: 'Kep & Cübbe (Mezuniyet · Akademik)',
+    primaryColor: '#101f3e',
+    backgroundStyle: 'bg-[#101f3e]',
+    titleColor: 'text-yellow-400',
+    btnColor: 'bg-yellow-500 hover:bg-yellow-400 text-[#101f3e]',
+    imageUrl: '/images/mezuniyet-akademik.svg'
+  },
+  {
+    id: 'mezuniyet-dinamik',
+    name: 'Fosfor (Mezuniyet · Dinamik)',
+    primaryColor: '#050505',
+    backgroundStyle: 'bg-[#050505]',
+    titleColor: 'text-white',
+    btnColor: 'bg-lime-400 hover:bg-lime-300 text-black',
+    imageUrl: '/images/mezuniyet-dinamik.svg'
+  },
+  // Baby Shower
+  {
+    id: 'baby-shower-pastel',
+    name: 'Pamuk Bulut (Baby Shower · Pastel)',
+    primaryColor: '#fdf6f8',
+    backgroundStyle: 'bg-[#fdf6f8]',
+    titleColor: 'text-[#8a5a6d]',
+    btnColor: 'bg-rose-300 hover:bg-rose-400 text-white',
+    imageUrl: '/images/baby-shower-pastel.svg'
+  },
+  {
+    id: 'baby-shower-boho',
+    name: 'Toprak Kemer (Baby Shower · Boho)',
+    primaryColor: '#f6f1e8',
+    backgroundStyle: 'bg-[#f6f1e8]',
+    titleColor: 'text-[#7a5c3e]',
+    btnColor: 'bg-[#b08d63] hover:bg-[#9a7952] text-[#fdfaf4]',
+    imageUrl: '/images/baby-shower-boho.svg'
+  },
+  // Parti
+  {
+    id: 'parti-neon',
+    name: 'Neon Gece (Parti)',
+    primaryColor: '#07070f',
+    backgroundStyle: 'bg-[#07070f]',
+    titleColor: 'text-cyan-300',
+    btnColor: 'bg-gradient-to-r from-cyan-400 to-fuchsia-500 text-white',
+    imageUrl: '/images/parti-neon.svg'
+  },
+  {
+    id: 'parti-gala',
+    name: 'Gala (Parti · Glamour)',
+    primaryColor: '#0a0a0a',
+    backgroundStyle: 'bg-[#0a0a0a]',
+    titleColor: 'text-[#e8cf7a]',
+    btnColor: 'bg-[#d4af37] hover:bg-[#e3c35a] text-black',
+    imageUrl: '/images/parti-gala.svg'
   }
 ];
 

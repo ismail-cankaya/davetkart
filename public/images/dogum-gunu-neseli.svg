@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="560" viewBox="0 0 400 560">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe4e6"/>
+      <stop offset="0.5" stop-color="#fff7fa"/>
+      <stop offset="1" stop-color="#e0f2fe"/>
+    </linearGradient>
+    <linearGradient id="btn" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d946ef"/>
+      <stop offset="0.5" stop-color="#f43f5e"/>
+      <stop offset="1" stop-color="#fb923c"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="560" fill="url(#bg)"/>
+  <circle cx="50" cy="80" r="110" fill="#f0abfc" opacity="0.35"/>
+  <circle cx="370" cy="200" r="95" fill="#fed7aa" opacity="0.45"/>
+  <circle cx="120" cy="520" r="130" fill="#bae6fd" opacity="0.45"/>
+  <ellipse cx="300" cy="420" rx="34" ry="42" fill="none" stroke="#fb7185" stroke-width="3" opacity="0.7"/>
+  <path d="M300 462c-6 30 8 52 22 84" stroke="#fb7185" stroke-width="2" fill="none" opacity="0.6" stroke-linecap="round"/>
+  <ellipse cx="352" cy="392" rx="24" ry="30" fill="none" stroke="#fb923c" stroke-width="3" opacity="0.7"/>
+  <circle cx="120" cy="160" r="5" fill="#d946ef" opacity="0.7"/>
+  <rect x="270" y="120" width="9" height="9" rx="2" fill="#fb923c" opacity="0.75" transform="rotate(24 274 124)"/>
+  <rect x="90" y="300" width="6" height="16" rx="3" fill="#38bdf8" opacity="0.65" transform="rotate(-18 93 308)"/>
+  <circle cx="330" cy="300" r="5" fill="#f43f5e" opacity="0.6"/>
+  <rect x="160" y="90" width="8" height="8" rx="2" fill="#a78bfa" opacity="0.7" transform="rotate(40 164 94)"/>
+  <text x="200" y="258" text-anchor="middle" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="32" font-weight="700" fill="#4c0519" letter-spacing="0.5">Konfeti!</text>
+  <text x="200" y="292" text-anchor="middle" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" fill="#be185d" letter-spacing="5">DOĞUM GÜNÜ PARTİSİ</text>
+  <rect x="140" y="318" width="120" height="12" rx="6" fill="url(#btn)"/>
+</svg>

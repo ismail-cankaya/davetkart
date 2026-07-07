@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="560" viewBox="0 0 400 560">
+  <rect width="400" height="560" fill="#f6f1e8"/>
+  <path d="M60 560V320a140 140 0 0 1 280 0v240Z" fill="#efe6d6"/>
+  <path d="M100 560V340a100 100 0 0 1 200 0v220Z" fill="#e9ddc8"/>
+  <path d="M140 560V360a60 60 0 0 1 120 0v200Z" fill="#f3ecdf"/>
+  <g stroke="#b08d63" stroke-opacity="0.55" stroke-width="1.5" fill="none" stroke-linecap="round">
+    <circle cx="86" cy="96" r="18"/>
+    <path d="M86 64v-12M86 140v-12M118 96h12M42 96h12M108 74l8-8M56 126l8-8M108 118l8 8M56 66l8 8"/>
+  </g>
+  <path d="M310 520c-3-56-5-104 6-160" stroke="#a1714b" stroke-opacity="0.5" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M313 396c-11-7-17-16-18-28 10 5 15 15 18 28ZM311 428c-13-3-21-9-25-21 12 2 20 9 25 21ZM314 396c9-9 12-19 11-31-9 7-12 18-11 31Z" stroke="#a1714b" stroke-opacity="0.45" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+  <line x1="176" y1="80" x2="224" y2="80" stroke="#b08d63" stroke-opacity="0.7"/>
+  <text x="200" y="262" text-anchor="middle" font-family="'Segoe UI Light', 'Segoe UI', Helvetica, sans-serif" font-size="28" font-weight="300" fill="#7a5c3e" letter-spacing="3">Toprak Kemer</text>
+  <text x="200" y="296" text-anchor="middle" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#a1714b" letter-spacing="6">BABY SHOWER · BOHO</text>
+  <rect x="156" y="320" width="88" height="9" rx="4.5" fill="#b08d63"/>
+</svg>

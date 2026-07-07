@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="560" viewBox="0 0 400 560">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#121110"/>
+      <stop offset="0.6" stop-color="#0a0a0a"/>
+      <stop offset="1" stop-color="#000000"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.14" r="0.6">
+      <stop offset="0" stop-color="#d4af37" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#d4af37" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d4af37" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#d4af37"/>
+      <stop offset="1" stop-color="#d4af37" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="560" fill="url(#bg)"/>
+  <rect width="400" height="560" fill="url(#glow)"/>
+  <line x1="40" y1="48" x2="360" y2="48" stroke="url(#line)"/>
+  <line x1="40" y1="512" x2="360" y2="512" stroke="url(#line)"/>
+  <path d="M28 40h24M28 40v24" stroke="#d4af37" stroke-opacity="0.6"/>
+  <path d="M372 40h-24M372 40v24" stroke="#d4af37" stroke-opacity="0.6"/>
+  <path d="M28 520h24M28 520v-24" stroke="#d4af37" stroke-opacity="0.6"/>
+  <path d="M372 520h-24M372 520v-24" stroke="#d4af37" stroke-opacity="0.6"/>
+  <g stroke="#e8cf7a" stroke-width="1.5" fill="none" stroke-linecap="round">
+    <path d="M200 96v18M200 158v18M172 136h-18M246 136h-18M181 117l-12-12M231 155l12 12M219 117l12-12M181 155l-12 12"/>
+    <circle cx="200" cy="136" r="9"/>
+  </g>
+  <circle cx="120" cy="230" r="2" fill="#e8cf7a" opacity="0.8"/>
+  <circle cx="292" cy="208" r="2.5" fill="#d4af37" opacity="0.6"/>
+  <circle cx="150" cy="420" r="2" fill="#e8cf7a" opacity="0.5"/>
+  <text x="200" y="286" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" fill="#e8cf7a" letter-spacing="8">GALA</text>
+  <text x="200" y="320" text-anchor="middle" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#a3a3a3" letter-spacing="7">BLACK TIE · GLAMOUR</text>
+  <rect x="152" y="346" width="96" height="9" rx="1" fill="#d4af37"/>
+</svg>

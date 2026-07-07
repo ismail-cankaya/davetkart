@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="560" viewBox="0 0 400 560">
+  <rect width="400" height="560" fill="#050505"/>
+  <polygon points="400,0 400,224 60,0" fill="#a3e635" opacity="0.09"/>
+  <polygon points="0,560 266,560 0,392" fill="#a3e635" opacity="0.07"/>
+  <circle cx="360" cy="180" r="100" fill="#a3e635" opacity="0.1"/>
+  <line x1="0" y1="112" x2="200" y2="112" stroke="#a3e635" stroke-opacity="0.8"/>
+  <line x1="0" y1="122" x2="132" y2="122" stroke="#a3e635" stroke-opacity="0.45"/>
+  <line x1="400" y1="414" x2="240" y2="414" stroke="#a3e635" stroke-opacity="0.7"/>
+  <path d="M24 24h20M24 24v20" stroke="#a3e635" stroke-width="3" stroke-opacity="0.7"/>
+  <path d="M376 536h-20M376 536v-20" stroke="#a3e635" stroke-width="3" stroke-opacity="0.7"/>
+  <circle cx="316" cy="332" r="4" fill="#a3e635"/>
+  <circle cx="96" cy="360" r="3" fill="#bef264" opacity="0.8"/>
+  <text x="40" y="266" font-family="'Arial Black', 'Segoe UI', sans-serif" font-size="40" font-weight="900" fill="#ffffff" letter-spacing="-1">MEZUN</text>
+  <text x="40" y="308" font-family="'Arial Black', 'Segoe UI', sans-serif" font-size="40" font-weight="900" fill="#a3e635" letter-spacing="-1">OLDUK.</text>
+  <text x="42" y="340" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#d4d4d4" letter-spacing="5">MEZUNİYET · DİNAMİK</text>
+</svg>

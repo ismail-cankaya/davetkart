@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="560" viewBox="0 0 400 560">
+  <defs>
+    <radialGradient id="cyan" cx="0.14" cy="0.1" r="0.55">
+      <stop offset="0" stop-color="#06b6d4" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pink" cx="0.9" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="#d946ef" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#d946ef" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="btn" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#d946ef"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="560" fill="#07070f"/>
+  <rect width="400" height="560" fill="url(#cyan)"/>
+  <rect width="400" height="560" fill="url(#pink)"/>
+  <circle cx="200" cy="150" r="78" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-opacity="0.85"/>
+  <circle cx="200" cy="150" r="78" fill="none" stroke="#22d3ee" stroke-width="10" stroke-opacity="0.15"/>
+  <circle cx="200" cy="150" r="62" fill="none" stroke="#d946ef" stroke-width="1.5" stroke-opacity="0.7"/>
+  <line x1="80" y1="0" x2="120" y2="220" stroke="#22d3ee" stroke-opacity="0.4"/>
+  <line x1="310" y1="0" x2="270" y2="180" stroke="#d946ef" stroke-opacity="0.4"/>
+  <circle cx="70" cy="300" r="3" fill="#67e8f9"/>
+  <circle cx="330" cy="350" r="2.5" fill="#e879f9"/>
+  <circle cx="120" cy="440" r="2" fill="#c4b5fd"/>
+  <text x="200" y="286" text-anchor="middle" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="34" font-weight="700" fill="#ffffff" letter-spacing="4">NEON</text>
+  <text x="200" y="318" text-anchor="middle" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" fill="#67e8f9" letter-spacing="7">GECE · PARTİ</text>
+  <rect x="145" y="344" width="110" height="11" rx="5.5" fill="url(#btn)"/>
+  <rect x="0" y="480" width="400" height="80" fill="#083344" opacity="0.35"/>
+</svg>

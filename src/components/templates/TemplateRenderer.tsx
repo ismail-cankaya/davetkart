@@ -2,6 +2,11 @@ import React from 'react';
 import { DugunSade, DugunManzara, DugunSekilli, DugunModern, Dugun1, Dugun2, Dugun3, Dugun4, Dugun5 } from './dugun';
 import { KinaSade, KinaManzara, KinaSekilli, KinaModern } from './kina';
 import { NisanSade, NisanManzara, NisanSekilli, NisanModern } from './nisan';
+import { SunnetKlasik, SunnetModern } from './sunnet';
+import { DogumGunuNeseli, DogumGunuSik } from './dogum-gunu';
+import { MezuniyetAkademik, MezuniyetDinamik } from './mezuniyet';
+import { BabyShowerPastel, BabyShowerBoho } from './baby-shower';
+import { PartiNeon, PartiGala } from './parti';
 import { Invitation } from '../../types';
 import { TemplateProps } from './types';
 
@@ -37,6 +42,21 @@ const THEME_PRESETS: Record<string, React.ComponentType<TemplateProps>> = {
   'nisan-manzara': NisanManzara,
   'nisan-sekilli': NisanSekilli,
   'nisan-modern': NisanModern,
+  // Sünnet
+  'sunnet-klasik': SunnetKlasik,
+  'sunnet-modern': SunnetModern,
+  // Doğum Günü
+  'dogum-gunu-neseli': DogumGunuNeseli,
+  'dogum-gunu-sik': DogumGunuSik,
+  // Mezuniyet
+  'mezuniyet-akademik': MezuniyetAkademik,
+  'mezuniyet-dinamik': MezuniyetDinamik,
+  // Baby Shower
+  'baby-shower-pastel': BabyShowerPastel,
+  'baby-shower-boho': BabyShowerBoho,
+  // Parti
+  'parti-neon': PartiNeon,
+  'parti-gala': PartiGala,
 };
 
 export function TemplateRenderer({ templateId, invitation, onRsvpClick, mode = 'preview' }: TemplateRendererProps) {
