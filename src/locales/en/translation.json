@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "Home",
+    "create": "Design Invitation",
+    "dashboard": "RSVP Panel"
+  },
+  "auth": {
+    "login": "Sign In",
+    "register": "Sign Up",
+    "logout": "Sign Out",
+    "myPanel": "My Panel"
+  },
+  "hero": {
+    "badge": "The Next-Generation Invitation Experience",
+    "headline": {
+      "lead": "Crown Your Special Moments",
+      "accent": "with Digital Elegance",
+      "tail": ""
+    },
+    "subtitle": "Leave an unforgettable first impression on your loved ones with eco-friendly, instantly shareable, musical, and fully customizable digital luxury invitations.",
+    "ctaPrimary": "Create Your Invitation",
+    "ctaSecondary": "Browse Templates",
+    "explore": "Discover",
+    "stats": {
+      "invitations": "Invitations Created",
+      "views": "Views",
+      "templates": "Unique Templates",
+      "eco": "Eco-Friendly"
+    }
+  }
+}

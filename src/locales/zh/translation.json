@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "首页",
+    "create": "设计请柬",
+    "dashboard": "宾客回执"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出",
+    "myPanel": "我的面板"
+  },
+  "hero": {
+    "badge": "新一代请柬体验",
+    "headline": {
+      "lead": "用",
+      "accent": "数字优雅",
+      "tail": "点亮您的特别时刻"
+    },
+    "subtitle": "环保、即时分享、配有音乐且完全可定制的数字奢华请柬，为您的挚爱留下难忘的第一印象。",
+    "ctaPrimary": "创建您的请柬",
+    "ctaSecondary": "浏览模板",
+    "explore": "探索",
+    "stats": {
+      "invitations": "已创建请柬",
+      "views": "浏览量",
+      "templates": "专属模板",
+      "eco": "环保"
+    }
+  }
+}

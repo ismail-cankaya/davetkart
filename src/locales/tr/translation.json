@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "Anasayfa",
+    "create": "Davetiye Tasarla",
+    "dashboard": "Katılım Paneli"
+  },
+  "auth": {
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "logout": "Çıkış Yap",
+    "myPanel": "Panelim"
+  },
+  "hero": {
+    "badge": "Yeni Nesil Davetiye Deneyimi",
+    "headline": {
+      "lead": "Özel Anlarınızı",
+      "accent": "Dijital Zarafetle",
+      "tail": "Taçlandırın"
+    },
+    "subtitle": "Çevre dostu, anında paylaşılabilir, müzikli ve tamamen kişiselleştirilebilir dijital lüks davetiyelerle sevdiklerinize unutulmaz bir ilk izlenim bırakın.",
+    "ctaPrimary": "Davetiyeni Oluştur",
+    "ctaSecondary": "Şablonları İncele",
+    "explore": "Keşfet",
+    "stats": {
+      "invitations": "Oluşturulan Davetiye",
+      "views": "Görüntülenme",
+      "templates": "Özel Şablon",
+      "eco": "Çevre Dostu"
+    }
+  }
+}

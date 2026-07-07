@@ -1,24 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion, animate, useInView } from 'motion/react';
 import { Sparkles, ArrowRight } from 'lucide-react';
 
 const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
 
-/* Headline split into words for a staggered blur-rise reveal */
-const HEADLINE: { text: string; accent?: boolean }[] = [
-  { text: 'Özel' },
-  { text: 'Anlarınızı' },
-  { text: 'Dijital', accent: true },
-  { text: 'Zarafetle', accent: true },
-  { text: 'Taçlandırın' }
-];
-
 const STATS = [
-  { value: 10, suffix: 'K+', label: 'Oluşturulan Davetiye' },
-  { value: 70, suffix: 'B+', label: 'Görüntülenme' },
-  { value: 500, suffix: '+', label: 'Özel Şablon' },
-  { value: 100, prefix: '%', suffix: '', label: 'Çevre Dostu' }
+  { value: 10, suffix: 'K+', labelKey: 'hero.stats.invitations' },
+  { value: 70, suffix: 'B+', labelKey: 'hero.stats.views' },
+  { value: 500, suffix: '+', labelKey: 'hero.stats.templates' },
+  { value: 100, prefix: '%', suffix: '', labelKey: 'hero.stats.eco' }
 ];
 
 function StatCounter({ value, prefix = '', suffix = '' }: { value: number; prefix?: string; suffix?: string }) {
@@ -47,6 +39,20 @@ function StatCounter({ value, prefix = '', suffix = '' }: { value: number; prefi
 }
 
 export const Hero = React.memo(function Hero() {
+  const { t } = useTranslation();
+
+  // Headline arrives as lead/accent/tail phrases per language, then gets
+  // split into words so the staggered blur-rise reveal survives translation.
+  const headline = useMemo(() => {
+    const toWords = (key: string, accent: boolean) =>
+      t(key).split(' ').filter(Boolean).map(text => ({ text, accent }));
+    return [
+      ...toWords('hero.headline.lead', false),
+      ...toWords('hero.headline.accent', true),
+      ...toWords('hero.headline.tail', false)
+    ];
+  }, [t]);
+
   return (
     <section className="relative min-h-[100dvh] -mt-[72px] pt-32 pb-20 overflow-hidden bg-gradient-to-b from-cream via-white to-cream flex flex-col justify-center bg-grain">
       <div className="max-w-7xl mx-auto px-4 md:px-12 relative z-10 flex flex-col items-center text-center w-full">
@@ -60,18 +66,18 @@ export const Hero = React.memo(function Hero() {
         >
           <div className="absolute inset-0 animate-shimmer" />
           <Sparkles size={14} className="text-gold animate-pulse relative z-10" />
-          <span className="relative z-10">Yeni Nesil Davetiye Deneyimi</span>
+          <span className="relative z-10">{t('hero.badge')}</span>
         </motion.div>
 
         {/* Headline — staggered word reveal */}
         <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-ink max-w-4xl mx-auto leading-[1.12] md:leading-[1.1] mb-6 font-bold tracking-tight">
-          {HEADLINE.map((word, idx) => (
-            <span key={idx} className="inline-block overflow-hidden align-bottom pb-1">
+          {headline.map((word, idx) => (
+            <span key={`${word.text}-${idx}`} className="inline-block overflow-hidden align-bottom pb-1">
               <motion.span
                 initial={{ opacity: 0, y: '70%', filter: 'blur(8px)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 transition={{ duration: 1, ease: EASE_LUXE, delay: 0.15 + idx * 0.09 }}
-                className={`inline-block mr-[0.28em] ${word.accent ? 'text-brand italic font-medium' : ''}`}
+                className={`inline-block me-[0.28em] ${word.accent ? 'text-brand italic font-medium' : ''}`}
               >
                 {word.text}
               </motion.span>
@@ -85,7 +91,7 @@ export const Hero = React.memo(function Hero() {
           transition={{ duration: 1, ease: EASE_LUXE, delay: 0.55 }}
           className="text-muted text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed"
         >
-          Çevre dostu, anında paylaşılabilir, müzikli ve tamamen kişiselleştirilebilir dijital lüks davetiyelerle sevdiklerinize unutulmaz bir ilk izlenim bırakın.
+          {t('hero.subtitle')}
         </motion.p>
 
         {/* CTAs */}
@@ -100,14 +106,14 @@ export const Hero = React.memo(function Hero() {
             className="group relative overflow-hidden bg-brand text-white px-8 py-4 rounded-full font-semibold text-sm hover:bg-brand-soft transition-all duration-500 shadow-lg shadow-brand/20 flex items-center justify-center gap-2 hover:-translate-y-1 hover:shadow-xl hover:shadow-brand/30"
           >
             <span className="absolute inset-0 animate-shimmer pointer-events-none" />
-            Davetiyeni Oluştur
-            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
+            {t('hero.ctaPrimary')}
+            <ArrowRight size={16} className="group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 transition-transform duration-300" />
           </Link>
           <Link
             to="/create"
             className="bg-white/70 backdrop-blur-sm text-brand border border-brand/15 px-8 py-4 rounded-full font-semibold text-sm hover:bg-white hover:border-brand/30 transition-all duration-500 flex items-center justify-center gap-2 hover:-translate-y-0.5 shadow-sm hover:shadow-md"
           >
-            Şablonları İncele
+            {t('hero.ctaSecondary')}
           </Link>
         </motion.div>
 
@@ -121,14 +127,14 @@ export const Hero = React.memo(function Hero() {
         >
           {STATS.map((stat, idx) => (
             <motion.div
-              key={stat.label}
+              key={stat.labelKey}
               className="p-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.95 + idx * 0.1, ease: EASE_LUXE }}
             >
               <StatCounter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
-              <p className="text-xs text-muted uppercase tracking-wider font-semibold mt-2">{stat.label}</p>
+              <p className="text-xs text-muted uppercase tracking-wider font-semibold mt-2">{t(stat.labelKey)}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -149,7 +155,7 @@ export const Hero = React.memo(function Hero() {
         transition={{ delay: 1.6, duration: 1 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 cursor-pointer group"
       >
-        <span className="text-[10px] text-muted uppercase tracking-[0.2em] font-semibold group-hover:text-brand transition-colors">Keşfet</span>
+        <span className="text-[10px] text-muted uppercase tracking-[0.2em] font-semibold group-hover:text-brand transition-colors">{t('hero.explore')}</span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}

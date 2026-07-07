@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react';
 import { Menu, X, LayoutDashboard, LogOut } from 'lucide-react';
 import { BrandMark } from '../ui/BrandMark';
+import { LanguageSwitcher } from '../LanguageSwitcher';
 import { useAuthStore } from '../../stores/useAuthStore';
 
 const NAV_LINKS = [
-  { to: '/', label: 'Anasayfa' },
-  { to: '/create', label: 'Davetiye Tasarla' },
-  { to: '/dashboard', label: 'Katılım Paneli' }
+  { to: '/', labelKey: 'nav.home' },
+  { to: '/create', labelKey: 'nav.create' },
+  { to: '/dashboard', labelKey: 'nav.dashboard' }
 ];
 
 const menuVariants = {
@@ -28,6 +30,7 @@ const menuItemVariants = {
 };
 
 export const Header = React.memo(function Header() {
+  const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { scrollY } = useScroll();
@@ -83,9 +86,9 @@ export const Header = React.memo(function Header() {
             >
               {({ isActive }) => (
                 <>
-                  {link.label}
+                  {t(link.labelKey)}
                   <span
-                    className={`absolute left-0 -bottom-0.5 w-full h-px bg-gold transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                    className={`absolute start-0 -bottom-0.5 w-full h-px bg-gold transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                       isActive
                         ? 'scale-x-100'
                         : 'origin-right scale-x-0 group-hover:origin-left group-hover:scale-x-100'
@@ -99,6 +102,7 @@ export const Header = React.memo(function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-3">
+          <LanguageSwitcher />
           {isAuthenticated ? (
             <>
               <button
@@ -106,7 +110,7 @@ export const Header = React.memo(function Header() {
                 className="hidden md:flex items-center gap-1.5 text-muted hover:text-brand font-semibold text-sm transition-colors duration-300 py-2 px-4 cursor-pointer"
               >
                 <LogOut size={14} />
-                Çıkış Yap
+                {t('auth.logout')}
               </button>
               <Link
                 to="/dashboard"
@@ -114,7 +118,7 @@ export const Header = React.memo(function Header() {
               >
                 <span className="absolute inset-0 animate-shimmer pointer-events-none" />
                 <LayoutDashboard size={14} />
-                <span className="max-w-28 truncate">{user?.fullName ?? 'Panelim'}</span>
+                <span className="max-w-28 truncate">{user?.fullName ?? t('auth.myPanel')}</span>
               </Link>
             </>
           ) : (
@@ -123,14 +127,14 @@ export const Header = React.memo(function Header() {
                 to="/login"
                 className="hidden md:block text-muted hover:text-brand font-semibold text-sm transition-colors duration-300 py-2 px-4"
               >
-                Giriş Yap
+                {t('auth.login')}
               </Link>
               <Link
                 to="/register"
                 className="relative overflow-hidden bg-brand text-white px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-brand-soft transition-all duration-500 shadow-md shadow-brand/15 hover:shadow-lg hover:shadow-brand/25 hover:-translate-y-0.5"
               >
                 <span className="absolute inset-0 animate-shimmer pointer-events-none" />
-                Kayıt Ol
+                {t('auth.register')}
               </Link>
             </>
           )}
@@ -178,7 +182,7 @@ export const Header = React.memo(function Header() {
                     }
                     to={link.to}
                   >
-                    {link.label}
+                    {t(link.labelKey)}
                   </NavLink>
                 </motion.span>
               ))}
@@ -190,14 +194,14 @@ export const Header = React.memo(function Header() {
                       onClick={handleLogout}
                       className="flex-1 bg-ink/5 text-center text-ink py-3 rounded-full font-semibold text-sm hover:bg-ink/10 transition-colors cursor-pointer"
                     >
-                      Çıkış Yap
+                      {t('auth.logout')}
                     </button>
                     <Link
                       onClick={() => setMobileMenuOpen(false)}
                       className="flex-1 bg-brand text-white text-center py-3 rounded-full font-semibold text-sm shadow-md shadow-brand/20"
                       to="/dashboard"
                     >
-                      Panelim
+                      {t('auth.myPanel')}
                     </Link>
                   </>
                 ) : (
@@ -207,14 +211,14 @@ export const Header = React.memo(function Header() {
                       className="flex-1 bg-ink/5 text-center text-ink py-3 rounded-full font-semibold text-sm hover:bg-ink/10 transition-colors"
                       to="/login"
                     >
-                      Giriş Yap
+                      {t('auth.login')}
                     </Link>
                     <Link
                       onClick={() => setMobileMenuOpen(false)}
                       className="flex-1 bg-brand text-white text-center py-3 rounded-full font-semibold text-sm shadow-md shadow-brand/20"
                       to="/register"
                     >
-                      Kayıt Ol
+                      {t('auth.register')}
                     </Link>
                   </>
                 )}

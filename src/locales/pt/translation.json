@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "Início",
+    "create": "Criar convite",
+    "dashboard": "Painel de RSVP"
+  },
+  "auth": {
+    "login": "Entrar",
+    "register": "Cadastrar",
+    "logout": "Sair",
+    "myPanel": "Meu painel"
+  },
+  "hero": {
+    "badge": "A experiência de convite de nova geração",
+    "headline": {
+      "lead": "Coroe seus momentos especiais",
+      "accent": "com elegância digital",
+      "tail": ""
+    },
+    "subtitle": "Deixe uma primeira impressão inesquecível nos seus entes queridos com convites digitais de luxo ecológicos, compartilháveis instantaneamente, com música e totalmente personalizáveis.",
+    "ctaPrimary": "Crie seu convite",
+    "ctaSecondary": "Ver modelos",
+    "explore": "Descubra",
+    "stats": {
+      "invitations": "Convites criados",
+      "views": "Visualizações",
+      "templates": "Modelos exclusivos",
+      "eco": "Ecológico"
+    }
+  }
+}

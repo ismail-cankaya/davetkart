@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { AppLayout } from './components/layout/AppLayout';
+import { useDocumentDirection } from './hooks/useDocumentDirection';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import HomePage from './pages/HomePage';
 
@@ -42,6 +43,8 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  // Flips <html dir> to rtl for Arabic and keeps <html lang> current.
+  useDocumentDirection();
   return <RouterProvider router={router} />;
 }
 

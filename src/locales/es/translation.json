@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "create": "Diseñar invitación",
+    "dashboard": "Panel de asistencia"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar sesión",
+    "myPanel": "Mi panel"
+  },
+  "hero": {
+    "badge": "La experiencia de invitación de nueva generación",
+    "headline": {
+      "lead": "Corona tus momentos especiales",
+      "accent": "con elegancia digital",
+      "tail": ""
+    },
+    "subtitle": "Deja una primera impresión inolvidable en tus seres queridos con invitaciones digitales de lujo ecológicas, compartibles al instante, con música y totalmente personalizables.",
+    "ctaPrimary": "Crea tu invitación",
+    "ctaSecondary": "Explorar plantillas",
+    "explore": "Descubre",
+    "stats": {
+      "invitations": "Invitaciones creadas",
+      "views": "Visualizaciones",
+      "templates": "Plantillas exclusivas",
+      "eco": "Ecológico"
+    }
+  }
+}

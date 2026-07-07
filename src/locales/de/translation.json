@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "create": "Einladung gestalten",
+    "dashboard": "RSVP-Übersicht"
+  },
+  "auth": {
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden",
+    "myPanel": "Mein Bereich"
+  },
+  "hero": {
+    "badge": "Das Einladungserlebnis der neuen Generation",
+    "headline": {
+      "lead": "Krönen Sie Ihre besonderen Momente",
+      "accent": "mit digitaler Eleganz",
+      "tail": ""
+    },
+    "subtitle": "Hinterlassen Sie bei Ihren Liebsten einen unvergesslichen ersten Eindruck mit umweltfreundlichen, sofort teilbaren, musikalischen und vollständig anpassbaren digitalen Luxus-Einladungen.",
+    "ctaPrimary": "Einladung erstellen",
+    "ctaSecondary": "Vorlagen entdecken",
+    "explore": "Entdecken",
+    "stats": {
+      "invitations": "Erstellte Einladungen",
+      "views": "Aufrufe",
+      "templates": "Exklusive Vorlagen",
+      "eco": "Umweltfreundlich"
+    }
+  }
+}

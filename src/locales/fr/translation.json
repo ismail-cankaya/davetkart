@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "create": "Créer une invitation",
+    "dashboard": "Suivi des réponses"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "logout": "Déconnexion",
+    "myPanel": "Mon espace"
+  },
+  "hero": {
+    "badge": "L'expérience d'invitation nouvelle génération",
+    "headline": {
+      "lead": "Sublimez vos moments précieux",
+      "accent": "avec une élégance numérique",
+      "tail": ""
+    },
+    "subtitle": "Laissez une première impression inoubliable à vos proches avec des invitations numériques de luxe écologiques, partageables instantanément, musicales et entièrement personnalisables.",
+    "ctaPrimary": "Créez votre invitation",
+    "ctaSecondary": "Découvrir les modèles",
+    "explore": "Explorer",
+    "stats": {
+      "invitations": "Invitations créées",
+      "views": "Vues",
+      "templates": "Modèles exclusifs",
+      "eco": "Écologique"
+    }
+  }
+}
