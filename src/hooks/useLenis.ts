@@ -60,18 +60,12 @@ export function useLenis() {
 
     const lenis = new Lenis({
       lerp: 0.1,
-      wheelMultiplier: 1,
-      // Touch handling is split by region (see onScroll): Lenis owns touch
-      // gestures only inside the hero, where the snap animation needs full
-      // control of the scroll position — a native fling would fight it
-      // frame-by-frame. Everywhere below, this flag is switched off at
-      // runtime and the page scrolls 100% natively on phones. Inner
-      // scrollables opt out with data-lenis-prevent.
-      syncTouch: true,
-      // Lenis' default inertia settle (0.075) feels syrupy-slow; a higher
-      // lerp keeps the same flick physics but settles noticeably faster.
-      syncTouchLerp: 0.12,
-      touchMultiplier: 1
+      wheelMultiplier: 1
+      // syncTouch stays at its default (false): emulating touch inertia in JS
+      // fights the phone's hardware-composited scrolling and tanks FPS on
+      // mobile. Touch gestures are 100% native; Lenis only smooths wheel
+      // input, so the hero snap below is effectively desktop-only (native
+      // touch scrolls are filtered out by the isScrolling === 'native' guard).
     });
     lenisInstance = lenis;
 
@@ -120,20 +114,12 @@ export function useLenis() {
       const sectionTop = section.getBoundingClientRect().top + lenis.scroll;
       const snapPoint = getSnapPoint(section, sectionTop);
 
-      // Lenis emulates touch inertia only where the snap needs to own the
-      // scroll: the hero region. Past the snap point the flag is switched
-      // off, so the rest of the page keeps the native mobile scroll feel.
-      lenis.options.syncTouch = lenis.scroll < snapPoint;
-
-      // While a finger is on the screen the user is still gesturing — snapping
-      // now would lock a live drag mid-touch (felt as stutter). Wait for the
-      // release: the inertia phase that follows still emits scroll events with
-      // a direction, so the intent is not lost.
-      if (autoScrolling || lenis.isTouching) return;
+      if (autoScrolling) return;
 
       // Never snap against browser-driven movement (native touch fling,
       // scrollbar drag): a programmatic glide would fight it frame-by-frame.
-      // Scrolling up from below the hero therefore stays fully native.
+      // With syncTouch off this also makes all phone scrolling — including
+      // the hero — fully native; the snap only engages on wheel input.
       if (lenis.isScrolling === 'native') return;
 
       // Scroll position at which the hero is fully revealed; 0 on screens
@@ -145,10 +131,6 @@ export function useLenis() {
       else if (lenis.direction === -1) glideTo(heroFloor, 1.2, true);
     };
     lenis.on('scroll', onScroll);
-    // Evaluate the region flag once up front: the page may load scrolled
-    // (browser scroll restoration), and the first touch must already be
-    // native below the hero. direction is 0 here, so no glide can trigger.
-    onScroll();
 
     // Intercept in-page anchors so they glide instead of jumping
     const onClick = (e: MouseEvent) => {

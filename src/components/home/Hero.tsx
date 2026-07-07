@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, animate, useInView } from 'motion/react';
 import { Sparkles, ArrowRight } from 'lucide-react';
@@ -24,21 +24,24 @@ const STATS = [
 function StatCounter({ value, prefix = '', suffix = '' }: { value: number; prefix?: string; suffix?: string }) {
   const ref = useRef<HTMLParagraphElement>(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
-  const [display, setDisplay] = useState(0);
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView || !ref.current) return;
+    const node = ref.current;
+    // Count by writing textContent straight to the DOM node: piping the
+    // 60fps ticks through setState re-rendered the component on every
+    // frame and blocked the main thread during the hero's entrance.
     const controls = animate(0, value, {
       duration: 1.8,
       ease: EASE_LUXE,
-      onUpdate: v => setDisplay(Math.round(v))
+      onUpdate: v => { node.textContent = `${prefix}${Math.round(v)}${suffix}`; }
     });
     return () => controls.stop();
-  }, [inView, value]);
+  }, [inView, value, prefix, suffix]);
 
   return (
     <p ref={ref} className="font-serif text-3xl md:text-4xl font-bold text-brand tabular-nums">
-      {prefix}{display}{suffix}
+      {prefix}0{suffix}
     </p>
   );
 }
@@ -131,22 +134,12 @@ export const Hero = React.memo(function Hero() {
         </motion.div>
       </div>
 
-      {/* Ambient aurora blobs */}
-      <motion.div
-        animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-10 right-0 w-80 h-80 bg-emerald-100/50 rounded-full blur-3xl pointer-events-none -z-10"
-      />
-      <motion.div
-        animate={{ x: [0, -20, 0], y: [0, 30, 0] }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        className="hidden md:block absolute bottom-20 left-10 w-96 h-96 bg-champagne/40 rounded-full blur-3xl pointer-events-none -z-10"
-      />
-      <motion.div
-        animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.35, 0.2] }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-emerald-100/30 to-transparent rounded-full blur-3xl pointer-events-none -z-10"
-      />
+      {/* Ambient aurora blobs — pure CSS keyframes on their own GPU layer
+          (see index.css); animating blur-3xl surfaces from JS janked mobile.
+          Blob 3's centering translate lives in the keyframes. */}
+      <div className="animate-aurora-1 absolute top-10 right-0 w-80 h-80 bg-emerald-100/50 rounded-full blur-2xl md:blur-3xl pointer-events-none -z-10" />
+      <div className="animate-aurora-2 hidden md:block absolute bottom-20 left-10 w-96 h-96 bg-champagne/40 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="animate-aurora-3 hidden md:block absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-gradient-to-br from-emerald-100/30 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* Scroll indicator */}
       <motion.a
