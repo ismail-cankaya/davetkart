@@ -4,8 +4,11 @@ import { motion } from 'motion/react';
 import { PenLine, Rocket, ShieldCheck } from 'lucide-react';
 import { DesignerPanel } from '../editor/DesignerPanel';
 import { DeviceSimulator } from '../preview/DeviceSimulator';
+import { PaywallModal } from '../payment/PaywallModal';
 import { useAuthStore } from '../../stores/useAuthStore';
 import { useCreateWizardStore } from '../../stores/useCreateWizardStore';
+import { useInvitationStore } from '../../stores/useInvitationStore';
+import { getRequiredTier, TIER_RANK, useSubscriptionStore } from '../../stores/useSubscriptionStore';
 import { toast } from '../ui/Toast';
 import { AuthRedirectState } from '../../types';
 import { scrollToTarget } from '../../hooks/useLenis';
@@ -34,6 +37,14 @@ export function EditorWorkspace() {
     scrollToTarget(0, { immediate: true });
   }, []);
 
+  /** Final step after payment (or with an already-owned plan): go live. */
+  const finishPublish = () => {
+    // TODO(backend): POST the invitation through `api` (services/api.ts)
+    // and navigate to the hosted /invite/:id link it returns.
+    toast('Davetiyeniz yayınlandı! Katılım yanıtlarını panelinizden takip edebilirsiniz. 🎉');
+    navigate('/dashboard');
+  };
+
   const handlePublish = () => {
     if (!isAuthenticated) {
       const state: AuthRedirectState = { from: location.pathname };
@@ -41,10 +52,18 @@ export function EditorWorkspace() {
       navigate('/login', { state });
       return;
     }
-    // TODO(backend): POST the invitation through `api` (services/api.ts)
-    // and navigate to the hosted /invite/:id link it returns.
-    toast('Davetiyeniz yayınlandı! Katılım yanıtlarını panelinizden takip edebilirsiniz. 🎉');
-    navigate('/dashboard');
+
+    // Paywall: there is no free tier — publishing needs a plan that covers
+    // every module enabled on the design (gallery/gift ⇒ Elit, envelope/
+    // timeline ⇒ Gold). A sufficient plan from this session skips the wall.
+    const { invitation } = useInvitationStore.getState();
+    const requiredTier = getRequiredTier(invitation);
+    const { activeTier, openPaywall } = useSubscriptionStore.getState();
+    if (activeTier && TIER_RANK[activeTier] >= TIER_RANK[requiredTier]) {
+      finishPublish();
+      return;
+    }
+    openPaywall(requiredTier);
   };
 
   const handleBackToEdit = () => {
@@ -130,6 +149,8 @@ export function EditorWorkspace() {
           </p>
         </motion.div>
       </section>
+
+      <PaywallModal onPurchased={finishPublish} />
     </motion.div>
   );
 }

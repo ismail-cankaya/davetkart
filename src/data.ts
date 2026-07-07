@@ -1,4 +1,4 @@
-import { EventCategory, FeaturedTemplate, Invitation, RSVPResponse, RsvpDraft, TemplatePreset, TimelineEvent } from './types';
+import { EventCategory, FeaturedTemplate, Invitation, RSVPResponse, RsvpDraft, SubscriptionPlan, TemplatePreset, TimelineEvent } from './types';
 import dugun1Preview from './components/templates/dugun/Dugun1/assets/dugun1-left.png';
 import dugun2Preview from './components/templates/dugun/Dugun2/assets/dugun2-top.png';
 import dugun3Preview from './components/templates/dugun/Dugun3/assets/dugun3-bottom.png';
@@ -332,6 +332,65 @@ export const DEFAULT_TIMELINE_EVENTS: TimelineEvent[] = [
 
 /** Pre-set gift amounts (₺) offered in the gift registry section. */
 export const DEFAULT_GIFT_OPTIONS: number[] = [1000, 2500, 5000];
+
+/**
+ * Paid publishing plans (paywall). Feature rows are kept parallel across the
+ * three plans so the pricing cards read as a comparison table; `included`
+ * drives the check vs struck-through rendering.
+ */
+export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
+  {
+    id: 'standart',
+    name: 'Standart',
+    price: 249,
+    tagline: 'Zarif bir başlangıç için temel modüller',
+    features: [
+      { label: 'Temel şablon koleksiyonu', included: true },
+      { label: 'Harita & Konum yönlendirmesi', included: true },
+      { label: 'Geri sayım sayacı', included: true },
+      { label: 'LCV — maksimum 100 kişi', included: true },
+      { label: 'Zarf açılış animasyonu', included: false },
+      { label: 'Hikaye / Zaman çizelgesi', included: false },
+      { label: 'Fotoğraf & Video galerisi', included: false },
+      { label: 'Hediye & IBAN modülü', included: false },
+      { label: 'Logosuz özel yayın', included: false }
+    ]
+  },
+  {
+    id: 'gold',
+    name: 'Gold',
+    price: 399,
+    tagline: 'Premium temalar ve etkileyici anlatım',
+    features: [
+      { label: 'Premium tema koleksiyonu', included: true },
+      { label: 'Harita & Konum yönlendirmesi', included: true },
+      { label: 'Geri sayım sayacı', included: true },
+      { label: 'Sınırsız LCV', included: true },
+      { label: 'Zarf açılış animasyonu', included: true },
+      { label: 'Hikaye / Zaman çizelgesi', included: true },
+      { label: 'Fotoğraf & Video galerisi', included: false },
+      { label: 'Hediye & IBAN modülü', included: false },
+      { label: 'Logosuz özel yayın', included: false }
+    ]
+  },
+  {
+    id: 'elit',
+    name: 'Elit',
+    price: 549,
+    tagline: 'Sitedeki tüm özellikler, sınırsız deneyim',
+    features: [
+      { label: 'Premium tema koleksiyonu', included: true },
+      { label: 'Harita & Konum yönlendirmesi', included: true },
+      { label: 'Geri sayım sayacı', included: true },
+      { label: 'Sınırsız LCV', included: true },
+      { label: 'Zarf açılış animasyonu', included: true },
+      { label: 'Hikaye / Zaman çizelgesi', included: true },
+      { label: 'Fotoğraf & Video galerisi', included: true },
+      { label: 'Hediye & IBAN modülü', included: true },
+      { label: 'Logosuz özel yayın', included: true }
+    ]
+  }
+];
 
 export const INITIAL_INVITATION: Invitation = {
   title: 'HAYATIMIZIN EN ANLAMLI GÜNÜ',

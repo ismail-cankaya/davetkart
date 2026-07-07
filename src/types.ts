@@ -80,6 +80,36 @@ export interface Invitation {
   galleryImages: string[];
 }
 
+/** Paid plan tiers — there is no free tier; publishing always requires a purchase. */
+export type SubscriptionTier = 'standart' | 'gold' | 'elit';
+
+/** A single row of a plan card's feature list. */
+export interface PlanFeature {
+  label: string;
+  /** false renders the row dimmed/struck-through (locked in this plan). */
+  included: boolean;
+}
+
+export interface SubscriptionPlan {
+  id: SubscriptionTier;
+  name: string;
+  /** One-time price in TL. */
+  price: number;
+  tagline: string;
+  features: PlanFeature[];
+}
+
+/** Payload the checkout endpoint will receive once the Payments service exists. */
+export interface CheckoutPayload {
+  tier: SubscriptionTier;
+}
+
+export interface CheckoutResult {
+  orderId: string;
+  tier: SubscriptionTier;
+  status: 'paid';
+}
+
 /** Lifecycle of an invitation stored on the Invitation microservice. */
 export type InvitationStatus = 'published' | 'saved';
 
