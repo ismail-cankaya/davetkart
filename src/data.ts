@@ -1,4 +1,4 @@
-import { EventCategory, Invitation, RSVPResponse, RsvpDraft, TemplatePreset, TimelineEvent } from './types';
+import { EventCategory, FeaturedTemplate, Invitation, RSVPResponse, RsvpDraft, TemplatePreset, TimelineEvent } from './types';
 import dugun1Preview from './components/templates/dugun/Dugun1/assets/dugun1-left.png';
 import dugun2Preview from './components/templates/dugun/Dugun2/assets/dugun2-top.png';
 import dugun3Preview from './components/templates/dugun/Dugun3/assets/dugun3-bottom.png';
@@ -64,42 +64,49 @@ export const EVENT_CATEGORIES: EventCategory[] = [
   }
 ];
 
+/** Categories served by the composable style presets (sade/manzara/sekilli/modern). */
+const COMPOSABLE_CATEGORIES = ['dugun', 'kina', 'nisan'];
+
 export const TEMPLATE_PRESETS: TemplatePreset[] = [
   {
     id: 'sade',
-    name: 'Sade Stil',
+    name: 'Zarif Sadelik',
     primaryColor: '#faf8f3',
     backgroundStyle: 'bg-stone-100',
     titleColor: 'text-stone-800',
     btnColor: 'bg-stone-900 hover:bg-stone-700 text-stone-50',
-    imageUrl: '/images/dugun-sade.svg'
+    imageUrl: '/images/dugun-sade.svg',
+    categories: COMPOSABLE_CATEGORIES
   },
   {
     id: 'manzara',
-    name: 'Manzara Konsepti',
+    name: 'Zümrüt Vadisi',
     primaryColor: '#0f172a',
     backgroundStyle: 'bg-slate-900',
     titleColor: 'text-white',
     btnColor: 'bg-emerald-500 hover:bg-emerald-400 text-white',
-    imageUrl: '/images/emerald.png'
+    imageUrl: '/images/emerald.png',
+    categories: COMPOSABLE_CATEGORIES
   },
   {
     id: 'sekilli',
-    name: 'Şekilli / Motifli',
+    name: 'Altın Motif',
     primaryColor: '#1a1c23',
     backgroundStyle: 'bg-[#1a1c23]',
     titleColor: 'text-amber-400',
     btnColor: 'bg-gradient-to-r from-amber-400 to-amber-600 text-stone-900',
-    imageUrl: '/images/corporate.png'
+    imageUrl: '/images/corporate.png',
+    categories: COMPOSABLE_CATEGORIES
   },
   {
     id: 'modern',
-    name: 'Modern / Dinamik',
+    name: 'Gece Modası',
     primaryColor: '#09090b',
     backgroundStyle: 'bg-zinc-950',
     titleColor: 'text-white',
     btnColor: 'bg-indigo-600 hover:bg-indigo-500 text-white',
-    imageUrl: '/images/moda-gece.svg'
+    imageUrl: '/images/moda-gece.svg',
+    categories: COMPOSABLE_CATEGORIES
   },
   // Katmanlı görsel düğün şablon ailesi (Dugun1–Dugun5)
   {
@@ -109,7 +116,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-stone-50',
     titleColor: 'text-stone-800',
     btnColor: 'bg-stone-900 hover:bg-stone-700 text-stone-50',
-    imageUrl: dugun1Preview
+    imageUrl: dugun1Preview,
+    categories: ['dugun']
   },
   {
     id: 'dugun-2',
@@ -118,7 +126,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#fbfaf5]',
     titleColor: 'text-[#3c4034]',
     btnColor: 'bg-[#4a5540] hover:bg-[#5d6a50] text-[#f7f6ee]',
-    imageUrl: dugun2Preview
+    imageUrl: dugun2Preview,
+    categories: ['dugun']
   },
   {
     id: 'dugun-3',
@@ -127,7 +136,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#faf6f3]',
     titleColor: 'text-[#452430]',
     btnColor: 'bg-[#54263a] hover:bg-[#6b3049] text-[#faf3ef]',
-    imageUrl: dugun3Preview
+    imageUrl: dugun3Preview,
+    categories: ['dugun']
   },
   {
     id: 'dugun-4',
@@ -136,7 +146,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#fdf4f5]',
     titleColor: 'text-[#5c3140]',
     btnColor: 'bg-[#a54d68] hover:bg-[#b95d79] text-white',
-    imageUrl: dugun4Preview
+    imageUrl: dugun4Preview,
+    categories: ['dugun']
   },
   {
     id: 'dugun-5',
@@ -145,7 +156,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#f4f7f0]',
     titleColor: 'text-[#39503f]',
     btnColor: 'bg-[#3d5245] hover:bg-[#4c6555] text-[#f2f5ee]',
-    imageUrl: dugun5Preview
+    imageUrl: dugun5Preview,
+    categories: ['dugun']
   },
   // ——— Kategoriye özel yeni tema koleksiyonu ———
   // Sünnet
@@ -156,7 +168,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#0a1633]',
     titleColor: 'text-amber-200',
     btnColor: 'bg-gradient-to-r from-amber-300 to-amber-500 text-[#0a1633]',
-    imageUrl: '/images/sunnet-klasik.svg'
+    imageUrl: '/images/sunnet-klasik.svg',
+    categories: ['sunnet']
   },
   {
     id: 'sunnet-modern',
@@ -165,7 +178,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#f2fbfb]',
     titleColor: 'text-slate-800',
     btnColor: 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white',
-    imageUrl: '/images/sunnet-modern.svg'
+    imageUrl: '/images/sunnet-modern.svg',
+    categories: ['sunnet']
   },
   // Doğum Günü
   {
@@ -175,7 +189,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#fff7fa]',
     titleColor: 'text-rose-950',
     btnColor: 'bg-gradient-to-r from-fuchsia-500 via-rose-500 to-orange-400 text-white',
-    imageUrl: '/images/dogum-gunu-neseli.svg'
+    imageUrl: '/images/dogum-gunu-neseli.svg',
+    categories: ['dogum-gunu']
   },
   {
     id: 'dogum-gunu-sik',
@@ -184,7 +199,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#0c0c0f]',
     titleColor: 'text-white',
     btnColor: 'bg-gradient-to-r from-amber-300 to-yellow-500 text-black',
-    imageUrl: '/images/dogum-gunu-sik.svg'
+    imageUrl: '/images/dogum-gunu-sik.svg',
+    categories: ['dogum-gunu']
   },
   // Mezuniyet
   {
@@ -194,7 +210,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#101f3e]',
     titleColor: 'text-yellow-400',
     btnColor: 'bg-yellow-500 hover:bg-yellow-400 text-[#101f3e]',
-    imageUrl: '/images/mezuniyet-akademik.svg'
+    imageUrl: '/images/mezuniyet-akademik.svg',
+    categories: ['mezuniyet']
   },
   {
     id: 'mezuniyet-dinamik',
@@ -203,7 +220,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#050505]',
     titleColor: 'text-white',
     btnColor: 'bg-lime-400 hover:bg-lime-300 text-black',
-    imageUrl: '/images/mezuniyet-dinamik.svg'
+    imageUrl: '/images/mezuniyet-dinamik.svg',
+    categories: ['mezuniyet']
   },
   // Baby Shower
   {
@@ -213,7 +231,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#fdf6f8]',
     titleColor: 'text-[#8a5a6d]',
     btnColor: 'bg-rose-300 hover:bg-rose-400 text-white',
-    imageUrl: '/images/baby-shower-pastel.svg'
+    imageUrl: '/images/baby-shower-pastel.svg',
+    categories: ['baby-shower']
   },
   {
     id: 'baby-shower-boho',
@@ -222,7 +241,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#f6f1e8]',
     titleColor: 'text-[#7a5c3e]',
     btnColor: 'bg-[#b08d63] hover:bg-[#9a7952] text-[#fdfaf4]',
-    imageUrl: '/images/baby-shower-boho.svg'
+    imageUrl: '/images/baby-shower-boho.svg',
+    categories: ['baby-shower']
   },
   // Parti
   {
@@ -232,7 +252,8 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#07070f]',
     titleColor: 'text-cyan-300',
     btnColor: 'bg-gradient-to-r from-cyan-400 to-fuchsia-500 text-white',
-    imageUrl: '/images/parti-neon.svg'
+    imageUrl: '/images/parti-neon.svg',
+    categories: ['parti']
   },
   {
     id: 'parti-gala',
@@ -241,8 +262,36 @@ export const TEMPLATE_PRESETS: TemplatePreset[] = [
     backgroundStyle: 'bg-[#0a0a0a]',
     titleColor: 'text-[#e8cf7a]',
     btnColor: 'bg-[#d4af37] hover:bg-[#e3c35a] text-black',
-    imageUrl: '/images/parti-gala.svg'
+    imageUrl: '/images/parti-gala.svg',
+    categories: ['parti']
   }
+];
+
+/**
+ * Kategoriye göre şablon filtreleme — hem /create sihirbazı hem anasayfa
+ * vitrini bu tek kaynaktan beslenir. Kategori seçilmemişse (null) tüm
+ * koleksiyon döner.
+ */
+export function getTemplatesForCategory(categoryId: string | null): TemplatePreset[] {
+  if (!categoryId) return TEMPLATE_PRESETS;
+  return TEMPLATE_PRESETS.filter((preset) => preset.categories.includes(categoryId));
+}
+
+/** Display label of a category (e.g. "dugun" → "Düğün"). */
+export function getCategoryLabel(categoryId: string): string {
+  return EVENT_CATEGORIES.find((c) => c.id === categoryId)?.label ?? categoryId;
+}
+
+/**
+ * Anasayfa vitrini — en popüler 5 tasarım, her biri tek bir kategoriye
+ * sabitlenir; 6. slot "Tüm Tasarımları Görüntüle" kartına ayrılmıştır.
+ */
+export const FEATURED_TEMPLATES: FeaturedTemplate[] = [
+  { presetId: 'dugun-2', categoryId: 'dugun' },
+  { presetId: 'manzara', categoryId: 'kina' },
+  { presetId: 'sekilli', categoryId: 'nisan' },
+  { presetId: 'sunnet-klasik', categoryId: 'sunnet' },
+  { presetId: 'dogum-gunu-neseli', categoryId: 'dogum-gunu' }
 ];
 
 /** Ready-made invitation messages the wizard offers as one-tap suggestions. */

@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check } from 'lucide-react';
-import { TEMPLATE_PRESETS } from '../../data';
+import { getTemplatesForCategory } from '../../data';
 import { useInvitationStore } from '../../stores/useInvitationStore';
-import { useCreateWizardStore } from '../../stores/useCreateWizardStore';
+import { useCreateWizardStore, useActiveCategory } from '../../stores/useCreateWizardStore';
 import { scrollToTarget } from '../../hooks/useLenis';
 
 const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
@@ -17,6 +17,10 @@ export function ThemeStep() {
   const selectTemplate = useInvitationStore(s => s.selectTemplate);
   const themeChosen = useCreateWizardStore(s => s.themeChosen);
   const markThemeChosen = useCreateWizardStore(s => s.markThemeChosen);
+  const activeCategory = useActiveCategory();
+
+  // Only the templates belonging to the picked category (dugun → düğün temaları…).
+  const categoryTemplates = getTemplatesForCategory(activeCategory?.id ?? null);
 
   const handleSelect = (id: string) => {
     selectTemplate(id);
@@ -42,13 +46,15 @@ export function ThemeStep() {
             Size en uygun <span className="italic text-brand font-medium">temayı</span> seçin
           </h2>
           <p className="text-muted text-sm mt-3 max-w-lg mx-auto">
-            Tüm temalar seçtiğiniz etkinliğe göre kişiselleştirilir; dilerseniz son adımda
-            renkleri ve metinleri ince ayarlayabilirsiniz.
+            {activeCategory
+              ? `${activeCategory.label} etkinliğinize özel ${categoryTemplates.length} tema listeleniyor; `
+              : 'Tüm temalar seçtiğiniz etkinliğe göre kişiselleştirilir; '}
+            dilerseniz son adımda renkleri ve metinleri ince ayarlayabilirsiniz.
           </p>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
-          {TEMPLATE_PRESETS.map((preset, idx) => {
+          {categoryTemplates.map((preset, idx) => {
             const isActive = themeChosen && activePresetId === preset.id;
             return (
               <motion.button

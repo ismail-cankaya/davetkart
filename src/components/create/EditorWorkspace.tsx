@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { PenLine, Rocket, ShieldCheck } from 'lucide-react';
 import { DesignerPanel } from '../editor/DesignerPanel';
-import { PhoneSimulator } from '../preview/PhoneSimulator';
+import { DeviceSimulator } from '../preview/DeviceSimulator';
 import { useAuthStore } from '../../stores/useAuthStore';
 import { useCreateWizardStore } from '../../stores/useCreateWizardStore';
 import { toast } from '../ui/Toast';
@@ -75,13 +75,20 @@ export function EditorWorkspace() {
               Davetiyeniz hazır — <span className="italic text-brand font-medium">son dokunuşlar sizde</span>
             </h1>
             <p className="text-muted text-sm mt-3 max-w-xl mx-auto">
-              Soldaki panelden ince ayarları yapın, sağdaki telefonda gerçek zamanlı sonucu izleyin.
+              <span className="lg:hidden">
+                Üstteki cihaz önizlemesinde sonucu izleyin, aşağıdaki panelden ince ayarları yapın.
+              </span>
+              <span className="hidden lg:inline">
+                Soldaki panelden ince ayarları yapın, sağdaki cihaz önizlemesinde gerçek zamanlı sonucu izleyin.
+              </span>
             </p>
           </motion.div>
 
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-14 items-center lg:items-start justify-center">
+          {/* Mobile: simulator first (see the result, scroll down to edit).
+              Desktop: panel left, simulator right. */}
+          <div className="flex flex-col-reverse lg:flex-row gap-8 lg:gap-14 items-center lg:items-start justify-center">
             <DesignerPanel />
-            <PhoneSimulator phoneRef={phoneRef} />
+            <DeviceSimulator simulatorRef={phoneRef} />
           </div>
         </div>
       </section>

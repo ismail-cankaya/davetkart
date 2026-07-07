@@ -122,4 +122,15 @@ export interface TemplatePreset {
   titleColor: string;
   btnColor: string;
   imageUrl: string;
+  /** Event categories this preset can serve (drives category filtering). */
+  categories: string[];
 }
+
+/** A curated homepage showcase slot: a preset pinned to a single category. */
+export interface FeaturedTemplate {
+  presetId: string;
+  categoryId: string;
+}
+
+/** Device frames offered by the preview simulator. */
+export type PreviewDevice = 'phone' | 'tablet' | 'laptop';

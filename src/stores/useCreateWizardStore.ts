@@ -28,7 +28,13 @@ export const useCreateWizardStore = create<CreateWizardState>()((set) => ({
   categoryId: null,
   themeChosen: false,
 
-  selectCategory: (id) => set({ categoryId: id }),
+  // Switching to a different category invalidates the previous theme pick —
+  // its templates may not exist in the new category's collection.
+  selectCategory: (id) =>
+    set((state) => ({
+      categoryId: id,
+      themeChosen: state.categoryId === id ? state.themeChosen : false
+    })),
   markThemeChosen: () => set({ themeChosen: true }),
   startGeneration: () => set({ stage: 'generating' }),
   completeGeneration: () => set({ stage: 'editor' }),

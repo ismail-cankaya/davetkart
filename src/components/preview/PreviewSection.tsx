@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { motion } from 'motion/react';
-import { PhoneSimulator } from './PhoneSimulator';
+import { DeviceSimulator } from './DeviceSimulator';
 import { TemplateGrid } from './TemplateGrid';
 
 export const PreviewSection = React.memo(function PreviewSection() {
   // Shared between the grid (scroll target on mobile) and the simulator (the device itself).
-  const phoneRef = useRef<HTMLDivElement>(null);
+  const simulatorRef = useRef<HTMLDivElement>(null);
 
   return (
     <section id="animasyon-ve-onizleme" className="py-12 md:py-20 bg-cream relative overflow-hidden scroll-mt-20">
@@ -29,10 +29,11 @@ export const PreviewSection = React.memo(function PreviewSection() {
           </p>
         </motion.div>
 
+        {/* Columns re-balance when the simulator switches to the wide laptop frame. */}
         <div className="flex flex-col-reverse lg:flex-row gap-8 lg:gap-16 items-center lg:items-start justify-center">
-          <TemplateGrid phoneRef={phoneRef} />
+          <TemplateGrid simulatorRef={simulatorRef} />
 
-          <PhoneSimulator phoneRef={phoneRef} />
+          <DeviceSimulator simulatorRef={simulatorRef} />
         </div>
       </div>
     </section>

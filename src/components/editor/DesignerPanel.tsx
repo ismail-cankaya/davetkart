@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Check, Palette, RotateCcw, Sparkles, Type } from 'lucide-react';
 import { Invitation } from '../../types';
-import { TEMPLATE_PRESETS } from '../../data';
+import { getTemplatesForCategory } from '../../data';
 import { useInvitationStore } from '../../stores/useInvitationStore';
 import { useActiveCategory } from '../../stores/useCreateWizardStore';
 import { CoupleNameFields } from '../create/CoupleNameFields';
@@ -24,6 +24,9 @@ export const DesignerPanel = React.memo(function DesignerPanel() {
   const updateField = useInvitationStore(s => s.updateField);
   const resetInvitation = useInvitationStore(s => s.resetInvitation);
   const category = useActiveCategory();
+
+  // Only offer themes belonging to the invitation's event category.
+  const categoryTemplates = getTemplatesForCategory(invitation.categoryId || null);
 
   // Local mirror keeps typing instant; the store (and live preview) is
   // updated behind a debounce so every keystroke doesn't re-render the app.
@@ -72,8 +75,8 @@ export const DesignerPanel = React.memo(function DesignerPanel() {
             Davetiyeni <span className="italic font-medium text-champagne">Kusursuzlaştır</span>
           </h2>
           <p className="text-emerald-100/70 text-xs md:text-sm mt-2.5 leading-relaxed">
-            Renk temasını ve tüm metinleri buradan düzenleyin; her değişiklik sağdaki
-            telefon önizlemesine anında yansır.
+            Renk temasını ve tüm metinleri buradan düzenleyin; her değişiklik
+            cihaz önizlemesine anında yansır.
           </p>
         </div>
 
@@ -84,7 +87,7 @@ export const DesignerPanel = React.memo(function DesignerPanel() {
             Tema &amp; Renk Paleti
           </h3>
           <div className="grid grid-cols-2 gap-2.5">
-            {TEMPLATE_PRESETS.map((preset) => {
+            {categoryTemplates.map((preset) => {
               const isActive = activePresetId === preset.id;
               return (
                 <button

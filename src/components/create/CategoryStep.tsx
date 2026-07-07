@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import {
   Baby, Cake, Check, Gem, GraduationCap, Heart, LucideIcon, MoonStar, PartyPopper, Sparkles
 } from 'lucide-react';
-import { EVENT_CATEGORIES } from '../../data';
+import { EVENT_CATEGORIES, getTemplatesForCategory } from '../../data';
 import { useCreateWizardStore } from '../../stores/useCreateWizardStore';
 import { useInvitationStore } from '../../stores/useInvitationStore';
 import { scrollToTarget } from '../../hooks/useLenis';
@@ -30,6 +30,8 @@ export function CategoryStep() {
   const categoryId = useCreateWizardStore(s => s.categoryId);
   const selectCategory = useCreateWizardStore(s => s.selectCategory);
   const updateField = useInvitationStore(s => s.updateField);
+  const activePresetId = useInvitationStore(s => s.activePresetId);
+  const selectTemplate = useInvitationStore(s => s.selectTemplate);
 
   const handleSelect = (id: string) => {
     const category = EVENT_CATEGORIES.find(c => c.id === id);
@@ -39,6 +41,12 @@ export function CategoryStep() {
     // pick the matching flavor (dugun/kina/nisan).
     updateField('categoryId', id);
     if (category) updateField('title', category.suggestedTitle);
+    // If the previously previewed template doesn't belong to this category,
+    // fall back to the category's first template so the preview stays coherent.
+    const categoryTemplates = getTemplatesForCategory(id);
+    if (!categoryTemplates.some(t => t.id === activePresetId) && categoryTemplates.length > 0) {
+      selectTemplate(categoryTemplates[0].id);
+    }
     // The theme step mounts on this state change; wait a frame before gliding.
     window.setTimeout(() => scrollToTarget('sihirbaz-tema'), 120);
   };
