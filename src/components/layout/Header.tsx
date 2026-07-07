@@ -102,7 +102,10 @@ export const Header = React.memo(function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-3">
-          <LanguageSwitcher />
+          {/* Mobile keeps the top bar minimal: the switcher lives inside the hamburger menu. */}
+          <div className="hidden md:block">
+            <LanguageSwitcher />
+          </div>
           {isAuthenticated ? (
             <>
               <button
@@ -222,6 +225,12 @@ export const Header = React.memo(function Header() {
                     </Link>
                   </>
                 )}
+              </motion.div>
+
+              {/* Language picker — chip grid, since the menu's overflow-hidden
+                  would clip the floating dropdown variant. */}
+              <motion.div variants={menuItemVariants} className="mt-5 pt-5 border-t border-ink/5">
+                <LanguageSwitcher variant="inline" />
               </motion.div>
             </div>
           </motion.div>

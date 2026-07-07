@@ -20,7 +20,17 @@ const itemVariants = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] as const } }
 };
 
-export const LanguageSwitcher = React.memo(function LanguageSwitcher() {
+interface LanguageSwitcherProps {
+  /**
+   * 'dropdown' (default): the compact globe pill with a floating menu, for
+   * the desktop header. 'inline': a flat chip grid that renders fully inside
+   * clipping containers (the mobile hamburger menu has overflow-hidden, so a
+   * floating dropdown would be cut off there).
+   */
+  variant?: 'dropdown' | 'inline';
+}
+
+export const LanguageSwitcher = React.memo(function LanguageSwitcher({ variant = 'dropdown' }: LanguageSwitcherProps) {
   const { i18n } = useTranslation();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -53,6 +63,37 @@ export const LanguageSwitcher = React.memo(function LanguageSwitcher() {
     i18n.changeLanguage(code);
     setOpen(false);
   };
+
+  if (variant === 'inline') {
+    return (
+      <div>
+        <div className="flex items-center gap-2 mb-3 text-muted">
+          <Globe size={14} className="shrink-0" />
+          <span className="text-[11px] font-bold uppercase tracking-[0.12em]">Dil / Language</span>
+        </div>
+        <div className="grid grid-cols-5 gap-1.5">
+          {SUPPORTED_LANGUAGES.map(lang => {
+            const active = lang.code === currentCode;
+            return (
+              <button
+                key={lang.code}
+                onClick={() => selectLanguage(lang.code)}
+                title={lang.nativeName}
+                aria-pressed={active}
+                className={`h-9 rounded-xl border text-[11px] font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                  active
+                    ? 'bg-brand text-white border-brand shadow-md shadow-brand/20'
+                    : 'bg-white/70 border-ink/10 text-muted hover:text-brand hover:border-brand/25 hover:bg-white'
+                }`}
+              >
+                {lang.code}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="relative">
