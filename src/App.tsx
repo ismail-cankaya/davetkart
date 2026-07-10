@@ -12,6 +12,17 @@ const RegisterPage = React.lazy(() => import('./pages/RegisterPage'));
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 const InvitePage = React.lazy(() => import('./pages/InvitePage'));
 
+// Kurumsal sayfalar
+const AboutPage = React.lazy(() => import('./pages/AboutPage'));
+const PricingPage = React.lazy(() => import('./pages/PricingPage'));
+const SustainabilityPage = React.lazy(() => import('./pages/SustainabilityPage'));
+const ContactPage = React.lazy(() => import('./pages/ContactPage'));
+
+// Yasal sayfalar
+const TermsPage = React.lazy(() => import('./pages/legal/TermsPage'));
+const PrivacyPage = React.lazy(() => import('./pages/legal/PrivacyPage'));
+const CookiesPage = React.lazy(() => import('./pages/legal/CookiesPage'));
+
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
@@ -20,6 +31,13 @@ const router = createBrowserRouter([
       { path: '/create', element: <CreatePage /> },
       { path: '/login', element: <LoginPage /> },
       { path: '/register', element: <RegisterPage /> },
+      { path: '/about', element: <AboutPage /> },
+      { path: '/pricing', element: <PricingPage /> },
+      { path: '/sustainability', element: <SustainabilityPage /> },
+      { path: '/contact', element: <ContactPage /> },
+      { path: '/terms', element: <TermsPage /> },
+      { path: '/privacy', element: <PrivacyPage /> },
+      { path: '/cookies', element: <CookiesPage /> },
       {
         path: '/dashboard',
         element: (

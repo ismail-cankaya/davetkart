@@ -49,11 +49,11 @@ export const Footer = React.memo(function Footer() {
         <div className="md:col-span-2 space-y-3">
           <h4 className="text-xs uppercase font-bold text-champagne tracking-[0.12em]">Kurumsal</h4>
           <ul className="space-y-2.5 text-xs text-emerald-100/50">
-            <li><a href="#" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Hakkımızda</a></li>
+            <li><Link to="/about" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Hakkımızda</Link></li>
             <li><Link to="/" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Özellikler</Link></li>
-            <li><a href="#" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Fiyatlandırma</a></li>
-            <li><a href="#" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Sürdürülebilirlik</a></li>
-            <li><a href="#" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">İletişim</a></li>
+            <li><Link to="/pricing" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Fiyatlandırma</Link></li>
+            <li><Link to="/sustainability" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">Sürdürülebilirlik</Link></li>
+            <li><Link to="/contact" className="hover:text-white hover:pl-1 transition-all duration-300 inline-block">İletişim</Link></li>
           </ul>
         </div>
 
@@ -88,9 +88,9 @@ export const Footer = React.memo(function Footer() {
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p>© 2026 DavetKart. Tüm hakları saklıdır.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-champagne transition-colors">Kullanım Şartları</a>
-            <a href="#" className="hover:text-champagne transition-colors">Gizlilik Sözleşmesi</a>
-            <a href="#" className="hover:text-champagne transition-colors">Çerez Politikası</a>
+            <Link to="/terms" className="hover:text-champagne transition-colors">Kullanım Şartları</Link>
+            <Link to="/privacy" className="hover:text-champagne transition-colors">Gizlilik Sözleşmesi</Link>
+            <Link to="/cookies" className="hover:text-champagne transition-colors">Çerez Politikası</Link>
           </div>
         </div>
       </div>
