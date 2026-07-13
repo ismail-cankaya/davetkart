@@ -1,4 +1,4 @@
-import { EventCategory, FeaturedTemplate, Invitation, RSVPResponse, RsvpDraft, SubscriptionPlan, TemplatePreset, TimelineEvent } from './types';
+import { EventCategory, FeaturedTemplate, Invitation, RsvpDraft, SubscriptionPlan, TemplatePreset, TimelineEvent } from './types';
 import dugun1Preview from './components/templates/dugun/Dugun1/assets/dugun1-left.png';
 import dugun2Preview from './components/templates/dugun/Dugun2/assets/dugun2-top.png';
 import dugun3Preview from './components/templates/dugun/Dugun3/assets/dugun3-bottom.png';
@@ -433,30 +433,3 @@ export const INITIAL_RSVP_DRAFT: RsvpDraft = {
   videoUrl: ''
 };
 
-export const INITIAL_RSVP_LIST: RSVPResponse[] = [
-  {
-    id: 'rsvp-1',
-    guestName: 'Ahmet Yılmaz',
-    guestCount: 2,
-    menuPreference: 'Et Menü',
-    status: 'Katılıyor',
-    message: 'Canım arkadaşlarım, bu mutlu gününüzde yanınızda olmayı çok isterdim. Mutluluklar!',
-    createdAt: '2026-06-21T10:15:00Z'
-  },
-  {
-    id: 'rsvp-2',
-    guestName: 'Zeynep Kaya',
-    guestCount: 1,
-    menuPreference: 'Standart Menü',
-    status: 'Bekleniyor',
-    createdAt: '2026-06-21T11:42:00Z'
-  },
-  {
-    id: 'rsvp-3',
-    guestName: 'Mehmet Can',
-    guestCount: 1,
-    menuPreference: 'Belirtilmedi',
-    status: 'Katılamıyor',
-    createdAt: '2026-06-21T12:05:00Z'
-  }
-];

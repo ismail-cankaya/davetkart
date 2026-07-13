@@ -25,34 +25,31 @@ import { Invitation } from '../types';
 
 const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
 
-type TabId = 'published' | 'saved' | 'local';
+type TabId = 'published' | 'saved';
 
-/** One grid card, unified across backend records and the local draft. */
+/** One grid card per backend invitation record. */
 interface DashboardCard {
-  /** React list key; also disambiguates remote records from the local draft. */
+  /** React list key. */
   key: string;
   kind: TabId;
-  /** Backend id — present only for remote records (drives view/copy links). */
-  remoteId?: string;
+  /** Backend id — drives the view/copy links and editor resume. */
+  remoteId: string;
   invitation: Invitation;
 }
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'published', label: 'Yayında Olanlar' },
-  { id: 'saved', label: 'Kaydedilenler' },
-  { id: 'local', label: 'Yerel Taslaklar' }
+  { id: 'saved', label: 'Kaydedilenler' }
 ];
 
 const KIND_META: Record<TabId, { label: string; chip: string }> = {
   published: { label: 'Yayında', chip: 'bg-emerald-50/90 text-emerald-700 border-emerald-200' },
-  saved: { label: 'Kayıtlı', chip: 'bg-amber-50/90 text-amber-700 border-amber-200' },
-  local: { label: 'Yerel Taslak', chip: 'bg-white/85 text-stone-600 border-stone-200' }
+  saved: { label: 'Kayıtlı', chip: 'bg-amber-50/90 text-amber-700 border-amber-200' }
 };
 
 const EMPTY_TAB_TEXT: Record<TabId, string> = {
   published: 'Henüz yayınlanmış bir davetiyeniz yok. Bir tasarımı yayınladığınızda burada listelenir.',
-  saved: 'Hesabınıza kaydedilmiş, yayın bekleyen bir davetiye bulunmuyor.',
-  local: 'Tarayıcınızda yarım kalmış bir taslak yok.'
+  saved: 'Hesabınıza kaydedilmiş, yayın bekleyen bir davetiye bulunmuyor.'
 };
 
 function categoryLabel(categoryId: string): string {
@@ -126,7 +123,7 @@ function InvitationCard({ card, onResume, onCopyLink }: InvitationCardProps) {
 
         {/* Actions */}
         <div className="mt-auto pt-4 border-t border-stone-100">
-          {card.kind === 'published' && card.remoteId ? (
+          {card.kind === 'published' ? (
             <div className="grid grid-cols-3 gap-2">
               <Link
                 to={`/invite/${card.remoteId}`}
@@ -135,7 +132,7 @@ function InvitationCard({ card, onResume, onCopyLink }: InvitationCardProps) {
                 <Eye size={13} /> Görüntüle
               </Link>
               <button
-                onClick={() => onCopyLink(card.remoteId ?? '')}
+                onClick={() => onCopyLink(card.remoteId)}
                 className="inline-flex items-center justify-center gap-1.5 text-[11px] font-semibold px-2 py-2.5 rounded-xl bg-stone-50 text-ink/70 border border-stone-200 hover:border-brand/40 hover:text-brand transition-all duration-300 cursor-pointer"
               >
                 <Copy size={13} /> Kopyala
@@ -176,19 +173,18 @@ export default function DashboardPage() {
   const startNew = useCreateWizardStore((s) => s.startNew);
   const navigate = useNavigate();
 
-  const { published, saved, localDraft, isLoading, remoteError, refresh } = useDashboardData();
+  const { published, saved, isLoading, remoteError, refresh } = useDashboardData();
   const [activeTab, setActiveTab] = useState<TabId>('published');
 
   const cardsByTab = useMemo<Record<TabId, DashboardCard[]>>(
     () => ({
       published: published.map((r) => ({ key: `remote-${r.id}`, kind: 'published', remoteId: r.id, invitation: r.invitation })),
-      saved: saved.map((r) => ({ key: `remote-${r.id}`, kind: 'saved', remoteId: r.id, invitation: r.invitation })),
-      local: localDraft ? [{ key: 'local-draft', kind: 'local', invitation: localDraft }] : []
+      saved: saved.map((r) => ({ key: `remote-${r.id}`, kind: 'saved', remoteId: r.id, invitation: r.invitation }))
     }),
-    [published, saved, localDraft]
+    [published, saved]
   );
 
-  const totalCount = cardsByTab.published.length + cardsByTab.saved.length + cardsByTab.local.length;
+  const totalCount = cardsByTab.published.length + cardsByTab.saved.length;
   const activeCards = cardsByTab[activeTab];
 
   /** Load the record into the editor stores and drop into /create's workspace. */
@@ -253,7 +249,7 @@ export default function DashboardPage() {
             >
               <span className="flex items-center gap-2 font-medium">
                 <CloudOff size={15} className="shrink-0" />
-                Sunucuya ulaşılamadı — hesabınızdaki davetiyeler geçici olarak listelenemiyor. Yerel taslaklarınız güvende.
+                Sunucuya ulaşılamadı — hesabınızdaki davetiyeler geçici olarak listelenemiyor.
               </span>
               <button
                 onClick={refresh}

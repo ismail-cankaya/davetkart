@@ -24,6 +24,18 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+/**
+ * Laravel API Resources wrap payloads in a `{ data: ... }` envelope; plain
+ * controller responses don't. Feature services normalize through this helper
+ * so both shapes are accepted.
+ */
+export function unwrapEnvelope(payload: unknown): unknown {
+  if (payload && typeof payload === 'object' && 'data' in payload) {
+    return (payload as { data: unknown }).data;
+  }
+  return payload;
+}
+
 // A 401 means the token was rejected/expired: drop the local session so the
 // UI falls back to the anonymous experience instead of looping on failures.
 api.interceptors.response.use(

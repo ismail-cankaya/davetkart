@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { PenLine, Rocket, ShieldCheck } from 'lucide-react';
+import { CloudOff, CloudUpload, CheckCircle2, PenLine, Rocket, ShieldCheck } from 'lucide-react';
 import { DesignerPanel } from '../editor/DesignerPanel';
 import { DeviceSimulator } from '../preview/DeviceSimulator';
 import { PaywallModal } from '../payment/PaywallModal';
@@ -27,6 +27,7 @@ const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
 export function EditorWorkspace() {
   const backToBuild = useCreateWizardStore(s => s.backToBuild);
   const isAuthenticated = useAuthStore(s => s.isAuthenticated);
+  const saveState = useInvitationStore(s => s.saveState);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -143,9 +144,35 @@ export function EditorWorkspace() {
             </motion.button>
           </div>
 
+          {/* Cloud auto-save status for members; anonymous designers get the
+              reassurance line (their draft persists after signing in). */}
           <p className="text-muted text-[11px] flex items-center justify-center gap-1.5">
-            <ShieldCheck size={13} className="text-brand" />
-            Giriş yapmadan tasarlayabilirsiniz — tasarımınız güvenle saklanır.
+            {!isAuthenticated ? (
+              <>
+                <ShieldCheck size={13} className="text-brand" />
+                Giriş yapmadan tasarlayabilirsiniz — yayınlamak için giriş yaptığınızda tasarımınız hesabınıza kaydedilir.
+              </>
+            ) : saveState === 'saving' ? (
+              <>
+                <CloudUpload size={13} className="text-brand animate-pulse" />
+                Değişiklikleriniz buluta kaydediliyor…
+              </>
+            ) : saveState === 'error' ? (
+              <>
+                <CloudOff size={13} className="text-amber-600" />
+                Kaydedilemedi — bağlantınızı kontrol edin, bir sonraki değişiklikte yeniden denenir.
+              </>
+            ) : saveState === 'saved' ? (
+              <>
+                <CheckCircle2 size={13} className="text-emerald-600" />
+                Tüm değişiklikler hesabınıza kaydedildi.
+              </>
+            ) : (
+              <>
+                <ShieldCheck size={13} className="text-brand" />
+                Değişiklikleriniz otomatik olarak hesabınıza kaydedilir.
+              </>
+            )}
           </p>
         </motion.div>
       </section>

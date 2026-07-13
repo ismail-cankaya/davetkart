@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { ImagePlus, Loader2, X } from 'lucide-react';
 import { useInvitationStore } from '../../stores/useInvitationStore';
 import { mediaService } from '../../services/media';
+import { toast } from '../ui/Toast';
 
 const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
 const MAX_PHOTOS = 8;
@@ -27,6 +28,8 @@ export function GalleryUploader() {
     try {
       const urls = await Promise.all(files.map((file) => mediaService.upload(file)));
       updateField('galleryImages', [...images, ...urls]);
+    } catch {
+      toast('Fotoğraflar yüklenemedi — lütfen bağlantınızı kontrol edip tekrar deneyin.', 'info');
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = '';

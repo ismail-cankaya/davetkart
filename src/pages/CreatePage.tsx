@@ -6,6 +6,7 @@ import { DetailsFormStep } from '../components/create/DetailsFormStep';
 import { GenerationLoader } from '../components/create/GenerationLoader';
 import { EditorWorkspace } from '../components/create/EditorWorkspace';
 import { useCreateWizardStore } from '../stores/useCreateWizardStore';
+import { useInvitationAutoSave } from '../hooks/useInvitationAutoSave';
 
 const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
 
@@ -22,6 +23,10 @@ export default function CreatePage() {
   const stage = useCreateWizardStore(s => s.stage);
   const categoryId = useCreateWizardStore(s => s.categoryId);
   const themeChosen = useCreateWizardStore(s => s.themeChosen);
+
+  // Debounced cloud auto-save covers every wizard stage — details form edits
+  // and the editor workspace both mutate useInvitationStore.
+  useInvitationAutoSave();
 
   return (
     <AnimatePresence mode="wait">

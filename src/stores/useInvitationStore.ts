@@ -1,7 +1,8 @@
 import { create } from 'zustand';
-import { Invitation, PaletteId, TemplatePreset } from '../types';
+import { Invitation, InvitationSaveState, PaletteId, TemplatePreset } from '../types';
 import { INITIAL_INVITATION, TEMPLATE_PRESETS } from '../data';
 import { persistenceService } from '../services/persistence';
+import { useAuthStore } from './useAuthStore';
 
 /** Palette carried by each modular preset; legacy presets keep the current palette. */
 const PRESET_PALETTES: Record<string, PaletteId> = {
@@ -30,6 +31,8 @@ const PRESET_PALETTES: Record<string, PaletteId> = {
 interface InvitationState {
   invitation: Invitation;
   activePresetId: string;
+  /** Outcome of the most recent backend save (drives the editor's status hint). */
+  saveState: InvitationSaveState;
   /** Update a single invitation field (form inputs). */
   updateField: <K extends keyof Invitation>(name: K, value: Invitation[K]) => void;
   /** Switch the visual template; keeps the invitation's theme fields in sync. */
@@ -38,11 +41,14 @@ interface InvitationState {
   loadInvitation: (invitation: Invitation) => void;
   /** Restore the invitation and template to their factory defaults. */
   resetInvitation: () => void;
+  /** Persist the current design to the backend (called by the debounced auto-save). */
+  saveInvitation: () => Promise<void>;
 }
 
-export const useInvitationStore = create<InvitationState>()((set) => ({
+export const useInvitationStore = create<InvitationState>()((set, get) => ({
   invitation: INITIAL_INVITATION,
   activePresetId: INITIAL_INVITATION.imageTheme,
+  saveState: 'idle',
 
   updateField: (name, value) =>
     set((state) => ({ invitation: { ...state.invitation, [name]: value } })),
@@ -67,7 +73,19 @@ export const useInvitationStore = create<InvitationState>()((set) => ({
     }),
 
   resetInvitation: () =>
-    set({ invitation: INITIAL_INVITATION, activePresetId: INITIAL_INVITATION.imageTheme })
+    set({ invitation: INITIAL_INVITATION, activePresetId: INITIAL_INVITATION.imageTheme }),
+
+  saveInvitation: async () => {
+    set({ saveState: 'saving' });
+    try {
+      await persistenceService.saveInvitation(get().invitation);
+      set({ saveState: 'saved' });
+    } catch {
+      // A failed save must never crash the editor; the status hint surfaces
+      // it and the next edit re-triggers the debounced save.
+      set({ saveState: 'error' });
+    }
+  }
 }));
 
 /** The full preset object for the currently selected template. */
@@ -77,20 +95,25 @@ export function useActivePreset(): TemplatePreset {
   );
 }
 
-// Hydrate once from the persistence boundary, then write back on every change.
-void persistenceService.getInvitation().then((saved) => {
-  if (saved) {
-    // Merge over the factory defaults so records persisted before the modular
-    // fields existed (showGift, timelineEvents…) hydrate with sane values.
-    useInvitationStore.setState({
-      invitation: { ...INITIAL_INVITATION, ...saved },
-      activePresetId: saved.imageTheme || INITIAL_INVITATION.imageTheme
+// Hydrate once from the backend for signed-in users (the auth store restores
+// its cached session synchronously, so the check is safe at module load).
+// Anonymous visitors design in memory; saving starts once they authenticate.
+// Writes are NOT mirrored here on every change — the editor persists through
+// the debounced auto-save hook (hooks/useInvitationAutoSave).
+if (useAuthStore.getState().isAuthenticated) {
+  persistenceService
+    .getInvitation()
+    .then((saved) => {
+      if (saved) {
+        // Merge over the factory defaults so records persisted before the modular
+        // fields existed (showGift, timelineEvents…) hydrate with sane values.
+        useInvitationStore.setState({
+          invitation: { ...INITIAL_INVITATION, ...saved },
+          activePresetId: saved.imageTheme || INITIAL_INVITATION.imageTheme
+        });
+      }
+    })
+    .catch(() => {
+      // Backend unreachable — the editor starts from factory defaults.
     });
-  }
-});
-
-useInvitationStore.subscribe((state, prev) => {
-  if (state.invitation !== prev.invitation) {
-    void persistenceService.saveInvitation(state.invitation);
-  }
-});
+}

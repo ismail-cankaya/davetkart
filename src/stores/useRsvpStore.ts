@@ -1,28 +1,50 @@
 import { create } from 'zustand';
-import { RSVPResponse, RsvpDraft } from '../types';
-import { INITIAL_RSVP_DRAFT, INITIAL_RSVP_LIST } from '../data';
+import { RSVPResponse, RsvpCreatePayload, RsvpDraft } from '../types';
+import { INITIAL_RSVP_DRAFT } from '../data';
 import { persistenceService } from '../services/persistence';
 import { mediaService } from '../services/media';
 
 interface RsvpState {
   rsvpList: RSVPResponse[];
+  /** True while GET /rsvps is in flight. */
+  isLoading: boolean;
+  /** The last fetch failed — the panel offers a retry. */
+  remoteError: boolean;
   /** The RSVP form currently being composed by a guest. */
   draft: RsvpDraft;
+  /** Load the owner's RSVP list from the backend. */
+  fetchRsvps: () => Promise<void>;
   updateDraft: (patch: Partial<RsvpDraft>) => void;
   /** Upload a photo/video through the media boundary and attach its URL to the draft. */
   attachDraftMedia: (field: 'photoUrl' | 'videoUrl', file: File) => Promise<void>;
   /**
-   * Validate and commit the draft as a new RSVP entry.
-   * Returns the created entry, or null when the draft is invalid.
+   * Validate and submit the draft to the backend as a new RSVP entry.
+   * Resolves with the server-issued entry, or null when the draft is invalid.
+   * Network/API failures reject — the calling form surfaces them.
    */
-  submitDraft: () => RSVPResponse | null;
-  deleteRsvp: (id: string) => void;
-  resetRsvps: () => void;
+  submitDraft: () => Promise<RSVPResponse | null>;
+  /**
+   * Optimistically remove an entry, then confirm with the backend; the entry
+   * is restored (and the error re-thrown) if the delete is rejected.
+   */
+  deleteRsvp: (id: string) => Promise<void>;
 }
 
 export const useRsvpStore = create<RsvpState>()((set, get) => ({
-  rsvpList: INITIAL_RSVP_LIST,
+  rsvpList: [],
+  isLoading: false,
+  remoteError: false,
   draft: INITIAL_RSVP_DRAFT,
+
+  fetchRsvps: async () => {
+    set({ isLoading: true });
+    try {
+      const rsvps = await persistenceService.listRsvps();
+      set({ rsvpList: rsvps, remoteError: false, isLoading: false });
+    } catch {
+      set({ remoteError: true, isLoading: false });
+    }
+  },
 
   updateDraft: (patch) => set((state) => ({ draft: { ...state.draft, ...patch } })),
 
@@ -31,38 +53,33 @@ export const useRsvpStore = create<RsvpState>()((set, get) => ({
     set((state) => ({ draft: { ...state.draft, [field]: url } }));
   },
 
-  submitDraft: () => {
+  submitDraft: async () => {
     const { draft } = get();
     if (!draft.guestName.trim()) return null;
 
-    const entry: RSVPResponse = {
-      id: `rsvp-${Date.now()}`,
-      guestName: draft.guestName,
+    const payload: RsvpCreatePayload = {
+      guestName: draft.guestName.trim(),
       guestCount: Number(draft.guestCount),
       menuPreference: draft.menuPreference,
       status: draft.status,
-      message: draft.message,
-      photoUrl: draft.photoUrl,
-      videoUrl: draft.videoUrl,
-      createdAt: new Date().toISOString()
+      message: draft.message || undefined,
+      photoUrl: draft.photoUrl || undefined,
+      videoUrl: draft.videoUrl || undefined
     };
 
+    const entry = await persistenceService.createRsvp(payload);
     set((state) => ({ rsvpList: [entry, ...state.rsvpList], draft: INITIAL_RSVP_DRAFT }));
     return entry;
   },
 
-  deleteRsvp: (id) => set((state) => ({ rsvpList: state.rsvpList.filter((r) => r.id !== id) })),
-
-  resetRsvps: () => set({ rsvpList: INITIAL_RSVP_LIST })
-}));
-
-// Hydrate once from the persistence boundary, then write back on every change.
-void persistenceService.getRsvps().then((saved) => {
-  if (saved) useRsvpStore.setState({ rsvpList: saved });
-});
-
-useRsvpStore.subscribe((state, prev) => {
-  if (state.rsvpList !== prev.rsvpList) {
-    void persistenceService.saveRsvps(state.rsvpList);
+  deleteRsvp: async (id) => {
+    const previous = get().rsvpList;
+    set({ rsvpList: previous.filter((r) => r.id !== id) });
+    try {
+      await persistenceService.deleteRsvp(id);
+    } catch (error) {
+      set({ rsvpList: previous });
+      throw error;
+    }
   }
-});
+}));

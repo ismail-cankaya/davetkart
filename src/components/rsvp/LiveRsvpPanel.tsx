@@ -1,20 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Users, RefreshCw, UserCheck, Clock, X, Utensils, Trash2, ImageIcon, Play } from 'lucide-react';
+import { Users, RefreshCw, UserCheck, Clock, X, Utensils, Trash2, ImageIcon, Play, CloudOff } from 'lucide-react';
 import { useRsvpStore } from '../../stores/useRsvpStore';
+import { useAuthStore } from '../../stores/useAuthStore';
+import { toast } from '../ui/Toast';
 
 export const LiveRsvpPanel = React.memo(function LiveRsvpPanel() {
   const rsvpList = useRsvpStore(s => s.rsvpList);
+  const isLoading = useRsvpStore(s => s.isLoading);
+  const remoteError = useRsvpStore(s => s.remoteError);
+  const fetchRsvps = useRsvpStore(s => s.fetchRsvps);
   const deleteRsvp = useRsvpStore(s => s.deleteRsvp);
-  const resetRsvps = useRsvpStore(s => s.resetRsvps);
+  const isAuthenticated = useAuthStore(s => s.isAuthenticated);
+
+  // GET /rsvps is owner-scoped; anonymous visitors (homepage demo) only see
+  // the entries they add in this session, so no fetch is issued for them.
+  useEffect(() => {
+    if (isAuthenticated) void fetchRsvps();
+  }, [isAuthenticated, fetchRsvps]);
 
   // Confirmation dialogs are a UI concern; the stores expose the raw actions.
   const handleDeleteRsvp = (id: string) => {
-    if (window.confirm('Bu katılım kaydını silmek istediğinize emin misiniz?')) deleteRsvp(id);
-  };
-
-  const handleResetRsvps = () => {
-    if (window.confirm('Katılım listesini orijinal durumuna sıfırlamak istiyor musunuz?')) resetRsvps();
+    if (!window.confirm('Bu katılım kaydını silmek istediğinize emin misiniz?')) return;
+    deleteRsvp(id).catch(() => {
+      toast('Kayıt silinemedi — lütfen tekrar deneyin.', 'info');
+    });
   };
 
   const countAttending = rsvpList.filter(r => r.status === 'Katılıyor').reduce((sum, r) => sum + r.guestCount, 0);
@@ -67,18 +77,35 @@ export const LiveRsvpPanel = React.memo(function LiveRsvpPanel() {
                   Misafir Takip Panosu
                 </h3>
                 <p className="text-xs text-muted mt-1">
-                  Misafirlerinizin katılım yanıtları bu panele eşzamanlı yansır <span className="text-brand font-medium">(*Simülasyondur)</span>
+                  Misafirlerinizin katılım yanıtları bu panele eşzamanlı yansır
                 </p>
               </div>
 
               <button
-                onClick={handleResetRsvps}
-                title="Listeyi Orijinal Haline Sıfırla"
-                className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-500 hover:text-red-600 hover:border-red-200 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-semibold"
+                onClick={() => void fetchRsvps()}
+                disabled={isLoading}
+                title="Listeyi Yenile"
+                className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-500 hover:text-brand hover:border-brand/30 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-semibold disabled:opacity-50"
               >
-                <RefreshCw size={13} /> Sıfırla
+                <RefreshCw size={13} className={isLoading ? 'animate-spin' : undefined} /> Yenile
               </button>
             </div>
+
+            {/* Backend unreachable — entries already loaded stay visible */}
+            {remoteError && (
+              <div className="flex items-center justify-between gap-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-4 py-3 text-xs">
+                <span className="flex items-center gap-2 font-medium">
+                  <CloudOff size={14} className="shrink-0" />
+                  Yanıt listesi sunucudan alınamadı.
+                </span>
+                <button
+                  onClick={() => void fetchRsvps()}
+                  className="font-bold hover:text-amber-950 transition-colors cursor-pointer shrink-0"
+                >
+                  Tekrar Dene
+                </button>
+              </div>
+            )}
 
             {/* Stats Counters */}
             <div className="grid grid-cols-3 gap-4">
@@ -183,7 +210,9 @@ export const LiveRsvpPanel = React.memo(function LiveRsvpPanel() {
               </AnimatePresence>
 
               {rsvpList.length === 0 && (
-                <p className="text-center text-xs text-gray-400 py-8">Henüz kaydedilmiş katılım yanıtı bulunmuyor.</p>
+                <p className="text-center text-xs text-gray-400 py-8">
+                  {isLoading ? 'Katılım yanıtları yükleniyor…' : 'Henüz kaydedilmiş katılım yanıtı bulunmuyor.'}
+                </p>
               )}
             </div>
 

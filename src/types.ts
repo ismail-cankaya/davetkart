@@ -135,6 +135,12 @@ export interface RSVPResponse {
   createdAt: string;
 }
 
+/** Payload for `POST /api/rsvps` — the server assigns `id` and `createdAt`. */
+export type RsvpCreatePayload = Omit<RSVPResponse, 'id' | 'createdAt'>;
+
+/** Lifecycle of the editor's debounced cloud auto-save. */
+export type InvitationSaveState = 'idle' | 'saving' | 'saved' | 'error';
+
 /** Form state of an RSVP being composed, before it becomes an RSVPResponse. */
 export interface RsvpDraft {
   guestName: string;

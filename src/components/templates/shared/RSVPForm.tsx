@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { Invitation, RsvpStatus } from '../../../types';
 import { cn } from '../../../utils/cn';
 import { useRsvpStore } from '../../../stores/useRsvpStore';
+import { toast } from '../../ui/Toast';
 import { SectionTheme, EASE_LUXE } from './palette';
 import { TemplateFlavor } from './flavor';
 import { googleCalendarUrl, downloadIcsFile } from './calendar';
@@ -31,6 +32,7 @@ export function RSVPForm({ invitation, theme, flavor }: RSVPFormProps) {
   const [menuPreference, setMenuPreference] = useState<string>(MENU_OPTIONS[0]);
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const isDark = theme.id === 'midnight';
   const calendarUrl = googleCalendarUrl(invitation);
@@ -39,8 +41,9 @@ export function RSVPForm({ invitation, theme, flavor }: RSVPFormProps) {
     ? new Date(invitation.rsvpDeadline).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })
     : null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
     if (!guestName.trim()) {
       setError(true);
       return;
@@ -52,7 +55,14 @@ export function RSVPForm({ invitation, theme, flavor }: RSVPFormProps) {
       menuPreference: invitation.askMenuPreference ? menuPreference : 'Belirtilmedi',
       message: ''
     });
-    if (submitDraft()) setSubmitted(true);
+    setSubmitting(true);
+    try {
+      if (await submitDraft()) setSubmitted(true);
+    } catch {
+      toast('Yanıtınız gönderilemedi — lütfen bağlantınızı kontrol edip tekrar deneyin.', 'info');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const labelClass = cn('block text-[10px] font-semibold tracking-[0.2em] uppercase mb-1.5', theme.body);
@@ -240,15 +250,16 @@ export function RSVPForm({ invitation, theme, flavor }: RSVPFormProps) {
 
               <motion.button
                 type="submit"
+                disabled={submitting}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
-                  'w-full flex items-center justify-center gap-2 rounded-xl py-3.5 text-xs font-bold tracking-wide transition-colors duration-300 cursor-pointer',
+                  'w-full flex items-center justify-center gap-2 rounded-xl py-3.5 text-xs font-bold tracking-wide transition-colors duration-300 cursor-pointer disabled:opacity-60 disabled:pointer-events-none',
                   theme.buttonPrimary
                 )}
               >
                 <SendIcon size={14} />
-                Katılımımı Bildir
+                {submitting ? 'Gönderiliyor…' : 'Katılımımı Bildir'}
               </motion.button>
             </motion.form>
           )}

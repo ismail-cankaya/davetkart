@@ -11,19 +11,32 @@ export function RsvpModal() {
   const attachDraftMedia = useRsvpStore(s => s.attachDraftMedia);
   const submitDraft = useRsvpStore(s => s.submitDraft);
   const setRsvpModalOpen = useUIStore(s => s.setRsvpModalOpen);
+  const [submitting, setSubmitting] = React.useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const entry = submitDraft();
-    if (!entry) return;
-    setRsvpModalOpen(false);
-    toast(`Teşekkürler, ${entry.guestName}! Katılım bildiriminiz kaydedildi ve canlı panele eklendi.`);
+    if (submitting) return;
+    setSubmitting(true);
+    try {
+      const entry = await submitDraft();
+      if (!entry) return;
+      setRsvpModalOpen(false);
+      toast(`Teşekkürler, ${entry.guestName}! Katılım bildiriminiz kaydedildi ve canlı panele eklendi.`);
+    } catch {
+      toast('Yanıtınız gönderilemedi — lütfen bağlantınızı kontrol edip tekrar deneyin.', 'info');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleMediaChange = (field: 'photoUrl' | 'videoUrl') =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
-      if (file) void attachDraftMedia(field, file);
+      if (file) {
+        attachDraftMedia(field, file).catch(() => {
+          toast('Dosya yüklenemedi — lütfen tekrar deneyin.', 'info');
+        });
+      }
     };
 
   return (
@@ -162,12 +175,13 @@ export function RsvpModal() {
 
         <motion.button
           type="submit"
+          disabled={submitting}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 py-3 rounded-xl text-xs font-semibold tracking-wider shadow-lg transition-colors mt-4 flex items-center justify-center gap-2"
+          className="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 py-3 rounded-xl text-xs font-semibold tracking-wider shadow-lg transition-colors mt-4 flex items-center justify-center gap-2 disabled:opacity-60 disabled:pointer-events-none"
         >
           <Send size={13} />
-          YANITI GÖNDER
+          {submitting ? 'GÖNDERİLİYOR…' : 'YANITI GÖNDER'}
         </motion.button>
       </form>
     </motion.div>
